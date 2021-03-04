@@ -12,7 +12,6 @@ import java.io.File;
  * 
  * @author Olivier Liechti
  */
-
 public class DFSFileExplorer implements IFileExplorer {
 
   @Override
