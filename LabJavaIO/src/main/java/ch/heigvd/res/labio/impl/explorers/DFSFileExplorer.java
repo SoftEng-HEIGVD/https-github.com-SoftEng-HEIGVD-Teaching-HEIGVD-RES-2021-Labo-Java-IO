@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,7 +22,9 @@ public class DFSFileExplorer implements IFileExplorer {
 
     visitor.visit(rootDirectory);
     if(rootDirectory.isDirectory()) { // Only recurse if rootDirectory is a directory
-      for (String filePath : Objects.requireNonNull(rootDirectory.list())) {
+      String[] paths = Objects.requireNonNull(rootDirectory.list());
+      Arrays.sort(paths);             // Sort the arrays so it is alphabetical order on every os
+      for (String filePath : paths) {
         explore(new File(rootDirectory + "/" + filePath), visitor);
       }
     }
