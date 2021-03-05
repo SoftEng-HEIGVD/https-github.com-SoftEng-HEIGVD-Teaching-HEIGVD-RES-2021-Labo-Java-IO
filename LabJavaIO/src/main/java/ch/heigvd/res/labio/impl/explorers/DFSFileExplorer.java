@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.LinkedList;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -23,8 +24,15 @@ public class DFSFileExplorer implements IFileExplorer {
     if (!rootDirectory.exists()) return; // File must exist
     File[] listFiles = rootDirectory.listFiles(); // Retrieves all the files in directory
 
+    // Divides the files and the directories
+    LinkedList<File> sortedFiles = new LinkedList<>();
+    for (File f : listFiles) {
+      if (f.isDirectory()) sortedFiles.addLast(f);
+      else sortedFiles.addFirst(f);
+    }
+
     // Iterates through each file
-    for (File f : listFiles)
+    for (File f : sortedFiles)
       explore(f, visitor);
   }
 }
