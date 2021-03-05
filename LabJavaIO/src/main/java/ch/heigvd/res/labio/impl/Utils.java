@@ -10,6 +10,9 @@ public class Utils {
 
   private static final Logger LOG = Logger.getLogger(Utils.class.getName());
 
+  // TODO : Find another solution
+  private static final String SEPARATOR_REGEX = "(?<=(\r\n))|(?<=\n)|((?<=\r)(?!\n))";
+
   /**
    * This method looks for the next new line separators (\r, \n, \r\n) to extract
    * the next line in the string passed in arguments. 
@@ -20,7 +23,14 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String[] result = lines.split(SEPARATOR_REGEX, 2);
+
+    if (result.length == 2)
+      return result;
+    else
+      return new String[]{"", result[0]};
   }
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
 
 }
