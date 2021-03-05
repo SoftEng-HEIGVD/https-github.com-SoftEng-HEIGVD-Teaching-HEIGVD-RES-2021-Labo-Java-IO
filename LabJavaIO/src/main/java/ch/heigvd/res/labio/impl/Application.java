@@ -40,7 +40,6 @@ public class Application implements IApplication {
      */
     System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%6$s%n");
     
-       
     int numberOfQuotes = 0;
     try {
       numberOfQuotes = Integer.parseInt(args[0]);
