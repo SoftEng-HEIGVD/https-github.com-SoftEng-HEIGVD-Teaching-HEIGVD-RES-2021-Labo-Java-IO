@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.Stack;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -17,7 +18,23 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
 
+    // Note: it explores the arbo by the end.
+    Stack<File> filesStack = new Stack<File>();
+    filesStack.push(rootDirectory);
+    while(!filesStack.empty()){
+        File file =  filesStack.pop();
+
+        // TODO Verify file can only be file or directory
+        if(file.isFile()){
+          vistor.visit(file);
+        }else{
+          for(File newFile: file.listFiles()){
+            filesStack.push(newFile);
+          }
+        }
+    }
+
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  }
 }
