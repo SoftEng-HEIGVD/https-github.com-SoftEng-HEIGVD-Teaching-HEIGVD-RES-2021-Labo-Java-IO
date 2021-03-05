@@ -1,12 +1,11 @@
 package ch.heigvd.res.labio.impl.explorers;
 
-import ch.heigvd.res.labio.impl.filters.FileNumberingFilterWriter;
+
 import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
