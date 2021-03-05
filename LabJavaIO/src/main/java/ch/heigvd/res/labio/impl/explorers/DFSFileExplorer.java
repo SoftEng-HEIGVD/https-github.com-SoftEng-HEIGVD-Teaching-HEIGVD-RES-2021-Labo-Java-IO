@@ -17,10 +17,27 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    ///I'm not the one who made the spelling mistake
+
+    if (rootDirectory == null){
+      return;
+    }
+
+    //I'm not the one who made the spelling mistake
     vistor.visit(rootDirectory);
 
     File[] children = rootDirectory.listFiles();
-  }
 
+    if(children == null) {
+      return;
+    }
+
+    for (File file : children) {
+      //here we recursively use explore if the child is a directory if it's a file we visit it
+      if (file.isDirectory()) {
+        explore(file, vistor);
+      }else{
+        vistor.visit(file);
+      }
+    }
+  }
 }
