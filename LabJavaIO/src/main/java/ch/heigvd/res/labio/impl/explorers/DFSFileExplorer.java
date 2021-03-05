@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -16,8 +17,35 @@ import java.io.File;
 public class DFSFileExplorer implements IFileExplorer {
 
   @Override
-  public void explore(File rootDirectory, IFileVisitor vistor) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  public void explore(File rootDirectory, IFileVisitor vistor)
+  {
+      vistor.visit(rootDirectory);
+      exploreRecursive(rootDirectory, vistor);
   }
 
+  /*
+  *     Fonction récursive "Esclave" afin de pouvoir noter le premier rootDirectory dans le writer sans qu il y ait
+  *     de répétition dans les suivants
+  */
+  private void exploreRecursive(File rootDirectory, IFileVisitor visitor)
+  {
+      // ALGO DE DFS pour explorer : https://www.techiedelight.com/traverse-given-directory-bfs-dfs-java/
+      // get the list of all files and directories present in the `root`
+      File[] listOfFilesAndDirectory = rootDirectory.listFiles();
+
+      // `listFiles()` returns non-null array if `root` denotes a directory
+      if (listOfFilesAndDirectory != null)
+      {
+          for (File file : listOfFilesAndDirectory)
+          {
+              // Action sur le fichier / dossier courant
+              visitor.visit(file);
+
+              // if the file denotes a directory, recur for it
+              if (file.isDirectory()) {
+                  exploreRecursive(file, visitor);
+              }
+          }
+      }
+  }
 }
