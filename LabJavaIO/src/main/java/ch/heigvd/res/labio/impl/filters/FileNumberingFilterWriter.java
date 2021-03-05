@@ -1,5 +1,7 @@
 package ch.heigvd.res.labio.impl.filters;
 
+import ch.heigvd.res.labio.impl.Utils;
+
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -19,23 +21,23 @@ public class FileNumberingFilterWriter extends FilterWriter {
    private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
    private int lineNumber = 0;
 
+   private boolean holdingR = false;
+
    public FileNumberingFilterWriter(Writer out) {
       super(out);
    }
 
    @Override
    public void write(int c) throws IOException {
-      char character = (char) c;
-      if (lineNumber == 0) {
-         ++lineNumber;
-         super.write(String.valueOf(lineNumber) + '\t', 0, 2);
-         ++lineNumber;
-      }
-      if (character == '\r' || character == '\n') {
-         super.write(character + String.valueOf(lineNumber) + '\t', 0, 3);
-         ++lineNumber;
+      if ((char)c == '\r'){
+         holdingR = true;
       } else {
-         super.write(character);
+         String s = String.valueOf((char) c);
+         if (holdingR) {
+            s = '\r' + s;
+            holdingR = false;
+         }
+         write(s, 0, s.length());
       }
    }
 
@@ -46,30 +48,26 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
    @Override
    public void write(String str, int off, int len) throws IOException {
-      StringBuilder temp = new StringBuilder();
-      if (lineNumber == 0) {
-         ++lineNumber;
-         super.write(String.valueOf(lineNumber) + '\t', 0, 2);
-         ++lineNumber;
-      }
-      for (int i = off; i < off + len; ++i) {
-         temp.append(str.charAt(i));
-         boolean isEndOfLine = false;
-         if (str.charAt(i) == '\r') {
-            if (i + 1 < off + len && str.charAt(i + 1) == '\n') {
-               ++i;
-            }
-            isEndOfLine = true;
-         } else if (str.charAt(i) == '\n') {
-            isEndOfLine = true;
-         }
-         if (isEndOfLine) {
-            temp.append(lineNumber).append('\t');
+      String[] lines = Utils.getNextLine(str.substring(off,off+len));
+      while (true) {
+         if (lineNumber == 0) {
             ++lineNumber;
-            super.write(temp.toString(), 0, temp.length());
-            temp = new StringBuilder();
+            writeLineNumber();
+         }
+         if (lines[0].equals("")) {
+            super.write(lines[1], 0, lines[1].length());
+            return;
+         } else {
+            super.write(lines[0], 0, lines[0].length());
+            writeLineNumber();
+            lines = Utils.getNextLine(lines[1]);
          }
       }
-      super.write(temp.toString(), 0, temp.length());
+   }
+
+   private void writeLineNumber() throws IOException {
+      String number = String.valueOf(lineNumber);
+      super.write(number + '\t', 0, number.length()+1);
+      ++lineNumber;
    }
 }
