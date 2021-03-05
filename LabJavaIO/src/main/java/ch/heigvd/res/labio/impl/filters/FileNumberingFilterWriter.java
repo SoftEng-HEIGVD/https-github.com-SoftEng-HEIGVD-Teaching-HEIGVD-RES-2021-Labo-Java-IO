@@ -18,24 +18,64 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int lineNumber;
+  private boolean beginning;
+  private boolean newline;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    lineNumber = 0;
+    beginning = true;
+    newline = false;
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    // throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    // throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for (int i = 0; i < len; ++i)
+      write(cbuf[off + i]);
+
+    // ajout de la dernière ligne (assez artificiel)
+    write(0);
+  }
+
+  /**
+   * Écrit un numéro de ligne suivi d'un tab à chaque nouvelle ligne
+   * @throws IOException si erreur à l'écriture sur le flux
+   */
+  public void newline() throws IOException {
+    out.write(++lineNumber + "\t");
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    // throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if (beginning) {
+      beginning = false;
+      newline();
+      out.write(c);
+    } else {
+      if (c == '\r' || c == '\n') {
+        if (!newline)
+          newline = true;
+
+        out.write(c);
+      } else {
+        if (newline)
+          newline();
+
+        newline = false;
+
+        if (c != 0)
+          out.write(c);
+      }
+    }
   }
 
 }
