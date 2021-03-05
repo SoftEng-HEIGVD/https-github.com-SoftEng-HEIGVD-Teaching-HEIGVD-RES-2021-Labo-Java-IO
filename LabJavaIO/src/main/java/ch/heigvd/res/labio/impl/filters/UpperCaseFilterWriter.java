@@ -9,27 +9,31 @@ import java.io.Writer;
  * @author Olivier Liechti
  */
 public class UpperCaseFilterWriter extends FilterWriter {
-  
+
   public UpperCaseFilterWriter(Writer wrappedWriter) {
     super(wrappedWriter);
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    super.write(str.toUpperCase(), off, len);
+    /**
+     * TODO: Pourquoi
+     * super.write(str.substring(off, len + off).toUpperCase(), off, len);
+     * ne fonctionne pas mais la ligne ci-dessous oui ?
+     */
+    write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    for(char chr : cbuf){
-      write(chr);
+    for(int i = off; i < len + off; ++i){
+      write(cbuf[i]);
     }
   }
 
   @Override
   public void write(int c) throws IOException {
-      super.write(Character.toUpperCase(c));
-
+    super.write(Character.toUpperCase(c));
   }
 
 }
