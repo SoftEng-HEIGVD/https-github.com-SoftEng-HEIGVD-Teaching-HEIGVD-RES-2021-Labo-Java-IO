@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,6 +103,7 @@ public class Application implements IApplication {
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
+        storeQuote(quote , "quote-"+ i + ".utf-8"); //PErso TODO: Why file utf 8 don't exit ?
       }
 
     }
@@ -133,18 +135,32 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //String pwd = System.getProperty("user.dir");
+   // System.out.println("Le répertoire courant est : " + pwd);
+    String text = quote.getQuote(); //DODO : FAilre quelque chose avec
+    Iterator i = quote.getTags().iterator();
+    String rep = WORKSPACE_DIRECTORY;
+    while(i.hasNext()){
+      rep += "/";
+      String t = (String)i.next();
+      rep += t;
+    }
+    rep += "/" + filename;
+    File dir = new File(rep);
+    dir.mkdirs(); //TODO: Que se passe-til si le directory existe deja ?
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
   
   /**
    * This method uses a IFileExplorer to explore the file system and prints the name of each
    * encountered file and directory.
    */
-  void printFileNames(final Writer writer) {
+  void printFileNames(final Writer writer) throws IOException {
     IFileExplorer explorer = new DFSFileExplorer();
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
-      public void visit(File file) {
+      public void visit(File file) throws IOException {
+        writer.write(file.getPath()); //perso
         /*
          * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
