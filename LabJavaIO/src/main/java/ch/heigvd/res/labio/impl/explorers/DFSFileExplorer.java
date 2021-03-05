@@ -15,9 +15,29 @@ import java.io.File;
  */
 public class DFSFileExplorer implements IFileExplorer {
 
+  private void visitFilesAndDirectoriesRecur(File root, IFileVisitor visitor) {
+    File[] filesAndDirectories = root.listFiles();
+
+    if(filesAndDirectories != null) {
+      // Then we go in sub-directories
+      for(File file : filesAndDirectories) {
+        if(file.isDirectory()) {
+          visitor.visit(file);
+          visitFilesAndDirectoriesRecur(file, visitor);
+        }
+      }
+      // We treat files first
+      for(File file : filesAndDirectories) {
+        if(file.isFile())
+          visitor.visit(file);
+      }
+    }
+  }
+
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    vistor.visit(rootDirectory);
+    visitFilesAndDirectoriesRecur(rootDirectory, vistor);
   }
 
 }

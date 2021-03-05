@@ -9,11 +9,9 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,7 +96,7 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
-        storeQuote(quote, "quote-" + i + ".utf8");
+        storeQuote(quote, "quote-" + (i + 1) + ".utf8");
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -134,14 +132,25 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    StringBuilder path = new StringBuilder(WORKSPACE_DIRECTORY);
+    for(String tag : quote.getTags())
+      path.append("/").append(tag);
+
+    File file = new File(path.toString(), filename);
+    file.getParentFile().mkdirs();
+    file.createNewFile();
+
+    OutputStreamWriter writer =
+            new OutputStreamWriter(new FileOutputStream(file.getPath()), StandardCharsets.UTF_8);
+    writer.write(quote.getQuote());
+    writer.close();
   }
   
   /**
    * This method uses a IFileExplorer to explore the file system and prints the name of each
    * encountered file and directory.
    */
-  void printFileNames(final Writer writer) {
+  void printFileNames(final Writer writer) throws IOException {
     IFileExplorer explorer = new DFSFileExplorer();
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
@@ -151,6 +160,11 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try {
+          writer.write(file.getPath() + "\n");
+        } catch (IOException ex) {
+          // do smth
+        }
       }
     });
   }
