@@ -1,5 +1,6 @@
 package ch.heigvd.res.labio.impl.transformers;
 
+import ch.heigvd.res.labio.impl.filters.*;
 import java.io.Writer;
 
 /**
