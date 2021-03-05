@@ -19,23 +19,66 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
+  private int nLines;
+  private boolean previousCharacterWasCarriageReturn;
+
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    nLines = 1;
+      /**
+       * TODO: Trouver un meilleur nom. Je suis pas doué pour nommer des trucs.
+       * https://en.wikipedia.org/wiki/Carriage_return
+       */
+    previousCharacterWasCarriageReturn = false;
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      for(int i = off; i < off + len; ++i){
+          write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      /**
+       * TODO: Résultat identique à l'oeil
+       * Cependant, à tester sur Windows pour test itShouldWorkOnWindows (je suis sur OSX).
+       */
+
+      /**
+       * TODO: Je pense que la logique peut être mieux implémentée !
+       */
+
+      if(nLines == 1){
+          newLineFormat();
+      }
+      if(previousCharacterWasCarriageReturn && c == '\n'){
+          previousCharacterWasCarriageReturn = false;
+          return;
+      }
+
+      super.write(c);
+
+      if(c == '\r'){
+          newLineFormat();
+          previousCharacterWasCarriageReturn = true;
+      }else if(c == '\n'){
+          newLineFormat();
+
+      }
+
   }
+
+  private void newLineFormat() throws IOException {
+      super.write(String.valueOf(nLines++));
+      super.write('\t');
+  }
+
 
 }
