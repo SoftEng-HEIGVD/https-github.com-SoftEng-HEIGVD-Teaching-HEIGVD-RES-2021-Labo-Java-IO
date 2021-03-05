@@ -163,7 +163,7 @@ public class Application implements IApplication {
         try {
           writer.write(file.getPath() + "\n");
         } catch (IOException ex) {
-          // do smth
+          // TODO do something
         }
       }
     });
