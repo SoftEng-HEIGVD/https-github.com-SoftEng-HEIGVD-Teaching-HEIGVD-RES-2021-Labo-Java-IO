@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ *
+ * TODO : Hakim
  */
 public class Application implements IApplication {
 
