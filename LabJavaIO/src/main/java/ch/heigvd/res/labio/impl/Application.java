@@ -140,11 +140,12 @@ public class Application implements IApplication {
       sbpath.append(tag).append("/");
 
     String path = sbpath.toString();
+
     File f = new File(path);
     f.mkdirs();
 
     OutputStreamWriter oswriter = new OutputStreamWriter(
-            new FileOutputStream(path + filename + ".utf-8"), StandardCharsets.UTF_8
+            new FileOutputStream(path + filename + ".utf8"), StandardCharsets.UTF_8
     );
 
     oswriter.write(quote.getQuote());
@@ -173,7 +174,7 @@ public class Application implements IApplication {
           writer.write(file.getPath());
           writer.write(System.lineSeparator());
         } catch (IOException ioe) {
-          throw new RuntimeException();
+          throw new RuntimeException(ioe);
         }
       }
     });
