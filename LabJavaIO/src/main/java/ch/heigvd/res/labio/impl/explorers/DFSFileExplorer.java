@@ -13,10 +13,13 @@ import java.io.File;
  * 
  * @author Olivier Liechti
  */
-public class DFSFileExplorer implements IFileExplorer {
+public class DFSFileExplorer implements IFileExplorer
+{
 
   @Override
-  public void explore(File rootDirectory, IFileVisitor vistor) {
+  public void explore(File rootDirectory, IFileVisitor vistor)
+  {
+    //while()
     throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
