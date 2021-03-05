@@ -43,6 +43,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
     // Checks the integer is a valid character
     if (c < 0 || c > 255) throw new IOException("Given value is not a character");
+    
     char v = (char)c; // Current char
     String outString = out.toString(); // Output string
 
