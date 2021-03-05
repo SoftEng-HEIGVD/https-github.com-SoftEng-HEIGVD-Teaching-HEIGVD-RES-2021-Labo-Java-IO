@@ -16,13 +16,13 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    out.write(str.toUpperCase());
+    out.write(str.substring(off, off + len).toUpperCase());
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    for(char c : cbuf){
-      out.write(Character.toUpperCase(c));
+    for (int i = 0; i < len; ++i) { //maybe there's a way to do it faster ? cast to string ?
+      out.write(Character.toUpperCase(cbuf[off + i]));
     }
   }
 
