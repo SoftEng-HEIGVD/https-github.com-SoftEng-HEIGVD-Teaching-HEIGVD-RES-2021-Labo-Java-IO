@@ -8,6 +8,8 @@ import java.io.Writer;
  *
  * @author Olivier Liechti
  */
+
+//initial commit
 public class UpperCaseFilterWriter extends FilterWriter {
   
   public UpperCaseFilterWriter(Writer wrappedWriter) {
