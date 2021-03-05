@@ -2,7 +2,7 @@
 
 ### About the 2021 version of this lab
 
-We did not change the 2019 version. However, read the paragraph below to be aware of some differences between the project structure in the webcasts and what you will see this year in your IDE.
+We did not change the 2019 version. However, read the paragraph below to be aware of some differences between the project structure in the webcasts and whatt you will see this year in your IDE.
 
 ### About the 2019 version of this lab
 
@@ -15,7 +15,7 @@ We changed the project structure. In previous editions, there was a "test" proje
 For this lab, we will try the following workflow:
 * create a branch for the entire lab (you call it "dev", "lab" or whatever you want)
 * commit code as soon as possible and push the branch to your fork
-* open a PR. In the name of the PR, start with `[WIP] `. This makes it easy for us to see that you are still working on the lab (Work In Progress) 
+* open a PR. In the name of the PR, start with `[WIP] `. This makes it easy for us to see that you are still working on the lab (Work In Progress)
 * even if tests are still red, we have a communication space while you work on the lab
 * whenever you push a new commit, we will be able to see it (and possibly to comment it)
 * at some point, all your tests will be green: you can then signal that you are done; for that, change the name of your PR. Replace `[WIP] ` with `[TOREVIEW] `.
@@ -57,7 +57,7 @@ If your application is fully implemented you should have the following result on
 
 ```
 [INFO] Scanning for projects...
-[INFO] 
+[INFO]
 [INFO] --------------------< ch.heigvd.res.io:lab-java-io >--------------------
 [INFO] Building RES Lab Java IO 1.0-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -66,9 +66,9 @@ If your application is fully implemented you should have the following result on
 
 [INFO] Running ch.heigvd.res.labio.impl.explorers.DFSFileExplorerTest
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.15 s - in ch.heigvd.res.labio.impl.explorers.DFSFileExplorerTest
-[INFO] 
+[INFO]
 [INFO] Results:
-[INFO] 
+[INFO]
 [INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0
 
 ... (skipping some of the log output)
