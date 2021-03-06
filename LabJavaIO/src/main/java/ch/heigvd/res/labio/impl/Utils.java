@@ -24,27 +24,31 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
+      //TODO: We have a modify here
       String firstLine = "";
-      String ligneRestante = "";
+      String ligneRestante = lines;
       String[] listOfSeparator = {"\r\n", "\n", "\r"};
       String sep2 = "";
-      for(String sep : listOfSeparator) {
-          if (lines.contains(sep)) {
-              sep2 = sep;
-              break;
+      if(!lines.isEmpty()){
+          for(String sep : listOfSeparator) {
+              if (lines.contains(sep)) {
+                  sep2 = sep;
+                  break;
+              }
           }
-      }
-      if(!sep2.isEmpty()){
-          String[] l = lines.split(sep2);
-          for (int i = 1; i < l.length; ++i) {
-              ligneRestante += l[i] + sep2;
+          if(!sep2.isEmpty()){
+              int end = 0;
+              //Se passer de sep2 et mettre directement la liste des spépareteurs dans compile ne fonctionne paas
+              Pattern pattern =  Pattern.compile(sep2);
+              Matcher matcher = pattern.matcher(lines);
+              if(matcher.find()){
+                  end = matcher.end();
+                  firstLine += lines.substring(0, end);
+              }
+              ligneRestante = lines.substring(end);
           }
-          firstLine = l[0] + sep2;
-      }else{
-          ligneRestante = lines;
       }
       return new String[]{firstLine, ligneRestante};
-          //TODO: We have a modify here
   }
 }
 
