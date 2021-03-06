@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -20,19 +21,18 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor visitor) {
+    if (rootDirectory == null) return; // File must exist
     visitor.visit(rootDirectory); // Visits the file
-    if (!rootDirectory.exists()) return; // File must exist
     File[] listFiles = rootDirectory.listFiles(); // Retrieves all the files in directory
 
-    // Divides the files and the directories
-    LinkedList<File> sortedFiles = new LinkedList<>();
-    for (File f : listFiles) {
-      if (f.isDirectory()) sortedFiles.addLast(f);
-      else sortedFiles.addFirst(f);
+    if (listFiles != null) {
+      // Sorts the files by alphabetical order
+      Arrays.sort(listFiles);
+
+      // Iterates through each file
+      for (File f : listFiles)
+        explore(f, visitor);
     }
 
-    // Iterates through each file
-    for (File f : sortedFiles)
-      explore(f, visitor);
   }
 }
