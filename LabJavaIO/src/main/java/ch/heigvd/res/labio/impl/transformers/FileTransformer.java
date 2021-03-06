@@ -35,7 +35,7 @@ public abstract class FileTransformer implements IFileVisitor {
    * @param writer the writer connected to the output file
    * @return the writer decorated by 0, 1 or more filter writers
    */
-  public abstract Writer decorateWithFilters(Writer writer);
+  public abstract Writer decorateWithFilters(Writer writer) throws IOException;
 
   @Override
   public void visit(File file) {
