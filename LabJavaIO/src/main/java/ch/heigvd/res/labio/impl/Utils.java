@@ -27,6 +27,7 @@ public class Utils {
       if (split.length == 2){
         return split;
       }else{
+          // ^ in multiline mode does not match the last char so we do the check ourselves
           if (lines.charAt(lines.length()-1) == '\n' || lines.charAt(lines.length()-1) == '\r'){
               return new String[]{split[0], ""};
           }
