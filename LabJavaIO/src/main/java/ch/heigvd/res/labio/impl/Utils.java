@@ -1,8 +1,6 @@
 package ch.heigvd.res.labio.impl;
 
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
