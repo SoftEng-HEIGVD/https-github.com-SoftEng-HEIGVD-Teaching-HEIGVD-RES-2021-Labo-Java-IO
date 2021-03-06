@@ -16,18 +16,19 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    super.out.write(str.substring(off, off + len));
+    for(int c : str.substring(off, off + len).toCharArray())
+      write(c);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
     for(int i = off; i < off + len; i++)
-      super.out.write(cbuf[i] - 32);
+      write(cbuf[i]);
   }
 
   @Override
   public void write(int c) throws IOException {
-    super.out.write(c - 32);
+    super.out.write(Character.toUpperCase(c));
   }
 
 }
