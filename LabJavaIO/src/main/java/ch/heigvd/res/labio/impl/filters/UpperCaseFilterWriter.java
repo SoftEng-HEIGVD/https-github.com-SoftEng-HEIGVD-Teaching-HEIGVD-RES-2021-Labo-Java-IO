@@ -6,7 +6,7 @@ import java.io.Writer;
 
 /**
  * @author Olivier Liechti
- * Updated by Marco Maziero on 05.03.2021
+ * Updated by Marco Maziero on 06.03.2021
  */
 public class UpperCaseFilterWriter extends FilterWriter {
   
@@ -18,7 +18,7 @@ public class UpperCaseFilterWriter extends FilterWriter {
   public void write(String str, int off, int len) throws IOException {
     // Ietartes through the string and modifies the chars
     for (int i = off; i < off + len; ++i) {
-      out.append(Character.toUpperCase(str.charAt(i)));
+      out.write(Character.toUpperCase(str.charAt(i)));
     }
   }
 
@@ -32,7 +32,6 @@ public class UpperCaseFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
     // Checks the integer is a valid character
     if (c < 0 || c > 255) throw new IOException("Given value is not a character");
-    out.append(Character.toUpperCase((char)c));
+    out.write(Character.toUpperCase((char)c));
   }
-
 }
