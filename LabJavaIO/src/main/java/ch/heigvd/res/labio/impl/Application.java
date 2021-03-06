@@ -9,10 +9,7 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -103,7 +100,7 @@ public class Application implements IApplication {
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
-        storeQuote(quote , "quote-"+ i + ".utf-8"); //PErso TODO: Why file utf 8 don't exit ?
+        storeQuote(quote , "quote-"+ i + ".utf8"); //PErso TODO: Why file utf 8 don't exit ?
       }
 
     }
@@ -145,10 +142,27 @@ public class Application implements IApplication {
       String t = (String)i.next();
       rep += t;
     }
-    rep += "/" + filename;
     File dir = new File(rep);
     dir.mkdirs(); //TODO: Que se passe-til si le directory existe deja ?
+    rep += "/" + filename;
+    Writer out = new BufferedWriter(new OutputStreamWriter(
+            new FileOutputStream(rep), "UTF-8"));
+    try {
+      out.write(text);
+    } finally {
+      out.close();
+    }
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    /*
+     // create a File object for the parent directory
+File wallpaperDirectory = new File("/sdcard/Wallpaper/");
+// have the object build the directory structure, if needed.
+wallpaperDirectory.mkdirs();
+// create a File object for the output file
+File outputFile = new File(wallpaperDirectory, filename);
+// now attach the OutputStream to the file object, instead of a String representation
+FileOutputStream fos = new FileOutputStream(outputFile);
+     */
   }
   
   /**
@@ -160,7 +174,8 @@ public class Application implements IApplication {
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
       public void visit(File file) throws IOException {
-        writer.write(file.getPath()); //perso
+        //TODO: modif perso
+        writer.write(file.getPath() + "\n"); //perso
         /*
          * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should

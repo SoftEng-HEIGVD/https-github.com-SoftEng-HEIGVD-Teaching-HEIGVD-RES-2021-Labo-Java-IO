@@ -26,10 +26,22 @@ public class DFSFileExplorer implements IFileExplorer {
     File[] paths = rootDirectory.listFiles();
 
     // for each pathname in pathname array
+    //TODO: modification personnelle, pour application
+
     if(paths != null){
+      vistor.visit(rootDirectory);
       for(File path : paths) {
         // prints file and directory paths
-        vistor.visit(path);
+
+        // if the file denotes a directory, recur for it
+
+        if (path.isDirectory()) {
+          explore(path, vistor);
+        }else{
+          vistor.visit(path);
+        }
+        // otherwise, print it
+
       }
     }
 
