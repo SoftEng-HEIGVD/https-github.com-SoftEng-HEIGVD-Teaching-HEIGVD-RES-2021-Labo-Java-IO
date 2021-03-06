@@ -16,16 +16,34 @@ import java.util.logging.Logger;
  * @author Olivier Liechti
  */
 public class FileNumberingFilterWriter extends FilterWriter {
+  private static int lineNb = 1;
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    lineNb=1;
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String newStr = "";
+    int counter=0;
+    if(lineNb == 1) {
+       newStr = lineNb++ + "\t";
+       counter = counter +2 ;
+    }
+
+    for(int i = off; i < off+len;i++)
+    {
+      newStr += str.charAt(i);
+      if(!String.valueOf(str.charAt(i)).matches("."))
+      {
+        newStr +=  lineNb++ + "\t";
+        counter = counter +2;
+      }
+    }
+    super.write(newStr, off, len+counter);
   }
 
   @Override
