@@ -28,22 +28,25 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(String str, int off, int len) throws IOException {
     String newStr = "";
+    String preline = "";
     int counter=0;
     if(lineNb == 1) {
-       newStr = lineNb++ + "\t";
-       counter = counter +2 ;
+       preline = lineNb++ + "\t";
+       newStr = preline;
+       counter = counter + preline.length() ;
     }
 
     for(int i = off; i < off+len;i++)
     {
       newStr += str.charAt(i);
-      if(!String.valueOf(str.charAt(i)).matches("."))
+      if(((Character)str.charAt(i)).equals('\n'))
       {
-        newStr +=  lineNb++ + "\t";
-        counter = counter +2;
+        preline = lineNb++ + "\t";
+        newStr +=  preline;
+        counter = counter + preline.length();
       }
     }
-    super.write(newStr, off, len+counter);
+    super.write(newStr, 0, len+counter);
   }
 
   @Override
