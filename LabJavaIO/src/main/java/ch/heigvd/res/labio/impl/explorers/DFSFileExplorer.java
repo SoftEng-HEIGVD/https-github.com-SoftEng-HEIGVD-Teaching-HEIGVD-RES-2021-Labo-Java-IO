@@ -32,9 +32,9 @@ public class DFSFileExplorer implements IFileExplorer {
         @Override
         public int compare(File file, File t1) {
           if (file.isDirectory() && !t1.isDirectory()){
-            return 1;
-          }else if (!file.isDirectory() && t1.isDirectory()){
             return -1;
+          }else if (!file.isDirectory() && t1.isDirectory()){
+            return 1;
           }else{
             return file.compareTo(t1);
           }

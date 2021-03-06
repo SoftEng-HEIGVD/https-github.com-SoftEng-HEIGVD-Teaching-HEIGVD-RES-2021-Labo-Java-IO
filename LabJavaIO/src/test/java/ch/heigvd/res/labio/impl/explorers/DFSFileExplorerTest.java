@@ -72,6 +72,16 @@ public class DFSFileExplorerTest {
         int childrenFiles = (int) (Math.random() * maxChildrenFiles);
 
 
+
+        for (int i = 0; i < childrenFolders; i++) {
+            String dirName = dir.getName() + "." + (i + 1);
+            dfsNodes.add(dirName);
+            File newDir = new File(dir, dirName);
+            newDir.mkdirs();
+            if (level < maxLevels) {
+                generateLevel(newDir, level + 1, maxLevels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
+            }
+        }
         for (int i = 0; i < childrenFiles; i++) {
             String fileName = dir.getName() + "." + (i + 1) + "_f";
             File newFile = new File(dir, fileName);
@@ -80,15 +90,6 @@ public class DFSFileExplorerTest {
                 dfsNodes.add(fileName);
             } catch (IOException e) {
                 System.err.println("Error in preparing test " + e+" "+dir);
-            }
-        }
-        for (int i = 0; i < childrenFolders; i++) {
-            String dirName = dir.getName() + "." + (i + 1);
-            dfsNodes.add(dirName);
-            File newDir = new File(dir, dirName);
-            newDir.mkdirs();
-            if (level < maxLevels) {
-                generateLevel(newDir, level + 1, maxLevels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
             }
         }
 
