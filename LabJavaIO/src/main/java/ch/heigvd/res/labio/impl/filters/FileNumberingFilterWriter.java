@@ -23,19 +23,47 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private int lineNumber = 1;
+  private boolean newLine = false;
+
+
+  //il va falloir détecter les sauts de ligne, il faut un compteur de ligne.
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      write(str.charAt(i));
+    }
+
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if(lineNumber == 1){
+      out.write(lineNumber++ + "\t");
+      super.write(c);
+    } else if( c == '\n') {
+      newLine = false;
+      super.write(c);
+      out.write(lineNumber++ + "\t");
+    } else if(!newLine){
+      super.write(c);
+    } else {
+      out.write(lineNumber++ + "\t");
+      super.write(c);
+      newLine = false;
+    }
+
+    if(c == '\r'){
+      newLine = true;
+    }
+
   }
 
 }
