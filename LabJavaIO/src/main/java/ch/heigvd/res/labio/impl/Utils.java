@@ -22,35 +22,14 @@ public class Utils {
 
         String[] result = new String[]{"", lines};
 
-        for (int i = 0; i < lines.length(); ++i) {
-            char c = lines.charAt(i);
-
-            /* Version 2
-            if (c == '\r' && i + 1 < lines.length() && lines.charAt(i + 1) == '\n') {
-                result[0] = lines.substring(0, i + 2);
-                result[1] = lines.substring(i + 2);
-                break;
-            } else if (c == '\r' || c == '\n'){
-                result[0] = lines.substring(0, i + 1);
-                result[1] = lines.substring(i + 1);
-                break;
-            }
-            */
-
-            switch (c) {
-                case '\r':
-                    if (i < lines.length() - 1 && lines.charAt(i + 1) == '\n') {
-                        result[0] = lines.substring(0, i + 2);
-                        result[1] = lines.substring(i + 2);
-                        break;
-                    }
-                case '\n':
-                    result[0] = lines.substring(0, i + 1);
-                    result[1] = lines.substring(i + 1);
-                    return result;
-            }
-
+        if (lines.contains("\r\n")) {
+            result = lines.split("(?<=\r\n)", 2);
+        } else if (lines.contains("\r")) {
+            result = lines.split("(?<=\r)", 2);
+        } else if (lines.contains("\n")) {
+            result = lines.split("(?<=\n)", 2);
         }
+
         return result;
     }
 
