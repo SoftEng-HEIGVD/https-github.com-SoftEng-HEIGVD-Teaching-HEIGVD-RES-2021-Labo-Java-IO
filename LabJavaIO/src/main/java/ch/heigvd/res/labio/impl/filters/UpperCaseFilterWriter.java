@@ -22,17 +22,21 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    for(int i = off; i<len;i++)
+    for(int i = off; i<off+len;i++)
     {
-      cbuf[i]=Character.toUpperCase(cbuf[i]);
-
+          if(Character.isLetter(cbuf[i])) {
+            cbuf[i] = Character.toUpperCase(cbuf[i]);
+          }
     }
     super.write(cbuf, off,len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char ch = (char) c;
+    ch = Character.toUpperCase(ch);
+
+    super.write((int)ch);
   }
 
 }
