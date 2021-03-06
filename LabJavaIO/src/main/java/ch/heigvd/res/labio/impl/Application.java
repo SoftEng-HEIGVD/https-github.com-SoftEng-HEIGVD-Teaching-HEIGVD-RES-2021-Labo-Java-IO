@@ -166,14 +166,13 @@ public class Application implements IApplication {
                  * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
                  * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
                  */
-                if (file == null){
+                if (file == null) {
                     //The dfs should not ask to visit null files but if we change it's here
                     return;
                 }
-                try{
-                    writer.write(file.getPath());
-                    writer.write(System.lineSeparator());
-                }catch (IOException e){
+                try {
+                    writer.write(file.getPath() + System.lineSeparator());
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
