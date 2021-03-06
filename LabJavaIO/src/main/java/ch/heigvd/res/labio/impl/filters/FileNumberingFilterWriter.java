@@ -14,12 +14,14 @@ import java.util.logging.Logger;
  * Hello\n\World -> 1\Hello\n2\tWorld
  *
  * @author Olivier Liechti
- * Updated by Marco Maziero on 05.03.2021
+ * Updated by Marco Maziero on 06.03.2021
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int lineCnt = 0;
+  private char lastWrittenChar;
+  private boolean writeStarted = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -45,16 +47,25 @@ public class FileNumberingFilterWriter extends FilterWriter {
     if (c < 0 || c > 255) throw new IOException("Given value is not a character");
     
     char v = (char)c; // Current char
-    String outString = out.toString(); // Output string
 
-    if (outString.isEmpty()) { // First line, out is empty
-      out.append(String.valueOf(++lineCnt)).append('\t').append(v);
+    if (!writeStarted) { // First line, starts the writing
+      writeStarted = true;
+      String data = String.valueOf(++lineCnt) + '\t' + v;
+      out.write(data);
+
     } else if (v == '\n') { // After a \n, always insert new line
-      out.append(v).append(String.valueOf(++lineCnt)).append('\t');
-    } else if (outString.charAt(outString.length() - 1) == '\r') { // If \r case. Cannot be \r\n at this point
-      out.append(String.valueOf(++lineCnt)).append('\t').append(v);
+      String data = v + String.valueOf(++lineCnt) + '\t';
+      out.write(data);
+
+    } else if (lastWrittenChar == '\r') { // If \r case. Cannot be \r\n at this point
+      String data = String.valueOf(++lineCnt) + '\t' + v;
+      out.write(data);
+
     } else { // Normal character
-      out.append(v);
+      out.write(v);
     }
+
+    // Stores the current char to detect \r lines separators in the next write
+    lastWrittenChar = v;
   }
 }
