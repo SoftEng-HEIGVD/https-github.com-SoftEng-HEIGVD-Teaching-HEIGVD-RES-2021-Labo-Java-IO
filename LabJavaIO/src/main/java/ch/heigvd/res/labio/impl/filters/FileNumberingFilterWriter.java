@@ -22,6 +22,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   private int no;
+  private String last2Chars;
+  private char buffer;
 
   public FileNumberingFilterWriter(Writer out) throws IOException {
     super(out);
@@ -29,7 +31,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   }
 
   private void insertNumerotation() throws IOException {
-    super.out.write((++no + '0'));
+    super.out.write(String.valueOf(++no));
     super.out.write(9); // Tab
   }
 
@@ -45,33 +47,50 @@ public class FileNumberingFilterWriter extends FilterWriter {
       toConsider.append(cbuf[i]);
 
     String[] lines = Utils.getNextLine(toConsider.toString());
-    for(String line : lines) {
-      if(line.isEmpty())
+    for(int i = 0; i < lines.length; i++) {
+      if(lines[i].isEmpty())
         continue;
 
-      for(int c : line.toCharArray())
+      for(int c : lines[i].toCharArray())
         super.out.write(c);
 
-      if(!lines[0].isEmpty())
+      if(i != lines.length - 1)
         insertNumerotation();
     }
   }
 
   @Override
   public void write(int c) throws IOException {
-    String possibleNewLine1 = "", possibleNewLine2 = "", bufferContent = super.out.toString();
-    // Si les deux derniers sont \r, \n ou si les 4 derniers sont \r\n, insérer une numérotation
-    if(bufferContent.length() >= 1)
-      possibleNewLine1 = bufferContent.substring(bufferContent.length() - 1);
-    if(bufferContent.length() >= 2)
-      possibleNewLine2 = bufferContent.substring(bufferContent.length() - 2);
+    // la première fois que l'on accède le buffer, last2Chars est à null
+    if(last2Chars != null) {
+      // Dans le cas où le dernier caractère écrit est un retour à la ligne, on place dans le buffer
+      // c, car on ne sait pas s'il faut faire le retour à la ligne maintenant (simple \r ou \n) ou si
+      // c'est un retour à la ligne double (\r\n)
+      if(last2Chars.charAt(1) == '\r' || last2Chars.charAt(1) == '\n' && buffer == 0)
+        buffer = (char)c;
 
-    if(possibleNewLine1.equals("\r") || possibleNewLine1.equals("\n") || possibleNewLine2.equals("\r\n"))
-      if(bufferContent.substring(bufferContent.length() - 1).toCharArray()[0] != (char)9) {
-        insertNumerotation();
-        return;
+      // Si nos deux derniers caractères sont du type \r-, \n- ou \r\n, on va ajouter une nouvelle ligne
+      if((last2Chars.charAt(0) == '\r')
+              || (last2Chars.charAt(0) == '\n')
+              ||  (last2Chars.charAt(0) == '\r' && last2Chars.charAt(1) == '\n')) {
+          // Si c'est un double retour, on écrit d'abord \n puis on insert la numérotation
+          if(buffer == '\r' || buffer == '\n') {
+            super.out.write(buffer);
+            insertNumerotation();
+          // Si c'est un simple retour, on insert la numérotation puis le premier caractère de la ligne suivante
+          } else {
+            insertNumerotation();
+            super.out.write(buffer);
+          }
+          buffer = 0;
       }
-    super.out.write(c);
+    }
+    // Si on a qqch dans le buffer, on l'écrit pas de suite dans la sortie
+    if(buffer == 0)
+      super.out.write(c);
+    last2Chars = super.out.toString().substring(super.out.toString().length() - 2);
+    // Si on a qqch dans le buffer, on met à jour last2Chars avec le contenu du buffer
+    if(buffer != 0)
+      last2Chars = last2Chars.substring(last2Chars.length() - 1) + buffer;
   }
-
 }
