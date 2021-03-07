@@ -23,19 +23,91 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private int cmptLigne = 1;
+  private boolean changementLigne = true;
+  private char precendentChar = 0;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+      for(int position = off; position < len + off; position++ )
+      {
+          if(changementLigne && str.charAt(position) != '\r' && str.charAt(position) != '\n')
+          {
+              out.write(cmptLigne++ + "\t");
+              changementLigne = false;
+          }
+
+          // Ecrit le char dans le stream
+          out.write(str.charAt(position));
+
+          // Control si il y a un changement de ligne à faire à la prochaine itération de la fonction
+          if(str.charAt(position) == '\r' || str.charAt(position) == '\n')
+          {
+              changementLigne = true;
+          }
+      }
+
+      // Controle si il y a eu un retour à la ligne en dernier char
+      if(changementLigne)
+      {
+          out.write(cmptLigne++ + "\t");
+          changementLigne = false;
+      }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+      for(int position = off; position < len + off; position++ )
+      {
+          if(changementLigne && cbuf[position] != '\r' && cbuf[position] != '\n')
+          {
+              out.write(cmptLigne++ + "\t");
+              changementLigne = false;
+          }
+
+          // Ecrit le char dans le stream
+          out.write(cbuf[position]);
+
+          // Control si il y a un changement de ligne à faire à la prochaine itération de la fonction
+          if(cbuf[position] == '\r' || cbuf[position] == '\n')
+          {
+              changementLigne = true;
+          }
+      }
+
+      // Controle si il y a eu un retour à la ligne en dernier char
+      if(changementLigne)
+      {
+          out.write(cmptLigne++ + "\t");
+          changementLigne = false;
+      }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
 
+      // Fait le changement de ligne s'il y en a un (et pas deux s'il y a des \r et \n qui se suivent)
+      if(changementLigne && (c != '\r' && c != '\n'))
+      {
+          out.write(cmptLigne++ + "\t");
+          changementLigne = false;
+      }
+
+      // Ecrit le char dans le stream
+      out.write((char)c);
+
+      // Control si il y a un changement de ligne à faire à la prochaine itération de la fonction
+      if(c == '\r' || c == '\n')
+      {
+          changementLigne = true;
+      }
+
+      // Sauvegarde du char traité
+      precendentChar = (char) c;
+  }
 }
