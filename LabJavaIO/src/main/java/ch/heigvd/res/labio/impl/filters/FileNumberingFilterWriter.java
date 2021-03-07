@@ -31,12 +31,18 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(String str, int off, int len) throws IOException {
-        str = str.substring(off,off+len);
+
+        str = str.substring(off, off + len);
         StringBuilder builder = new StringBuilder("");
-        boolean oneLine = Utils.getNextLine(str)[0].equals("");
-        if (oneLine){ if(lineNumber == 1) builder.append(lineNumber++ + "\t" + Utils.getNextLine(str)[1]);
-                      else builder.append(Utils.getNextLine(str)[1]);}
-        else {
+        boolean isOneLine = Utils.getNextLine(str)[0].equals("");
+
+        if (isOneLine) {
+
+            if (lineNumber == 1) builder.append(lineNumber++ + "\t" + Utils.getNextLine(str)[1]);
+            else builder.append(Utils.getNextLine(str)[1]);
+
+        } else {
+
             if (lineNumber == 1) builder.append(lineNumber++ + "\t" + Utils.getNextLine(str)[0] + lineNumber++ + "\t");
             else builder.append(Utils.getNextLine(str)[0] + lineNumber++ + "\t");
 
@@ -46,9 +52,12 @@ public class FileNumberingFilterWriter extends FilterWriter {
                 builder.append(Utils.getNextLine(tmp)[0] + lineNumber++ + "\t");
                 tmp = Utils.getNextLine(tmp)[1];
             }
+
             builder.append(Utils.getNextLine(tmp)[1]);
         }
+
         super.write(builder.toString(), 0, builder.toString().length());
+
     }
 
     @Override
@@ -58,15 +67,18 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(int c) throws IOException {
-        if(lineNumber == 1) super.write(lineNumber++ + "\t");
-        if(c != '\n' && pastChar == '\r') super.write(lineNumber++ + "\t");
-        if(c == '\n'){
+
+        if (lineNumber == 1) super.write(lineNumber++ + "\t");
+
+        if (c != '\n' && pastChar == '\r') super.write(lineNumber++ + "\t");
+
+        if (c == '\n') {
             super.write(c);
             super.write(lineNumber++ + "\t");
-        }
-        else
-        super.write(c);
+        } else
+            super.write(c);
         pastChar = c;
+
     }
 
 }
