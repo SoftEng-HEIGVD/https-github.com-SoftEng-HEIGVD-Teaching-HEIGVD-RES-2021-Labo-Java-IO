@@ -25,10 +25,10 @@ public class DFSFileExplorer implements IFileExplorer {
     }
     vistor.visit(rootDirectory);
 
-    File[] childs = rootDirectory.listFiles();
+    File[] children = rootDirectory.listFiles();
 
-    if (childs != null){
-      Arrays.sort(childs, new Comparator<File>() {
+    if (children != null){
+      Arrays.sort(children, new Comparator<File>() {
         @Override
         public int compare(File file, File t1) {
           if (file.isDirectory() && !t1.isDirectory()){
@@ -40,7 +40,7 @@ public class DFSFileExplorer implements IFileExplorer {
           }
         }
       });
-      for (File f : childs){
+      for (File f : children){
         if (f.isDirectory()){
           explore(f, vistor);
         }else{
