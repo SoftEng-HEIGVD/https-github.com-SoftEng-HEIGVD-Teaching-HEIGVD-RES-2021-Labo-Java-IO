@@ -31,7 +31,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(String str, int off, int len) throws IOException {
-
+        /*
         str = str.substring(off, off + len);
         StringBuilder builder = new StringBuilder("");
         boolean isOneLine = Utils.getNextLine(str)[0].equals("");
@@ -57,24 +57,45 @@ public class FileNumberingFilterWriter extends FilterWriter {
         }
 
         super.write(builder.toString(), 0, builder.toString().length());
-
+*/
+       int size = off+len;
+        for(int i = off; i <size ; ++i){
+            write(str.charAt(i));
+        }
     }
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        write(new String(cbuf), off, len);
+       // write(new String(cbuf), off, len);
+        int size = off + len;
+        for(int i = off ; i < size; ++i)
+            write(cbuf[i]);
     }
 
     @Override
     public void write(int c) throws IOException {
+        if(c < 0 || c >255) throw new IOException("Invalid character");
+        char[] digits  = Integer.toString( lineNumber ).toCharArray();
+        if (lineNumber == 1){
+            for(char digit : digits)
+                super.write(digit);
+            digits  = Integer.toString( lineNumber++ ).toCharArray();
+            super.write('\t');
+            }
 
-        if (lineNumber == 1) super.write(lineNumber++ + "\t");
-
-        if (c != '\n' && pastChar == '\r') super.write(lineNumber++ + "\t");
+        if (c != '\n' && pastChar == '\r'){
+            for(char digit : digits)
+                super.write(digit);
+            digits  = Integer.toString( lineNumber++ ).toCharArray();
+            super.write('\t');
+        }
 
         if (c == '\n') {
             super.write(c);
-            super.write(lineNumber++ + "\t");
+            for(char digit : digits)
+                super.write(digit);
+            ++lineNumber;
+            super.write('\t');
         } else
             super.write(c);
         pastChar = c;
