@@ -1,9 +1,12 @@
 package ch.heigvd.res.labio.impl.transformers;
 
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,10 +56,10 @@ public abstract class FileTransformer implements IFileVisitor {
        * characters and write them to the writer.
        */
       int r;
-      while ((r = reader.read()) != -1) {
-        char ch = (char) r;
-        writer.write(ch);
-      }
+      StringBuilder toWrite = new StringBuilder();
+      while ((r = reader.read()) != -1)
+        toWrite.append((char) r);
+      writer.write(toWrite.toString(), 0, toWrite.length());
 
       reader.close();
       writer.flush();
