@@ -21,9 +21,7 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    int size = off + len;
-    for (int i = off; i < size; ++i)
-      write(cbuf[i]);
+    write(new String(cbuf), off, len);
   }
 
   @Override

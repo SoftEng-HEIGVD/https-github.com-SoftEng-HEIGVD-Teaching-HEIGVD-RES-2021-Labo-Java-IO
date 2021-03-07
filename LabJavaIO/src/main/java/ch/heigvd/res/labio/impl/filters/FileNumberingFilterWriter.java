@@ -3,6 +3,8 @@ package ch.heigvd.res.labio.impl.filters;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +27,24 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  /*  List<Integer> indexes = new ArrayList<>();
+    int index = 0;
+
+
+    while(index != -1){
+      index = str.indexOf("\n", index);
+      if (index != -1) {
+        indexes.add(index + 1);
+        index++;
+      }
+    }
+
+    StringBuilder builder = new StringBuilder("1\t"+ str);
+    int size = indexes.size() + 1;
+    for(int i = 2; i < size; ++i){
+      builder.insert(indexes.get(i - 1), i + "\t");
+    }
+    super.write(builder.toString(), off, len);*/
   }
 
   @Override
