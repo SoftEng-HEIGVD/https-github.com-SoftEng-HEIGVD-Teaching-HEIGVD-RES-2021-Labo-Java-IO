@@ -171,7 +171,7 @@ public class Application implements IApplication {
                     return;
                 }
                 try {
-                    writer.write(file.getPath() + System.lineSeparator());
+                    writer.write(file.getPath() + "\n");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
