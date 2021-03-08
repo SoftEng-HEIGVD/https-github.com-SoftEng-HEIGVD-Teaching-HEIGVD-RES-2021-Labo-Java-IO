@@ -31,7 +31,7 @@ public class Utils {
 
       if(index > -1){
         newLine[0] = lines.substring(0, index + 1);
-        newLine[1] = lines.substring(index + 1, lines.length());
+        newLine[1] = lines.substring(index + 1);
         isWritten = true;
         break;
       }

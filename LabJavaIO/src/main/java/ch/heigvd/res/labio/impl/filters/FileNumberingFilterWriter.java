@@ -49,7 +49,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     \r is for mac
     \r\n is for windows
      */
-    
+
     if(firstLine){
       out.write(++nbLine + "\t");
       firstLine = false;
