@@ -91,22 +91,15 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        /* There is a missing piece here!
-         * As you can see, this method handles the first part of the lab. It uses the web service
-         * client to fetch quotes. We have removed a single line from this method. It is a call to
-         * one method provided by this class, which is responsible for storing the content of the
-         * quote in a text file (and for generating the directories based on the tags).
-         */
-        String tags = new String();
+        StringBuilder tags = new StringBuilder();
 
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
-          tags += tag + "/";
+          tags.append(tag).append("/");
         }
-        storeQuote(quote, WORKSPACE_DIRECTORY + "/" + tags + "/quote-" + quote.getValue().getId());
+        storeQuote(quote, WORKSPACE_DIRECTORY + "/" + tags.toString() + "/quote-" + quote.getValue().getId() + ".utf8");
       }
-
     }
   }
   
@@ -139,7 +132,7 @@ public class Application implements IApplication {
   {
     try
     {
-      //créer l'arborescence si pas existante
+      // Créer l'arborescence
       File file = new File(filename);
       file.getParentFile().mkdirs();
 
@@ -151,7 +144,6 @@ public class Application implements IApplication {
     {
       e.printStackTrace();
     }
-    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
   
   /**
