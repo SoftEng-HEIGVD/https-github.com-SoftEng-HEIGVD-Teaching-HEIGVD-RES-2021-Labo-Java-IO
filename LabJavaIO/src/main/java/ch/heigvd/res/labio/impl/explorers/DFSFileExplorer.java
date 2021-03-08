@@ -27,7 +27,7 @@ public class DFSFileExplorer implements IFileExplorer {
     File [] subFolder = rootDirectory.listFiles();
 
     for (File f : subFolder ) {
-      if(f.isDirectory() && f != rootDirectory) {
+      if(f.isDirectory()) {
         vistor.visit(f);
         Rexplore(f, vistor);
       }
