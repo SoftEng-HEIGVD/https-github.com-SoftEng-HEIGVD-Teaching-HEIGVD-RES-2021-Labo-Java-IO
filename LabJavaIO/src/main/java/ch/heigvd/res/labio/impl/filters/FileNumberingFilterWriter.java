@@ -45,14 +45,14 @@ public class FileNumberingFilterWriter extends FilterWriter {
     do {
       int i = str.indexOf('\n', prevOff) + 1;
       int macI = str.indexOf('\r', prevOff) + 1;
-      String test;
+      String tmp;
       if (i==0 && macI==0) {
-        test = str.substring(prevOff);
+        tmp = str.substring(prevOff);
       } else {
         if (i==0) i = macI;
-        test = str.substring(prevOff, i);
+        tmp = str.substring(prevOff, i);
       }
-      result.append(addNumberToString(test));
+      result.append(addNumberToString(tmp));
       prevOff = i;
 
     } while (prevOff != 0);
@@ -67,7 +67,17 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char character = (char) c;
+    StringBuilder result = new StringBuilder();
+    if (fileNb == 1) {
+      ++fileNb;
+      result.append("1\t");
+    }
+    result.append(character);
+    if (character == '\n')
+      result.append(fileNb++).append('\t');
+
+    out.write(result.toString());
   }
 
 }
