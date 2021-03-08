@@ -32,7 +32,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
       result.append("1\t");
     }
     result.append(str);
-    if (str.indexOf('\n') != -1) result.append(fileNb++).append('\t');
+    if (str.indexOf('\n') != -1 || str.indexOf('\r') != -1)
+      result.append(fileNb++).append('\t');
     return result.toString();
   }
 
@@ -40,14 +41,21 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(String str, int off, int len) throws IOException {
     str = str.substring(off, off + len);
     StringBuilder result = new StringBuilder();
-    int prevOff = off;
-    int i = str.indexOf('\n') + 1;
+    int prevOff = 0;
     do {
-      String test = (i==0 ? str : str.substring(prevOff, i));
+      int i = str.indexOf('\n', prevOff) + 1;
+      int macI = str.indexOf('\r', prevOff) + 1;
+      String test;
+      if (i==0 && macI==0) {
+        test = str.substring(prevOff);
+      } else {
+        if (i==0) i = macI;
+        test = str.substring(prevOff, i);
+      }
       result.append(addNumberToString(test));
       prevOff = i;
-      i = str.indexOf('\n', prevOff) + 1;
-    } while (i != 0);
+
+    } while (prevOff != 0);
 
     out.write(result.toString());
   }
