@@ -18,14 +18,37 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int fileNb;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    fileNb = 1;
+  }
+
+  private String addNumberToString(String str) {
+    StringBuilder result = new StringBuilder();
+    if (fileNb == 1) {
+      ++fileNb;
+      result.append("1\t");
+    }
+    result.append(str);
+    if (str.indexOf('\n') != -1) result.append(fileNb++).append('\t');
+    return result.toString();
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet. ");
+    StringBuilder result = new StringBuilder();
+    int prevOff = off;
+    int i = str.indexOf('\n') + 1;
+    do {
+      String test = (i==0 ? str : str.substring(prevOff, i));
+      result.append(addNumberToString(test));
+      prevOff = i;
+      i = str.indexOf('\n', prevOff) + 1;
+    } while (i != 0);
+
+    out.write(result.toString());
   }
 
   @Override
