@@ -109,7 +109,7 @@ public class Application implements IApplication {
    * This method deletes the WORKSPACE_DIRECTORY and its content. It uses the
    * apache commons-io library. You should call this method in the main method.
    * 
-   * @throws IOException 
+   * @throws IOException
    */
   void clearOutputDirectory() throws IOException {
     FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));    
@@ -171,11 +171,11 @@ public class Application implements IApplication {
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
       public void visit(File file) {
-        /*
-         * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
-         * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
-         * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
-         */
+        try {
+          writer.write(file.toString());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     });
   }
