@@ -172,7 +172,7 @@ public class Application implements IApplication {
       @Override
       public void visit(File file) {
         try {
-          writer.write(file.toString());
+          writer.write(file.toString()+"\n");
         } catch (IOException e) {
           e.printStackTrace();
         }
