@@ -38,6 +38,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
+    str = str.substring(off, off + len);
     StringBuilder result = new StringBuilder();
     int prevOff = off;
     int i = str.indexOf('\n') + 1;
