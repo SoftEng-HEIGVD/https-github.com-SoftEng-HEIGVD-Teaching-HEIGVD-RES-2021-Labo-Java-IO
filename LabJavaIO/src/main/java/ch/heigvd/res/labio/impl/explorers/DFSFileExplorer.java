@@ -2,6 +2,7 @@ package ch.heigvd.res.labio.impl.explorers;
 
 import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
+import java.util.Arrays;
 
 import java.io.File;
 // pouvoir parcourir tous les enfants d'un dossier parent , récursif, chaque fois qu'on rencontre un noeud, on
@@ -19,7 +20,15 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor visitor) {
-    //rootDirectory.listFiles();
-  }
+    File[] listOfFilesAndDirectory = rootDirectory.listFiles();
+    Arrays.sort(listOfFilesAndDirectory);
+    for (File file : listOfFilesAndDirectory)
+    {
+      visitor.visit(file);
 
+      if (file.isDirectory()) {
+        explore(file, visitor);
+      }
+    }
+  }
 }
