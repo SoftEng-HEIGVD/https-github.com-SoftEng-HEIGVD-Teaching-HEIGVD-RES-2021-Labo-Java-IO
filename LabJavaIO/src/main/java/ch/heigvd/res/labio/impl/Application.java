@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -138,7 +139,8 @@ public class Application implements IApplication {
     File f = new File(WORKSPACE_DIRECTORY + subPath + "/" + filename + ".utf8");
     f.getParentFile().mkdirs();
 
-    FileWriter fileWriter = new FileWriter(f);
+    Writer fileWriter = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8);
+    //FileWriter fileWriter = new FileWriter(f);
 
     fileWriter.write(quote.getQuote());
     fileWriter.close();
