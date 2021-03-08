@@ -1,6 +1,7 @@
 package ch.heigvd.res.labio.impl;
 
 import java.util.logging.Logger;
+import java.lang.String;
 
 /**
  *
@@ -20,7 +21,27 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] newLine = new String[]{"", ""};
+    String[] symbols = new String[]{"\n", "\r", "\r\n"};
+    boolean isWritten = false;
+
+
+    for(String s : symbols){
+      int index = lines.indexOf(s);
+
+      if(index > -1){
+        newLine[0] = lines.substring(0, index + 1);
+        newLine[1] = lines.substring(index + 1, lines.length());
+        isWritten = true;
+        break;
+      }
+    }
+    // if lines do not contain any line separator
+    if(!isWritten){
+      newLine[1] = lines;
+    }
+
+    return newLine;
   }
 
 }
