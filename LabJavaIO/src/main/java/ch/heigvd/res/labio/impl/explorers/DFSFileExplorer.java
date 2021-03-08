@@ -25,16 +25,8 @@ public class DFSFileExplorer implements IFileExplorer {
       visitor.visit(currentFile);
       File[] files = currentFile.listFiles();
       if (files != null) { //is a directory
-         ArrayList<File> subdirectories = new ArrayList<>();
          for (File file : files) {
-            if (file.isDirectory()) {
-               subdirectories.add(file);
-            } else {
                dfsRecursive(file, visitor);
-            }
-         }
-         for (File file : subdirectories){
-            dfsRecursive(file,visitor);
          }
       }
    }

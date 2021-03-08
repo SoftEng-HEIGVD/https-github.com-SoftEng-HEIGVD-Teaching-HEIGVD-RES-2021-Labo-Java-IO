@@ -140,7 +140,7 @@ public class Application implements IApplication {
       for (String s : quote.getTags()) {
          path += '/' + s;
       }
-      File file = new File(path, filename);
+      File file = new File(path + '/', filename);
       file.getParentFile().mkdirs();
       file.createNewFile();
 
@@ -160,7 +160,7 @@ public class Application implements IApplication {
          @Override
          public void visit(File file) {
             try {
-               writer.write(file.getAbsolutePath());
+               writer.write(file.getPath().replace('\\', '/') + '\n');
             } catch (IOException e) {
                e.printStackTrace();
             }
