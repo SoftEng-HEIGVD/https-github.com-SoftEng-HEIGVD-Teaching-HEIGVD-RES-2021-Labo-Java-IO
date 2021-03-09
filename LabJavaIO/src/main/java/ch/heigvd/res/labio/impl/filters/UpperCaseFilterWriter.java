@@ -3,6 +3,7 @@ package ch.heigvd.res.labio.impl.filters;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Level;
 
 /**
  *
@@ -16,17 +17,24 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    int endIndex = off + len - 1;
+    String upStr = str.substring(off, endIndex);
+    out.write(upStr.toUpperCase());
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char[] upCbuf = new char[len];
+    for (int i = 0; i < len ; ++i) {
+      upCbuf[i] = Character.toUpperCase(cbuf[off + i]);
+    }
+    out.write(upCbuf);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char upChar = Character.toUpperCase((char) c);
+    out.write(upChar);
   }
 
 }
