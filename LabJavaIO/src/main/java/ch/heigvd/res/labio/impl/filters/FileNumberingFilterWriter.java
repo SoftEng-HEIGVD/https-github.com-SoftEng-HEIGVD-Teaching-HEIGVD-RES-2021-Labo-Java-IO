@@ -25,14 +25,18 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    super.write(str.toCharArray(), off, len);
+    //this.write(str.toCharArray(), off, len);
+    for(int i = off; i < (off + len); i++){
+      this.write(str.charAt(i));
+    }
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
     for(char c : cbuf){
-      super.write(c);
+    //for(int i = off; i < (off + len); i++){
+      this.write(cbuf[c]);
     }
   }
 
@@ -40,13 +44,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
     char letter = (char) c;
     if(lineCounter == 0){
-      super.write((++lineCounter) + '\t' + letter);
+      out.write((++lineCounter) + "\t" + letter);
     } else if (lastChar == '\r' && letter == '\n'){
-      super.write(letter);
-    }else if (letter == '\r' || letter == '\n'){
-      super.write(letter + (++lineCounter) + '\t');
-    }else {
-      super.write (letter);
+      out.write("\r\n" + (++lineCounter) + "\t");
+    }else if (letter == '\n' && lastChar != '\r'){
+      out.write( "\n" + (++lineCounter) + "\t");
+    }else if (lastChar == '\r'){
+      out.write( "\r" + (++lineCounter) + "\t" + letter);
+    }else if (letter != '\r'){
+      out.write (letter);
     }
     lastChar = letter;
   }
