@@ -18,24 +18,57 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int nbLine = 0;
+  private int lastChar;
+  private boolean firstLine = true;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
 
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      this.write(str.charAt(i));
+    }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      this.write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    /*
+    New line property between OS:
+    \n is for unix
+    \r is for mac
+    \r\n is for windows
+     */
+
+    if(firstLine){
+      out.write(++nbLine + "\t");
+      firstLine = false;
+    }
+
+    // if on mac
+    if(lastChar == '\r' && c != '\n'){
+      out.write(++nbLine + "\t");
+    }
+
+    // if not the end of the line
+    out.write(c);
+
+    if(c == '\n'){
+      out.write(++nbLine + "\t");
+    }
+
+    // save the last char
+    lastChar = c;
   }
 
 }
