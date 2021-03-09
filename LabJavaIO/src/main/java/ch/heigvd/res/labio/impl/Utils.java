@@ -20,7 +20,31 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      String[] lineSeparators = {"\r\n", "\r", "\n"};
+      //TODO : Check Ilias
+
+
+      int occurence = -1, i = 0;
+
+      // for(; i < lineSeparators.length; ++i){
+      for(; i < lineSeparators.length; ++i){
+          int currentOccurence = lines.indexOf(lineSeparators[i]);
+          if(currentOccurence != -1){
+              occurence = currentOccurence;
+              //TODO: Pour éviter le ++i
+              // Peut mieux faire !
+              break;
+          }
+      }
+
+      if(occurence < 0){ // No line separator.
+          return new String[] {"", lines};
+      }
+
+      int separatorLength = (lineSeparators[i]).length();
+
+
+      return new String[] {lines.substring(0, occurence + separatorLength), lines.substring(occurence + separatorLength)};
   }
 
 }
