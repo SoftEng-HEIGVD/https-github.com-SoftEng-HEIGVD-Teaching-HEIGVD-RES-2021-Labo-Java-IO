@@ -124,13 +124,14 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     List<String> tags = quote.getTags();
-    String pathDir = WORKSPACE_DIRECTORY;
+    String pathDir = WORKSPACE_DIRECTORY + "/";
     for(String tag : tags){
       pathDir += (tag + '/');
     }
 
     File directory = new File(pathDir);
     directory.mkdirs();
+
     String pathFile = pathDir + filename;
 
     FileWriter fileWriter = new FileWriter(pathFile);
@@ -153,7 +154,7 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
         try{
-          writer.write(file.getPath());
+          writer.write(file.getPath()+"\n");
         }
         catch(IOException e){
           e.printStackTrace();
