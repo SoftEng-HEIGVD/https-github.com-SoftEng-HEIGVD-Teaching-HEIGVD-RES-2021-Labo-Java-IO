@@ -9,11 +9,9 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,6 +96,8 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        //TODO: check Iliasi
+          storeQuote(quote, "quote-" + i + ".utf8");
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +133,31 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+      //TODO: Check ILIAs
+    StringBuilder pathToFile = new StringBuilder(WORKSPACE_DIRECTORY + "/");
+
+    for(String tag : quote.getTags()){
+      pathToFile.append(tag);
+      pathToFile.append("/");
+    }
+
+    File file = new File(pathToFile.toString() + filename);
+    file.getParentFile().mkdirs();
+
+    FileOutputStream fout = new FileOutputStream(file);
+    fout.write(quote.getQuote().getBytes(StandardCharsets.UTF_8));
+
+
+    //TODO : flush ou pas flush ?
+      
+    fout.close();
+
+    
+
+
+    
+
   }
   
   /**
@@ -150,6 +174,15 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        //TODO: Try-catch auto-généré, p-e qu'il faudrait en faire qqch
+        try {
+          //TODO: Check ilasi
+          //TODO: J'ai l'impression d'être dans Scooby-doo à chercher des énigmes..
+          // https://www.geeksforgeeks.org/system-lineseparator-method-in-java-with-examples/ ou \n ???
+          writer.write(file.getPath() + System.lineSeparator());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     });
   }
