@@ -4,7 +4,6 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first exploration of the file system and invokes
@@ -26,7 +25,7 @@ public class DFSFileExplorer implements IFileExplorer {
       File[] files = currentFile.listFiles();
       if (files != null) { //is a directory
          for (File file : files) {
-               dfsRecursive(file, visitor);
+            dfsRecursive(file, visitor);
          }
       }
    }
