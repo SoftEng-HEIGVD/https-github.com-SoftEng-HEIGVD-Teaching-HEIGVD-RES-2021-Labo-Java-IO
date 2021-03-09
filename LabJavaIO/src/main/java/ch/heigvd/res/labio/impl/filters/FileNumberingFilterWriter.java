@@ -25,17 +25,14 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    //this.write(str.toCharArray(), off, len);
     for(int i = off; i < (off + len); i++){
       this.write(str.charAt(i));
     }
-    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
     for(char c : cbuf){
-    //for(int i = off; i < (off + len); i++){
       this.write(cbuf[c]);
     }
   }
