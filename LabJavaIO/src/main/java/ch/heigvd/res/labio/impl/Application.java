@@ -133,10 +133,11 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     String subPath = "";
+    String extension = ".utf8";
     for (String tag : quote.getTags()) {
       subPath += "/" + tag;
     }
-    File f = new File(WORKSPACE_DIRECTORY + subPath + "/" + filename + ".utf8");
+    File f = new File(WORKSPACE_DIRECTORY + subPath + "/" + filename + extension);
     f.getParentFile().mkdirs();
 
     Writer fileWriter = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8);

@@ -31,7 +31,7 @@ public class DFSFileExplorer implements IFileExplorer {
         vistor.visit(f);
         Rexplore(f, vistor);
       }
-      if (!f.isDirectory()) {
+      if (f.isFile()) {
         vistor.visit(f);
       }
     }
