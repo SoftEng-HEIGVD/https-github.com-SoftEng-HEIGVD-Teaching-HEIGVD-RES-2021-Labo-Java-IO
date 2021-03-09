@@ -23,19 +23,67 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private static int nbLine = 1;
+  private static boolean newLine = true;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    int endIndex = off + len;
+    String tempStr = str.substring(off, endIndex);
+    String newStr = "";
+
+    if(newLine) {
+      out.write(nbLine++ + "\t");
+      newLine = false;
+    }
+
+    for (int i=0; i < tempStr.length(); i++) {
+      char c = tempStr.charAt(i);
+      newStr += c;
+      if(c == '\n' || c == '\r')
+      {
+        out.write(newStr);
+        out.write(nbLine++ + "\t");
+        newStr = "";
+      }
+    }
+
+    out.write(newStr);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char[] newCBuf = new char[len];
+    if(newLine) {
+      out.write(nbLine++ + "\t");
+      newLine = false;
+    }
+    for (int i = 0; i < len ; ++i) {
+      newCBuf[i] = cbuf[off + i];
+      if(cbuf[off + i] == '\n' || cbuf[off + i] == '\r')
+      {
+        out.write(newCBuf);
+        out.write(nbLine++ + "\t");
+        newCBuf = new char[len-i];
+      }
+    }
+    out.write(newCBuf);
   }
+
+
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if(newLine) {
+      out.write(nbLine++ + "\t");
+      newLine = false;
+    }
+    out.write((char) c);
+
+    if((char) c == '\n' || (char) c == '\r')
+      out.write(nbLine++ + "\t");
+
   }
 
 }
