@@ -5,6 +5,7 @@ import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -19,31 +20,33 @@ import java.util.Stack;
 public class DFSFileExplorer implements IFileExplorer {
 
   @Override
-  public void explore(File rootDirectory, IFileVisitor vistor) {
+  public void explore(File rootDirectory, IFileVisitor visitor) {
       if(rootDirectory == null){
           return;
       }
-    // Note: it explores the arbo by the end.
-    Stack<File> filesStack = new Stack<File>();
-    filesStack.push(rootDirectory);
-    while(!filesStack.empty()){
-        File file =  filesStack.pop();
 
-        // Je sais pas si c'est correcte
-        // TODO file.isFile() pas nécessaire pour le moment
-        if(file.isFile()){
-          vistor.visit(file);
-        }else{
-           File[] childrenFiles = file.listFiles();
-           if(childrenFiles != null){
-               for(File newFile: childrenFiles){
-                   filesStack.push(newFile);
-               }
-           }else{
-               vistor.visit(file);
-           }
-        }
-    }
+      visitor.visit(rootDirectory);
+
+      File[] files = rootDirectory.listFiles();
+
+      if (files == null){
+          return;
+      }
+
+      Arrays.sort(files);
+
+      for(File file : files){
+          if(file.isDirectory()){
+              explore(file, visitor);
+          }else{
+              visitor.visit(file);
+          }
+
+      }
+
+
+
+
 
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
