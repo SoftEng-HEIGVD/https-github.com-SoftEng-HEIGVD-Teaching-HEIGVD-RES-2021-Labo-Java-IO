@@ -4,6 +4,8 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -18,20 +20,28 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-
+      if(rootDirectory == null){
+          return;
+      }
     // Note: it explores the arbo by the end.
     Stack<File> filesStack = new Stack<File>();
     filesStack.push(rootDirectory);
     while(!filesStack.empty()){
         File file =  filesStack.pop();
 
-        // TODO Verify file can only be file or directory
+        // Je sais pas si c'est correcte
+        // TODO file.isFile() pas nécessaire pour le moment
         if(file.isFile()){
           vistor.visit(file);
         }else{
-          for(File newFile: file.listFiles()){
-            filesStack.push(newFile);
-          }
+           File[] childrenFiles = file.listFiles();
+           if(childrenFiles != null){
+               for(File newFile: childrenFiles){
+                   filesStack.push(newFile);
+               }
+           }else{
+               vistor.visit(file);
+           }
         }
     }
 
