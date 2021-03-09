@@ -44,6 +44,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
   }
 
+
   @Override
   public void write(int c) throws IOException {
       /**
@@ -55,30 +56,29 @@ public class FileNumberingFilterWriter extends FilterWriter {
        * TODO: Je pense que la logique peut être mieux implémentée !
        */
 
-      if(nLines == 1){
+      if(nLines == 1 ){
           newLineFormat();
       }
-      if(previousCharacterWasCarriageReturn && c == '\n'){
+
+      // Add new line if the \r was alone (no \r\n)
+      if(c != '\n' && previousCharacterWasCarriageReturn){
           previousCharacterWasCarriageReturn = false;
-          return;
+          newLineFormat();
       }
 
       super.write(c);
 
-      if(c == '\r'){
-          newLineFormat();
+      if(c =='\r'){
           previousCharacterWasCarriageReturn = true;
-      }else if(c == '\n'){
-          newLineFormat();
-
       }
-
+      else if(c == '\n'){
+          previousCharacterWasCarriageReturn = false;
+          newLineFormat();
+      }
   }
 
   private void newLineFormat() throws IOException {
-      super.write(String.valueOf(nLines++));
+      super.write(Integer.toString(nLines++));
       super.write('\t');
   }
-
-
 }
