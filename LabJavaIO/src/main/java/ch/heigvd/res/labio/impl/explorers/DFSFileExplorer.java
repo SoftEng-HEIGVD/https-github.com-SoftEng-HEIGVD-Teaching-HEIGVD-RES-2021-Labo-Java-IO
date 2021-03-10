@@ -34,16 +34,14 @@ public class DFSFileExplorer implements IFileExplorer {
 
             visitor.visit(currentFile);
 
-            File[] files = currentFile.listFiles();
-
-            if (files == null) {
-                return;
-            }
-
-            Arrays.sort(files);
-
             if (currentFile.isDirectory()) {
-                list.addAll(0,Arrays.asList(files));
+                File[] files = currentFile.listFiles();
+
+                if (files == null) {
+                    return;
+                }
+                Arrays.sort(files);
+                list.addAll(0, Arrays.asList(files));
             }
         }
     }
