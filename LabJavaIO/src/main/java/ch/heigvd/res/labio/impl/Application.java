@@ -178,8 +178,13 @@ public class Application implements IApplication {
         try {
           //TODO: Check ilasi
           //TODO: J'ai l'impression d'être dans Scooby-doo à chercher des énigmes..
+
+
           // https://www.geeksforgeeks.org/system-lineseparator-method-in-java-with-examples/ ou \n ???
-          writer.write(file.getPath() + System.lineSeparator());
+          // TODO System.lineSparator() empeche ApplicationTest.theApplicationShouldBeAbleToGenerateTheListOfFileNames
+          //      de fonctionner sur Windows (Linux ok)
+          /*writer.write(file.getPath() + System.lineSeparator());*/
+          writer.write(file.getPath() + '\n' );
         } catch (IOException e) {
           e.printStackTrace();
         }
