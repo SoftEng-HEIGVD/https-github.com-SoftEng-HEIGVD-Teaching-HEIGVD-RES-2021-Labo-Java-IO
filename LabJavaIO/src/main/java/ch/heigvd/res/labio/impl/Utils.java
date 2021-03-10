@@ -24,12 +24,15 @@ public class Utils {
     String[] str = new String[]{"",""};
     String[] delimiteurs = new String[]{"\n","\r","\r\n"};
     int pos1 = 0;
+    // We look for the spot where the lines are split with the specified characters
     if(lines.contains("\n") || lines.contains("\r") || lines.contains("\r\n")){
       for(int i = 0; i < delimiteurs.length; i++){
          pos1 = lines.indexOf(delimiteurs[i]);
          if(pos1 > -1)
            break;
       }
+
+      // We then divide the string in two lines thanks to the position of the splitting char found above
       str[0] = lines.substring(0,pos1+1);
       str[1] = lines.substring(pos1+1);
     }

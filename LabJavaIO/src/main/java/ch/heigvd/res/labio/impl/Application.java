@@ -93,13 +93,12 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        /* There is a missing piece here!
-         * As you can see, this method handles the first part of the lab. It uses the web service
+        /* As you can see, this method handles the first part of the lab. It uses the web service
          * client to fetch quotes. We have removed a single line from this method. It is a call to
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
-	storeQuote(quote,"quote-" + i + ".utf8");
+	    storeQuote(quote,"quote-" + i + ".utf8");
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -135,17 +134,19 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
+    // We create the path to where the quote will be stored with its tags
     List<String> tags = quote.getTags();
     String pathDir = WORKSPACE_DIRECTORY + "/";
     for(String tag : tags){
       pathDir += (tag + '/');
     }
-
+    // We create the directory
     File directory = new File(pathDir);
     directory.mkdirs();
 
     String pathFile = pathDir + filename;
-
+    // We create the actual file inside recently created directory
+    // We write the quote inside the new file and close it
     FileWriter fileWriter = new FileWriter(pathFile);
     fileWriter.write(quote.getQuote());
     fileWriter.close();

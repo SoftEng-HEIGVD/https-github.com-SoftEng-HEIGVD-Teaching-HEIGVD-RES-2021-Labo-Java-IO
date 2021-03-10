@@ -40,6 +40,12 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(int c) throws IOException {
     char letter = (char) c;
+
+    // If it is the very first line or if it is a character creating a split in the lines
+    // We write the line number, the tabulation and the character in the file
+
+    // We check for '\n', '\r' and '\r\n' for the Mac, Linux and Windows OS
+
     if(lineCounter == 0){
       out.write((++lineCounter) + "\t" + letter);
     } else if (lastChar == '\r' && letter == '\n'){
