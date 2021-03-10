@@ -19,8 +19,34 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
-  public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  public static String[] getNextLine(String lines)
+  {
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      String[] ret = {"",""};
+
+      for(int position = 0; position < lines.length(); position++ )
+      {
+          // Ecrit le char dans le stream
+          ret[0] += lines.charAt(position);
+
+          // Itère jusqu'au changement de ligne
+          if(lines.charAt(position) == '\r' || lines.charAt(position) == '\n')
+          {
+              // Contrôle s'il y a un \r ou \n supplémentaire
+              if(position < lines.length() - 1 && (lines.charAt(position + 1) == '\r' || lines.charAt(position + 1) == '\n'))
+              {
+                  position++;
+              }
+
+              // Met le reste de lines dans la deuxième partie de la String[] de retour
+              ret[1] += lines.substring(position);
+
+              // Quitte la boucle et la fonction
+              break;
+          }
+      }
+
+      return ret;
   }
 
 }
