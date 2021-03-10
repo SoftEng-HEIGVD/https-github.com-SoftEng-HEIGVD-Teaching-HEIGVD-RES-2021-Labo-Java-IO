@@ -131,10 +131,10 @@ public class Application implements IApplication {
      */
     void storeQuote(Quote quote, String filename) throws IOException {
         StringBuilder path = new StringBuilder();
-        path.append(WORKSPACE_DIRECTORY).append(File.separatorChar);
+        path.append(WORKSPACE_DIRECTORY).append("/");
 
         for (String tag : quote.getTags()) {
-            path.append(tag).append(File.separatorChar);
+            path.append(tag).append("/");
         }
 
         path.append(filename).append(".utf8");
