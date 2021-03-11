@@ -26,8 +26,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
   }
 
   private int cmptLigne = 1;
-  private boolean changementLigne = true;
   private char precendentChar = 0;
+  //private boolean changementLigne = true; // First Version
 
   @Override
   public void write(String str, int off, int len) throws IOException {
@@ -136,6 +136,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
       }
       else
       {
+          // Ecrit le char dans le stream
           out.write((char)c);
       }
 
