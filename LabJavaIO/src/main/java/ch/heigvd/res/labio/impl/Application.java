@@ -154,12 +154,9 @@ public class Application implements IApplication {
     // Création du fichier
     File fichier = new File(cheminDeBase + filename + extension);
 
-    /*if (fichier.createNewFile())
+    if (fichier.createNewFile())
       System.out.println("Fichier créé!");
     else
-      System.out.println("Le fichier existe déjà!");*/
-
-    if (!fichier.createNewFile())
       System.out.println("Le fichier existe déjà!");
 
     if(!fichier.isFile())
