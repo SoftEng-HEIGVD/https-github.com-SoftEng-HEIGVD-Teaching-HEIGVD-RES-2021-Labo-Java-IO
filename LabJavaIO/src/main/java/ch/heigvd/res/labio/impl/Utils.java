@@ -21,10 +21,15 @@ public class Utils {
    */
   public static String[] getNextLine(String lines) {
     String[] s = new String[2];
+    // For Linux or Windows
     int index = lines.indexOf("\n");
-    index++; // The character is included.
+    if (index == -1) { // If nothing search for MacOS
+      index = lines.indexOf("\r");
+    }
+    index++; // The line separator is included.
+    // If index was -1 then it becomes 0 which leads to an empty subString for s[0].
     s[0] = lines.substring(0,index);
-    s[1] = lines.substring(index);
+    s[1] = lines.substring(index); // Remaining after the new line
     return s;
   }
 
