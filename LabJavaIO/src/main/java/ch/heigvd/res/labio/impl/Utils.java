@@ -22,29 +22,26 @@ public class Utils {
   public static String[] getNextLine(String lines)
   {
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-      String[] ret = {"",""};
+      String[] ret = new String[]{"",""};
 
-      for(int position = 0; position < lines.length(); position++ )
+      int positionRetourLigneN = lines.indexOf('\n');
+      int positionRetourLigneR = lines.indexOf('\r');
+      int position;
+
+      // Cas spécial
+      if(positionRetourLigneN == -1 && positionRetourLigneR == -1)
       {
-          // Ecrit le char dans le stream
-          ret[0] += lines.charAt(position);
-
-          // Itère jusqu'au changement de ligne
-          if(lines.charAt(position) == '\r' || lines.charAt(position) == '\n')
-          {
-              // Contrôle s'il y a un \r ou \n supplémentaire
-              if(position < lines.length() - 1 && (lines.charAt(position + 1) == '\r' || lines.charAt(position + 1) == '\n'))
-              {
-                  position++;
-              }
-
-              // Met le reste de lines dans la deuxième partie de la String[] de retour
-              ret[1] += lines.substring(position);
-
-              // Quitte la boucle et la fonction
-              break;
-          }
+          ret[1] = lines;
+          return ret;
       }
+
+      // Affectation de la position de fin de la premier ligne
+      position = Math.max(positionRetourLigneN, positionRetourLigneR);
+
+      // Met la première ligne dans la première case du tableau
+      ret[0] = lines.substring(0, ++position);
+      // Met le reste dans la deuxième case du tableau
+      ret[1] = lines.substring(position);
 
       return ret;
   }

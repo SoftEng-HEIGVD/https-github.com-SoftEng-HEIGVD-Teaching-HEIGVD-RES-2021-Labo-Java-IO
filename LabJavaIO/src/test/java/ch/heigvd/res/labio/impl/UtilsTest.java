@@ -41,6 +41,7 @@ public class UtilsTest {
     String lines = "hello\nworld\n";
     String[] r1 = Utils.getNextLine(lines);
     String[] e1 = {"hello\n", "world\n"};
+    System.out.println(r1[0]);
     assertArrayEquals(e1, r1);
     String[] r2 = Utils.getNextLine(r1[1]);
     String[] e2 = {"world\n", ""};
