@@ -25,7 +25,7 @@ public class Application implements IApplication {
    * This constant defines where the quotes will be stored. The path is relative
    * to where the Java application is invoked.
    */
-  public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
+  public static String WORKSPACE_DIRECTORY = ".\\workspace\\quotes";
   
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
   
