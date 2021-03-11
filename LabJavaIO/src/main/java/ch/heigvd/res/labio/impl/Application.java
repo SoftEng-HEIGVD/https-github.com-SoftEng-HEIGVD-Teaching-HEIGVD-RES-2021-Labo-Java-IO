@@ -146,16 +146,9 @@ public class Application implements IApplication {
     OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
     fout.write(quote.getQuote());
 
-    // Nous assure que tous les bytes o
+    // Everything must be written now !
     fout.flush();
-      
     fout.close();
-
-    
-
-
-    
-
   }
   
   /**
@@ -173,9 +166,11 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
         try {
-          // System.lineSparator() empeche ApplicationTest.theApplicationShouldBeAbleToGenerateTheListOfFileNames
-          //      de fonctionner sur Windows (Linux ok)
-          /*writer.write(file.getPath() + System.lineSeparator());*/
+          /**
+           * We tried to use System.lineSparator() here,
+           * but it blocks ApplicationTest.theApplicationShouldBeAbleToGenerateTheListOfFileNames
+           * from working on Windows, (it works on Linux tho).
+           */
           writer.write(file.getPath() + '\n' );
         } catch (IOException e) {
           LOG.log(Level.SEVERE, "Error while writing", e.getMessage());
