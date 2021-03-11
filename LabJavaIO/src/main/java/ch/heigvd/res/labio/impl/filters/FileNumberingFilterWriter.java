@@ -36,33 +36,28 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    for (int i = off; i < off + len; ++i) {
-      write(cbuf[i]);
-    }
+    write(String.valueOf(cbuf), off, len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    // Checks the integer is a valid character
-    if (c < 0 || c > 255) throw new IOException("Given value is not a character");
-    
     char v = (char)c; // Current char
 
     if (!writeStarted) { // First line, starts the writing
       writeStarted = true;
       String data = String.valueOf(++lineCnt) + '\t' + v;
-      out.write(data);
+      super.write(data, 0, data.length());
 
     } else if (v == '\n') { // After a \n, always insert new line
       String data = v + String.valueOf(++lineCnt) + '\t';
-      out.write(data);
+      super.write(data, 0, data.length());
 
     } else if (lastWrittenChar == '\r') { // If \r case. Cannot be \r\n at this point
       String data = String.valueOf(++lineCnt) + '\t' + v;
-      out.write(data);
+      super.write(data, 0, data.length());
 
     } else { // Normal character
-      out.write(v);
+      super.write(v);
     }
 
     // Stores the current char to detect \r lines separators in the next write
