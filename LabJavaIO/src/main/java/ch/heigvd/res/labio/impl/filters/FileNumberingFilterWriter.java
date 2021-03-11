@@ -24,12 +24,40 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
-    lineNb=1;
+    lineNb = 1;
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-
+    String newStr = "";
+    if(lineNb == 1) {
+      newStr =  lineNb++ + "\t";
+    }
+    Pattern pattern =  Pattern.compile("(\r\n|\r|\n|\n\r)");
+    Matcher matcher = pattern.matcher(str);
+    int nextCarc = 0;
+    boolean hasSep = false;
+    if(matcher.find()){
+      nextCarc = matcher.end() - 1;
+      hasSep = true;
+    }
+    for(int i = off; i < off+len;i++)
+    {
+      newStr += str.charAt(i);
+      if(hasSep && i == nextCarc)
+      {
+        newStr += lineNb++ + "\t";
+        int offset = i + 1;
+        String strM = str.substring(offset);
+        matcher = pattern.matcher(strM);
+        if(matcher.find()){
+          nextCarc = offset + matcher.end() - 1;
+        }else{
+          hasSep = false;
+        }
+      }
+    }
+    super.write(newStr, 0, newStr.length() );
   }
 
   @Override
@@ -39,11 +67,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    super.write(c);
-    if( c == '\n'){
-      super.write('\t');
-    }
-    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
 }
