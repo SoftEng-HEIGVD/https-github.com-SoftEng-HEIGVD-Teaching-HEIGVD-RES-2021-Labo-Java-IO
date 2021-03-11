@@ -19,8 +19,31 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
-  public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  public static String[] getNextLine(String lines)
+  {
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      String[] ret = new String[]{"",""};
+
+      int positionRetourLigneN = lines.indexOf('\n');
+      int positionRetourLigneR = lines.indexOf('\r');
+      int position;
+
+      // Cas spécial
+      if(positionRetourLigneN == -1 && positionRetourLigneR == -1)
+      {
+          ret[1] = lines;
+          return ret;
+      }
+
+      // Affectation de la position de fin de la premier ligne
+      position = Math.max(positionRetourLigneN, positionRetourLigneR);
+
+      // Met la première ligne dans la première case du tableau
+      ret[0] = lines.substring(0, ++position);
+      // Met le reste dans la deuxième case du tableau
+      ret[1] = lines.substring(position);
+
+      return ret;
   }
 
 }

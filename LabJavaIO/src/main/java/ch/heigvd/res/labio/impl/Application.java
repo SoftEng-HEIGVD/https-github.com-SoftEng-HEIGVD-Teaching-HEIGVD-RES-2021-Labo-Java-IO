@@ -9,10 +9,7 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +17,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ * modifié par Loïs Diserens
  */
 public class Application implements IApplication {
 
@@ -97,11 +95,16 @@ public class Application implements IApplication {
          * client to fetch quotes. We have removed a single line from this method. It is a call to
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
+         *
+         *  DONE
+         *
          */
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
+
+        storeQuote(quote, "quote-" + i);
       }
 
     }
@@ -133,7 +136,36 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String separateurOs = "/";
+    String cheminDeBase = WORKSPACE_DIRECTORY + separateurOs;
+    String extension = ".utf8";
+
+    // Ajoute les tags au chemin
+    for(String tag : quote.getTags())
+    {
+        cheminDeBase += tag + separateurOs;
+    }
+
+    // Créé l'arborensce pour où va être créé le fichier
+    File dossier = new File(cheminDeBase);
+    dossier.mkdirs();
+
+    // Création du fichier
+    File fichier = new File(cheminDeBase + filename + extension);
+
+    if (fichier.createNewFile())
+      System.out.println("Fichier créé!");
+    else
+      System.out.println("Le fichier existe déjà!");
+
+    if(!fichier.isFile())
+      throw new RuntimeException("Problème à la création du fichier.");
+
+    // Ecriture de la quote dans le fichier
+    FileWriter ecritureFichier = new FileWriter(cheminDeBase + filename + extension);
+    ecritureFichier.write(quote.getQuote());
+    ecritureFichier.close();
   }
   
   /**
@@ -150,6 +182,11 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+          try {
+            writer.write(file.getPath() + "\n");
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
       }
     });
   }
@@ -157,7 +194,6 @@ public class Application implements IApplication {
   @Override
   public void processQuoteFiles() throws IOException {
     IFileExplorer explorer = new DFSFileExplorer();
-    explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());    
+    explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());
   }
-
 }
