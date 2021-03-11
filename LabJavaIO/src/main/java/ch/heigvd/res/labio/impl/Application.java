@@ -137,8 +137,8 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
 
-    String separateurOs = "\\";
-    String cheminDeBase = "." + separateurOs + "workspace" + separateurOs + "quotes" + separateurOs;// Pour linux : Application.WORKSPACE_DIRECTORY + separateurOs;
+    String separateurOs = "/";
+    String cheminDeBase = WORKSPACE_DIRECTORY + separateurOs;
     String extension = ".utf8";
 
     // Ajoute les tags au chemin
