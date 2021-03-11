@@ -20,10 +20,8 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
+
       String[] lineSeparators = {"\r\n", "\r", "\n"};
-      //TODO : Check Ilias
-
-
       int occurence = -1, i = 0;
 
       // for(; i < lineSeparators.length; ++i){
@@ -31,8 +29,7 @@ public class Utils {
           int currentOccurence = lines.indexOf(lineSeparators[i]);
           if(currentOccurence != -1){
               occurence = currentOccurence;
-              //TODO: Pour éviter le ++i
-              // Peut mieux faire !
+              // TODO: Peut mieux faire !
               break;
           }
       }

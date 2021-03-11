@@ -53,7 +53,6 @@ public abstract class FileTransformer implements IFileVisitor {
        * characters and write them to the writer.
        */
 
-      //TODO: Est-ce qu'il faudrait utiliser un buffer ici ? 🤔
       int b;
       while((b = reader.read()) != -1){
         writer.write(b);

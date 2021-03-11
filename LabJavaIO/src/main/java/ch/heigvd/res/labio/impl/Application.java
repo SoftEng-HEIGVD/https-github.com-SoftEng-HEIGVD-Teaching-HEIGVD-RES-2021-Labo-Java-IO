@@ -96,7 +96,6 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
-        //TODO: check Iliasi
           storeQuote(quote, "quote-" + i + ".utf8");
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
@@ -134,7 +133,6 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
 
-      //TODO: Check ILIAs
     StringBuilder pathToFile = new StringBuilder(WORKSPACE_DIRECTORY + "/");
 
     for(String tag : quote.getTags()){
@@ -145,11 +143,11 @@ public class Application implements IApplication {
     File file = new File(pathToFile.toString() + filename);
     file.getParentFile().mkdirs();
 
-    FileOutputStream fout = new FileOutputStream(file);
-    fout.write(quote.getQuote().getBytes(StandardCharsets.UTF_8));
+    OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+    fout.write(quote.getQuote());
 
-
-    //TODO : flush ou pas flush ?
+    // Nous assure que tous les bytes o
+    fout.flush();
       
     fout.close();
 
@@ -174,19 +172,13 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
-        //TODO: Try-catch auto-généré, p-e qu'il faudrait en faire qqch
         try {
-          //TODO: Check ilasi
-          //TODO: J'ai l'impression d'être dans Scooby-doo à chercher des énigmes..
-
-
-          // https://www.geeksforgeeks.org/system-lineseparator-method-in-java-with-examples/ ou \n ???
-          // TODO System.lineSparator() empeche ApplicationTest.theApplicationShouldBeAbleToGenerateTheListOfFileNames
+          // System.lineSparator() empeche ApplicationTest.theApplicationShouldBeAbleToGenerateTheListOfFileNames
           //      de fonctionner sur Windows (Linux ok)
           /*writer.write(file.getPath() + System.lineSeparator());*/
           writer.write(file.getPath() + '\n' );
         } catch (IOException e) {
-          e.printStackTrace();
+          LOG.log(Level.SEVERE, "Error while writing", e.getMessage());
         }
       }
     });
