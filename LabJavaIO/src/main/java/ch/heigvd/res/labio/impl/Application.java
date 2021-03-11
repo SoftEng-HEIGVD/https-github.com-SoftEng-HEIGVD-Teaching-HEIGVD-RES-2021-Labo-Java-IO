@@ -165,6 +165,7 @@ public class Application implements IApplication {
         String path = file.getPath();
         try {
           writer.write(path);
+          writer.write('\n');
         } catch (IOException e) {
           e.printStackTrace();
         }
