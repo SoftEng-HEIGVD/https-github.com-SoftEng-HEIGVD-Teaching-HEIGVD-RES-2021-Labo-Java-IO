@@ -30,8 +30,7 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    // Checks the integer is a valid character
-    if (c < 0 || c > 255) throw new IOException("Given value is not a character");
-    out.write(Character.toUpperCase((char)c));
+    // Writes the character in uppercase
+    super.write(Character.toUpperCase((char)c));
   }
 }
