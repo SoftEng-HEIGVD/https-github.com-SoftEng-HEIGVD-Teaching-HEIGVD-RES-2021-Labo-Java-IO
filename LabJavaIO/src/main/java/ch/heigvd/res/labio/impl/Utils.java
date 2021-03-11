@@ -27,9 +27,19 @@ public class Utils {
       //TODO: We have a modify here
       String firstLine = "";
       String ligneRestante = lines;
-      String[] listOfSeparator = {"\r\n", "\n", "\r"};
-      String sep2 = "";
-      if(!lines.isEmpty()){
+      int end = 0;
+      Pattern pattern =  Pattern.compile("(\r\n|\r|\n|\n\r)");
+      Matcher matcher = pattern.matcher(lines);
+      if(matcher.find()){
+          end = matcher.end();
+          firstLine += lines.substring(0, end);
+      }
+      ligneRestante = lines.substring(end);
+      return new String[]{firstLine, ligneRestante};
+
+      //Sources : https://www.rgagnon.com/javadetails/java-0454.html
+
+     /* if(!lines.isEmpty()){
           for(String sep : listOfSeparator) {
               if (lines.contains(sep)) {
                   sep2 = sep;
@@ -47,8 +57,8 @@ public class Utils {
               }
               ligneRestante = lines.substring(end);
           }
-      }
-      return new String[]{firstLine, ligneRestante};
+      }*/
+
   }
 }
 

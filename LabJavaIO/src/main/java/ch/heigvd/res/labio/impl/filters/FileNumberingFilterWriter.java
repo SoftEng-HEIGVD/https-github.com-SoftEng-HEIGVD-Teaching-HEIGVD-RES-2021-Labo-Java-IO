@@ -4,6 +4,8 @@ import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class transforms the streams of character sent to the decorated writer.
@@ -27,26 +29,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    String newStr = "";
-    String preline = "";
-    int counter=0;
-    if(lineNb == 1) {
-       preline = lineNb++ + "\t";
-       newStr = preline;
-       counter = counter + preline.length() ;
-    }
 
-    for(int i = off; i < off+len;i++)
-    {
-      newStr += str.charAt(i);
-      if(((Character)str.charAt(i)).equals('\n'))
-      {
-        preline = lineNb++ + "\t";
-        newStr +=  preline;
-        counter = counter + preline.length();
-      }
-    }
-    super.write(newStr, 0, len+counter);
   }
 
   @Override
@@ -56,7 +39,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    super.write(c);
+    if( c == '\n'){
+      super.write('\t');
+    }
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
 }
