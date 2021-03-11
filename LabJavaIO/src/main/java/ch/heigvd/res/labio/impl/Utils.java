@@ -26,7 +26,6 @@ public class Utils {
   public static String[] getNextLine(String lines) {
       //TODO: We have a modify here
       String firstLine = "";
-      String ligneRestante = lines;
       int end = 0;
       Pattern pattern =  Pattern.compile("(\r\n|\r|\n|\n\r)");
       Matcher matcher = pattern.matcher(lines);
@@ -34,8 +33,7 @@ public class Utils {
           end = matcher.end();
           firstLine += lines.substring(0, end);
       }
-      ligneRestante = lines.substring(end);
-      return new String[]{firstLine, ligneRestante};
+      return new String[]{firstLine, lines.substring(end)};
 
       //Sources : https://www.rgagnon.com/javadetails/java-0454.html
 

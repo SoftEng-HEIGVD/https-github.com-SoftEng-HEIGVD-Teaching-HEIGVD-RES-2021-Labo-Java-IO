@@ -21,7 +21,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   private static int lineNb = 1;
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
-
+  private static boolean firstLineForIntFct = true;
   public FileNumberingFilterWriter(Writer out) {
     super(out);
     lineNb = 1;
@@ -35,23 +35,22 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
     Pattern pattern =  Pattern.compile("(\r\n|\r|\n|\n\r)");
     Matcher matcher = pattern.matcher(str);
-    int nextCarc = 0;
+    int posSeparateur = 0;
     boolean hasSep = false;
     if(matcher.find()){
-      nextCarc = matcher.end() - 1;
+      posSeparateur = matcher.end() - 1;
       hasSep = true;
     }
     for(int i = off; i < off+len;i++)
     {
       newStr += str.charAt(i);
-      if(hasSep && i == nextCarc)
+      if(hasSep && i == posSeparateur)
       {
         newStr += lineNb++ + "\t";
         int offset = i + 1;
-        String strM = str.substring(offset);
-        matcher = pattern.matcher(strM);
+        matcher = pattern.matcher(str.substring(offset));
         if(matcher.find()){
-          nextCarc = offset + matcher.end() - 1;
+          posSeparateur = offset + matcher.end() - 1;
         }else{
           hasSep = false;
         }
@@ -63,11 +62,24 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
     throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //String string = new String(cbuf);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if (firstLineForIntFct) {
+      super.write(lineNb++ + 48);
+      super.write((int) '\t');
+      firstLineForIntFct = false;
+    }
 
+    if ((char) c == '\n') {
+      super.write(c);
+      super.write(lineNb++ + 48);
+      super.write((int) '\t');
+    } else {
+      super.write(c);
+    }
+  }
 }
