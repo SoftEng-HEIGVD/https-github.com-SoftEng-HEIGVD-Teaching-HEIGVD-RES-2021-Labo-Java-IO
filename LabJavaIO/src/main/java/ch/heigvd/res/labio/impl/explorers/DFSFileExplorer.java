@@ -28,16 +28,13 @@ public class DFSFileExplorer implements IFileExplorer {
     File[] children = rootDirectory.listFiles();
 
     if (children != null){
-      Arrays.sort(children, new Comparator<File>() {
-        @Override
-        public int compare(File file, File t1) {
-          if (file.isDirectory() && !t1.isDirectory()){
-            return -1;
-          }else if (!file.isDirectory() && t1.isDirectory()){
-            return 1;
-          }else{
-            return file.compareTo(t1);
-          }
+      Arrays.sort(children, (file, t1) -> {
+        if (file.isDirectory() && !t1.isDirectory()){
+          return -1;
+        }else if (!file.isDirectory() && t1.isDirectory()){
+          return 1;
+        }else{
+          return file.compareTo(t1);
         }
       });
       for (File f : children){

@@ -37,6 +37,9 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
+        if(off < 0 || len < 0 || off+len < 0 || off + len >  cbuf.length){
+            throw new IndexOutOfBoundsException();
+        }
         for (int i = off; i < off + len; i++) {
             write(cbuf[i]);
         }
@@ -59,6 +62,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
             insertNewLine();
         }
         out.write(c);
+
     }
 
     /**
