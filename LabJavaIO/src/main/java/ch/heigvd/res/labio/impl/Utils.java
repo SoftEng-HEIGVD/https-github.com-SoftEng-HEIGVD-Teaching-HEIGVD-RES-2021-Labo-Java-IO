@@ -1,5 +1,6 @@
 package ch.heigvd.res.labio.impl;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -26,13 +27,15 @@ public class Utils
         String[] newLineSeparator = new String[]{"\r\n", "\r", "\n"};
 
         int index = -1;
+        int delimSize = 0;
 
         for (String ls : newLineSeparator)
         {
-            if ((index = lines.indexOf(ls)) != -1)
+            int tmp = lines.indexOf(ls);
+            if (tmp != -1 && (tmp < index - delimSize || index == -1))
             {
-                index += ls.length()-1;
-                break;
+                delimSize = ls.length()-1;
+                index = tmp + delimSize;
             }
         }
 

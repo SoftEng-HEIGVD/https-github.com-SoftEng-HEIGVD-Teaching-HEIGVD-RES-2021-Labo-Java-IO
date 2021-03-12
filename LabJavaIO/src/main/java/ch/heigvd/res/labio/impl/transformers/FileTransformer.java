@@ -47,17 +47,20 @@ public abstract class FileTransformer implements IFileVisitor {
       Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), StandardCharsets.UTF_8); // the bug fix by teacher
       writer = decorateWithFilters(writer);
 
-      int c = reader.read();
+      BufferedReader br = new BufferedReader(reader);
+      BufferedWriter bw = new BufferedWriter(writer);
+
+      int c = br.read();
 
       while(c != -1)
       {
-        writer.write(c);
-        c = reader.read();
+        bw.write(c);
+        c = br.read();
       }
-      
-      reader.close();
-      writer.flush();
-      writer.close();
+
+      br.close();
+      bw.flush();
+      bw.close();
     } catch (IOException ex) {
       LOG.log(Level.SEVERE, null, ex);
     }
