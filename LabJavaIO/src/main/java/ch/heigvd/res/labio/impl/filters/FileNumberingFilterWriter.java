@@ -57,7 +57,28 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    boolean sendString = false;
+    StringBuilder resultStr = new StringBuilder();
+
+    if (count == 1) { // For the first line.
+      resultStr.append(count).append("\t");
+      count++;
+      sendString = true;
+    }
+    resultStr.append(Character.toString(c));
+
+    char separator = System.lineSeparator().charAt(System.lineSeparator().length()-1);
+    if (Character.toString(c).equals(Character.toString(separator))) {
+      resultStr.append(count).append("\t");
+      count++;
+      sendString = true;
+    }
+
+    if (sendString) {
+      this.out.write(resultStr.toString());
+    } else {
+      this.out.write(c);
+    }
   }
 
 }
