@@ -23,7 +23,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
-  private int cpt = 2;
+  private int lineCounter = 2;
   private boolean imTheFirstLine = true;
 
   @Override
@@ -34,26 +34,19 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     if(imTheFirstLine){
       str = "1\t" + str;
-      len += 2;
+      len = str.length();
       imTheFirstLine = false;
     }
 
-    if(str.charAt(len-1) == '\n'){
-      str = str.substring(0,len) + cpt++ + '\t';
-      len += 2;
+    for(int i = 0 ; i < str.length() ; i++){
+      if(str.charAt(i) == '\n'){
+        str = str.substring(0,i+1) + lineCounter++ + '\t' + str.substring(i+1,str.length());
+        len = str.length();
+      }
     }
 
+    off = 0;
 
-    //if(str.charAt(len) == '\n')
-      //str = str.substring(0,len);
-
-    /*for (int i = 0 ; i < len ; i++){ // len-1 for avoid the treatement of the last \n
-      if(str.charAt(i) == '\n'){
-        str = str.substring(0,i) + '\n' + cpt + '\t' + str.substring(i+1);
-        cpt++;
-        len += 3;
-      }
-    }*/
     super.write(str,off,len);
   }
 
@@ -64,7 +57,20 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    if(imTheFirstLine){
+      super.write(49);
+      super.write(9);
+      imTheFirstLine = false;
+    }
 
+    if(c == 13){
+      super.write(13);
+    }else if(c == 10){
+      super.write(10);
+      super.write(48 + lineCounter++);
+      super.write(9);
+    }if(c != 10 && c != 13){
+      super.write(c);
+    }
+  }
 }
