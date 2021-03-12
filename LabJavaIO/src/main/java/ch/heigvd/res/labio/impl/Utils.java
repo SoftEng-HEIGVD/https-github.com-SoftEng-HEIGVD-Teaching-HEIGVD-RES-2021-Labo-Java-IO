@@ -22,12 +22,20 @@ public class Utils {
 
         String[] result = new String[]{"", lines};
 
-        if (lines.contains("\r\n")) {
-            result = lines.split("(?<=\r\n)", 2);
-        } else if (lines.contains("\r")) {
-            result = lines.split("(?<=\r)", 2);
-        } else if (lines.contains("\n")) {
-            result = lines.split("(?<=\n)", 2);
+        for(int i = 0; i < lines.length(); ++i) {
+            char c = lines.charAt(i); /* current char */
+            switch (c) {
+                case '\r':
+                    if (i < lines.length() - 1 && lines.charAt(i + 1) == '\n') {
+                        result[0] = lines.substring(0, i + 2);
+                        result[1] = lines.substring(i + 2);
+                        return result;
+                    }
+                case '\n': /* case '\n' or '\r\n' */
+                    result[0] = lines.substring(0, i + 1);
+                    result[1] = lines.substring(i + 1);
+                    return result;
+            }
         }
 
         return result;
