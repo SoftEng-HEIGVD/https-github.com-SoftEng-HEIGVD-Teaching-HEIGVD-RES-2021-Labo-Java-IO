@@ -9,10 +9,7 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,6 +99,7 @@ public class Application implements IApplication {
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
+        storeQuote(quote, "quote-" + i + ".utf8");
       }
 
     }
@@ -114,7 +112,7 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void clearOutputDirectory() throws IOException {
-    FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));    
+    FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));
   }
 
   /**
@@ -133,7 +131,25 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String filepath = WORKSPACE_DIRECTORY;
+    File mainDir = new File(filepath);
+    if (!mainDir.exists()){
+      mainDir.mkdir();
+    }
+
+    for (String tag : quote.getTags()){
+      filepath += "/" + tag;
+      File dir = new File(filepath) ;
+      if (!dir.exists()){
+        dir.mkdir();
+      }
+    }
+    filepath += "/" + filename;
+    File file = new File(filepath);
+    file.createNewFile();
+    FileWriter fileWriter = new FileWriter(file);
+    fileWriter.write(quote.getQuote());
+    fileWriter.close();
   }
   
   /**
@@ -150,6 +166,12 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try {
+          writer.write(file.getPath() + "\n");
+        } catch (IOException e){
+
+        }
+
       }
     });
   }
