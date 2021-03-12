@@ -41,22 +41,25 @@ public class FileNumberingFilterWriter extends FilterWriter
    @Override
    public void write(String str, int off, int len) throws IOException
    {
-//      if(str == null || str.isEmpty()) return;
-//      String[] result;
-//      String sub = str.substring(off, off+len);
-//      result = Utils.getNextLine(sub);
-//
-//      while(!result[0].isEmpty())
-//      {
-//         beginNewLine();
-//         super.write(result[0]);
-//
-//         result = Utils.getNextLine(result[1]);
-//      }
-//
-//      beginNewLine();
-//      super.write(result[1]);
-      write(str.toCharArray(), off, len);
+      if(str == null || str.isEmpty()) return;
+      String[] result;
+      String sub = str.substring(off, off+len);
+      result = Utils.getNextLine(sub);
+
+      while(!result[0].isEmpty())
+      {
+         if(lineNumber == 1) beginNewLine();
+         super.write(result[0], 0, result[0].length());
+         beginNewLine();
+
+         result = Utils.getNextLine(result[1]);
+      }
+
+      if(!result[1].isEmpty())
+      {
+         beginNewLine();
+         super.write(result[1], 0, result[1].length());
+      }
    }
 
    @Override
