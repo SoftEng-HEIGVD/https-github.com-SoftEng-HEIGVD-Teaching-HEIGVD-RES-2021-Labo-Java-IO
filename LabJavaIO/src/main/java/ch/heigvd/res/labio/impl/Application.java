@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ * On progress...
  */
 public class Application implements IApplication {
 
