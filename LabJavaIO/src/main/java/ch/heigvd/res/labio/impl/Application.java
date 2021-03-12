@@ -11,16 +11,16 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  *
  * @author Olivier Liechti
+ *
+ * Modified by Dylan Canton, Alessandro Parrino
  */
 public class Application implements IApplication {
 
@@ -93,13 +93,10 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        /* There is a missing piece here!
-         * As you can see, this method handles the first part of the lab. It uses the web service
-         * client to fetch quotes. We have removed a single line from this method. It is a call to
-         * one method provided by this class, which is responsible for storing the content of the
-         * quote in a text file (and for generating the directories based on the tags).
-         */
-        //storeQuote(quote, "quote-" + i);
+
+        //Store the quote (the name contains note number)
+        storeQuote(quote, "quote-"+ String.valueOf(i) +".utf8");
+
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -122,12 +119,13 @@ public class Application implements IApplication {
   /**
    * This method stores the content of a quote in the local file system. It has
    * 2 responsibilities: 
-   * 
+   *
    * - with quote.getTags(), it gets a list of tags and uses
+   *   it to create sub-folders (for instance, if a quote has three tags "A", "B" and
+   *   "C", it will be stored in /quotes/A/B/C/quotes-n.utf8.
    *
-   *
-   *
-   *
+   * - with quote.getQuote(), it has access to the text of the quote. It stores
+   *   this text in UTF-8 file.
    * 
    * @param quote the quote object, with tags and text
    * @param filename the name of the file to create and where to store the quote text
@@ -135,31 +133,35 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
 
+    //String for the future abstract pathname
+    StringBuilder pathname = new StringBuilder(WORKSPACE_DIRECTORY);
+    //Liste for storing tags
     List<String> tags = quote.getTags();
-    boolean success = true;
-  //  Path path = Paths.get(WORKSPACE_DIRECTORY);
-    /*try {
+    //Used to check mkdirs()'s result is fine
+    boolean createFolderSucced;
 
-    for(String tag : tags) {
-      File folder = new File(WORKSPACE_DIRECTORY);
-      if (!folder.exists()) {
-        success = folder.getParentFile().mkdirs();
-      }
-      if (!success) {
-        throw new IOException("Cannot create folder");
-      }
-      //path = folder.getPath();
-    }*/
-/*
-      FileWriter textFile = new FileWriter( path + filename, StandardCharsets.UTF_8 );
-      textFile.write( quote.getQuote() );
-      textFile.close();
+    //Add tags to the path
+    for(String tag : tags){
+        pathname.append('/').append(tag);
+    }
+    //Add filename to the path
+    pathname.append("/").append(filename);
 
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }*/
+    //Create File instance with path
+    File pathQuote = new File(pathname.toString());
+    //Create the directory named by the abstract pathname, including parents
+    createFolderSucced = pathQuote.getParentFile().mkdirs();
 
+    //Check if the create folder process has worked
+    if(!(createFolderSucced)){
+      System.out.println("An error occurred creating folder");
+    }
+
+    //Writer open to write quotes and then closed
+    OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(pathQuote), StandardCharsets.UTF_8);
+    writer.write(quote.getQuote());
+    writer.flush();
+    writer.close();
   }
   
   /**
@@ -176,9 +178,13 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
-        try{ writer.write(file.getName());}
+
+        //we want to write the filename, including the path, to the writer passed in argument
+        try{
+          writer.write(file.getPath() + '\n');
+        }
         catch (IOException e) {
-          System.out.println("An error occurred.");
+          LOG.log(Level.SEVERE, "An error occurred fetching quotes. {0}", e.getMessage());
           e.printStackTrace();
         }
       }

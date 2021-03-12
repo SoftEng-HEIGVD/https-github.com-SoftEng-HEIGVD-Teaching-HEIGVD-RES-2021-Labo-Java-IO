@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  * a list of filters and decorates the output writer with them.
  * 
  * @author Olivier Liechti
+ *
+ * Modified by Dylan Canton, Alessandro Parrino
  */
 public abstract class FileTransformer implements IFileVisitor {
 
@@ -47,12 +49,14 @@ public abstract class FileTransformer implements IFileVisitor {
       Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), StandardCharsets.UTF_8); // the bug fix by teacher
       writer = decorateWithFilters(writer);
 
-      /*
-       * There is a missing piece here: you have an input reader and an ouput writer (notice how the 
-       * writer has been decorated by the concrete subclass!). You need to write a loop to read the
-       * characters and write them to the writer.
-       */
-      
+      //Integer to read and then write
+      int character;
+
+      //Loop to read a character (as a integer) and write it to the writer (-1 means end of stream).
+      while((character = reader.read()) != -1){
+        writer.write(character);
+      }
+
       reader.close();
       writer.flush();
       writer.close();

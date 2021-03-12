@@ -31,6 +31,5 @@ public class Utils {
     if (index != -1) return new String[]{lines.substring(0, index + 1), lines.substring(index + 1)};
 
     return new String[]{"", lines};
-
   }
 }
