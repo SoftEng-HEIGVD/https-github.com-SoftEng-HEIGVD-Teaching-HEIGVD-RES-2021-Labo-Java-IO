@@ -24,7 +24,8 @@ public class Utils
     {
 
         String[] result = new String[]{"", ""};
-        String[] newLineSeparator = new String[]{"\r\n", "\r", "\n"};
+        String[] newLineSeparator = new String[]{"\r", "\n", "\r\n"};
+        Arrays.sort(newLineSeparator, (a, b) -> b.length() - a.length());
 
         int index = -1;
         int delimSize = 0;
@@ -34,7 +35,7 @@ public class Utils
             int tmp = lines.indexOf(ls);
             if (tmp != -1 && (tmp < index - delimSize || index == -1))
             {
-                delimSize = ls.length()-1;
+                delimSize = ls.length() - 1;
                 index = tmp + delimSize;
             }
         }
