@@ -18,14 +18,48 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int fileNb;
+  private char previousChar;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    fileNb = 1;
+    previousChar='a';
+  }
+
+  private String addNumberToString(String str) {
+    StringBuilder result = new StringBuilder();
+    if (fileNb == 1) {
+      ++fileNb;
+      result.append("1\t");
+    }
+    result.append(str);
+    if (str.indexOf('\n') != -1 || str.indexOf('\r') != -1)
+      result.append(fileNb++).append('\t');
+    return result.toString();
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    str = str.substring(off, off + len);
+    StringBuilder result = new StringBuilder();
+    int prevOff = 0;
+    do {
+      int i = str.indexOf('\n', prevOff) + 1;
+      int macI = str.indexOf('\r', prevOff) + 1;
+      String tmp;
+      if (i==0 && macI==0) {
+        tmp = str.substring(prevOff);
+      } else {
+        if (i==0) i = macI;
+        tmp = str.substring(prevOff, i);
+      }
+      result.append(addNumberToString(tmp));
+      prevOff = i;
+
+    } while (prevOff != 0);
+
+    out.write(result.toString());
   }
 
   @Override
@@ -35,7 +69,21 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    char character = (char) c;
+    StringBuilder result = new StringBuilder();
+    if (fileNb == 1) {
+      ++fileNb;
+      result.append("1\t");
+    }
+
+    if ((previousChar == '\r' && character != '\n') || previousChar == '\n') {
+      result.append(fileNb++).append('\t');
+    }
+
+    result.append(character);
+
+    previousChar = character;
+    out.write(result.toString());
   }
 
 }
