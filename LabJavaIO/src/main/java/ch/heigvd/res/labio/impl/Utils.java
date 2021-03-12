@@ -10,6 +10,7 @@ public class Utils {
 
   private static final Logger LOG = Logger.getLogger(Utils.class.getName());
 
+
   /**
    * This method looks for the next new line separators (\r, \n, \r\n) to extract
    * the next line in the string passed in arguments. 
@@ -20,7 +21,13 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] result = new String[2];
+
+    int endl = lines.indexOf("\r\n");
+
+    result[0] = lines.substring(0,endl+2);
+    result[1] = lines.substring(endl+2);
+    return result;
   }
 
 }
