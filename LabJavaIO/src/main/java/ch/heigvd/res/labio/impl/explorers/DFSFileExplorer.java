@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
 public class DFSFileExplorer implements IFileExplorer {
 
   @Override
-  public void explore(File rootDirectory, IFileVisitor visitor) {
+  public void explore(File rootDirectory, IFileVisitor visitor) throws IOException {
 
     visitor.visit(rootDirectory);
     if(rootDirectory.isDirectory()) { // Only recurse if rootDirectory is a directory
