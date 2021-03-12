@@ -1,5 +1,7 @@
 package ch.heigvd.res.labio.impl.filters;
 
+import ch.heigvd.res.labio.impl.Utils;
+
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -23,19 +25,68 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private int idLine = 1;
+  private  boolean init = false;
+  private int previousChar;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      String s = str.substring(off, off + len);
+      String[] line = new String[2];
+      String res = "";
+      do {
+        line = Utils.getNextLine(s);
+        if (!init){
+          init = true;
+          res +=  idLine + "\t";
+        }
+        res += line[0];
+        if (line[0].length() != 0){
+          ++idLine;
+          res += idLine + "\t";
+        }
+        s = line[1];
+
+      }while (line[0].length() != 0);
+      res += line[1];
+      out.write(res);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      write(new String(cbuf, off,len));
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String res = "";
+    if (!init){
+      init = true;
+      String noLine = String.valueOf(idLine);
+      for (int i=0; i<noLine.length(); i++) {
+        int fig = noLine.charAt(i);
+        out.write(fig);
+      }
+      out.write('\t');
+    }
+    if (c == '\n' || previousChar != '\r'){
+      out.write(c);
+    }
+
+    if (c == '\n' || previousChar == '\r'){
+      ++idLine;
+      String noLine = String.valueOf(idLine);
+      for (int i=0; i<noLine.length(); i++) {
+        int fig = noLine.charAt(i);
+        out.write(fig);
+      }
+      out.write('\t');
+    }
+    if (c != '\n' && previousChar == '\r'){
+      out.write(c);
+    }
+    previousChar = c;
   }
 
 }
