@@ -13,6 +13,7 @@ import java.io.*;
 //import java.io.FilterWriter;
 //import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -136,7 +137,7 @@ public class Application implements IApplication {
       File file = new File(filename);
       file.getParentFile().mkdirs();
 
-      Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+      Writer out = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
       out.write(quote.getQuote());
       out.close();
