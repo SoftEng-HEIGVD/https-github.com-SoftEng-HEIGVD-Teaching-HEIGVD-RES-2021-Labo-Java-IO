@@ -20,7 +20,48 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] retour = new String[2];
+
+    int idx  = lines.indexOf("\r") + 1;
+    int idx1 = lines.indexOf("\n") + 1;
+
+    if(idx == 0 && idx1 == 0){
+      retour[1] = lines;
+      retour[0] = "";
+      return retour;
+    }
+
+    if(idx == idx1 - 1){
+      if(idx1 == lines.length()){
+        retour[0] = lines;
+        retour[1] = "";
+      } else {
+        retour[0] = lines.substring(0, idx1);
+        retour[1] = lines.substring(idx1);
+      }
+    } else if (idx < idx1) {
+      if(idx == 0){ //idx1 est plus petit
+        retour[0] = lines.substring(0, idx1);
+        retour[1] = lines.substring(idx1);
+      } else { //idx est vraiment plus petit
+        retour[0] = lines.substring(0, idx);
+        retour[1] = lines.substring(idx);
+      }
+    } else {
+      if(idx1 == 0){ //idx est plus petit
+        retour[0] = lines.substring(0, idx);
+        retour[1] = lines.substring(idx);
+      } else { //idx1 est vraiment plus petit
+        retour[0] = lines.substring(0, idx1);
+        retour[1] = lines.substring(idx1);
+      }
+    }
+
+
+    //retour[0] = part1;
+    //retour[1] = part2;
+
+    return retour;
   }
 
 }
