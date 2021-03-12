@@ -133,20 +133,22 @@ public class Application implements IApplication {
     void storeQuote(Quote quote, String filename) throws IOException {
         StringBuilder path = new StringBuilder(WORKSPACE_DIRECTORY + "/");
 
+        // Building the path
         for (String tag : quote.getTags()) {
             path.append(tag).append("/");
         }
 
         String filepath = path.toString();
         File file = new File(filepath);
-        file.mkdirs();
+        file.mkdirs(); // Creating sub-folders
 
-
+        // Creating the file
         Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream((filepath) + filename + ".utf8"),
                 StandardCharsets.UTF_8
         ));
 
+        // Writing the quote in the utf8 file
         writer.write(quote.getQuote());
         writer.flush();
         writer.close();

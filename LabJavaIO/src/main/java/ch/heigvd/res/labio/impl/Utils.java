@@ -20,6 +20,10 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
+
+      // (?m) makes ^ match the beginning of a line instead of matching the beginning of the whole input (lines) and
+      // (?<=^) represents a positive lookbehind to match the char at the end of line and use it as the separator
+      // limit is 2 because we want 2 elements
       String[] split = lines.split("(?m)(?<=^)", 2);
 
       if (split.length == 2){
@@ -29,6 +33,8 @@ public class Utils {
           if (lines.charAt(lines.length()-1) == '\n' || lines.charAt(lines.length()-1) == '\r'){
               return new String[]{split[0], ""};
           }
+
+        // If the argument does not contain any line separator
         return new String[]{"", split[0]};
       }
   }

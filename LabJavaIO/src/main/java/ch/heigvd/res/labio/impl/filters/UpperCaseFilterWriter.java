@@ -20,6 +20,8 @@ public class UpperCaseFilterWriter extends FilterWriter {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
+
+        // Tests to determine if off and len are valid
         if(off < 0 || len < 0 || off+len < 0 || off + len >  cbuf.length){
             throw new IndexOutOfBoundsException();
         }
