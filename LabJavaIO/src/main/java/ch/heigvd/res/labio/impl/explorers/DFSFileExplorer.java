@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -28,6 +29,8 @@ DFSFileExplorer implements IFileExplorer
       files = rootDirectory.listFiles();
 
       if(files == null) return;
+
+      Arrays.sort(files);
 
       File element;
       // For each pathname in the pathnames array
