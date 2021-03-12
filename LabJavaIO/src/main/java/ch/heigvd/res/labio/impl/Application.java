@@ -154,8 +154,8 @@ public class Application implements IApplication
 
 
 
-      FileWriter fw = new FileWriter(file);
-      BufferedWriter bw = new BufferedWriter(fw);
+      Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+      BufferedWriter bw = new BufferedWriter(writer);
       bw.write(quote.getQuote());
       bw.close();
 
