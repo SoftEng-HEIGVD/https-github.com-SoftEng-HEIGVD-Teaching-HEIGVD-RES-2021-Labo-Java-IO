@@ -28,27 +28,30 @@ public class Utils {
 
     int endl = -1;
 
-    if(lines.indexOf("\r\n")>0)
+    if(lines.indexOf("\r\n")>0)   // Windows
     {
       endl = lines.indexOf("\r\n");
       result[0] = lines.substring(0, endl + 2);
       result[1] = lines.substring(endl + 2);
       return result;
     }
-    else if(lines.indexOf("\r")>0 )
+    else if(lines.indexOf("\r")>0 ) // MacOS9
     {
       endl = lines.indexOf("\r");
       result[0] = lines.substring(0,endl+1);
       result[1] = lines.substring(endl+1);
       return result;
     }
-    else if(lines.indexOf("\n")>0 )
+    else if(lines.indexOf("\n")>0 ) // Unix
     {
       endl = lines.indexOf("\n");
       result[0] = lines.substring(0,endl+1);
       result[1] = lines.substring(endl+1);
       return result;
     }
-    return null;
+
+    result[0] = "";
+    result[1] = lines;
+    return result;
   }
 }
