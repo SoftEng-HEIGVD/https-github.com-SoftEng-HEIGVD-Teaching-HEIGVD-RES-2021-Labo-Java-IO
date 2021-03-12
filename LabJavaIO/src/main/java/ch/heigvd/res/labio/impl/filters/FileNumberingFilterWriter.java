@@ -19,23 +19,48 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
+  private int line = 0;
+  private char previous;
+
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    final int range = off + len;
+    for (int i = off; i < range; ++i)
+    {
+      write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    if (line == 0 || (c != '\n' && previous == '\r'))
+    {
+      addNewLine();
+    }
+
+    super.write((char) c);
+
+    if (c == '\n')
+    {
+      addNewLine();
+    }
+    previous = (char) c;
+  }
+
+  private void addNewLine() throws IOException
+  {
+    String end = (++line) + "\t";
+    super.write(end, 0, end.length());
   }
 
 }
