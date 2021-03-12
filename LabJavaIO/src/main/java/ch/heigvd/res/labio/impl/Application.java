@@ -142,10 +142,10 @@ public class Application implements IApplication {
         file.mkdirs();
 
 
-        OutputStreamWriter writer = new OutputStreamWriter(
+        Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream((filepath) + filename + ".utf8"),
                 StandardCharsets.UTF_8
-        );
+        ));
 
         writer.write(quote.getQuote());
         writer.flush();
