@@ -52,7 +52,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
     // call to the function Write(String str,int off, int len) for the same process.
-    this.write(Arrays.toString(cbuf), off, len);
+    this.write(String.valueOf(cbuf), off, len);
   }
 
   @Override
