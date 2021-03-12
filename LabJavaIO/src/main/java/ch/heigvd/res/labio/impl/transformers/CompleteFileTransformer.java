@@ -16,7 +16,8 @@ public class CompleteFileTransformer extends FileTransformer {
   @Override
   public Writer decorateWithFilters(Writer writer) {
     if (true) {
-      throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      //TO DO
     }
     /*
      * If you uncomment the following line (and get rid of th 3 previous lines...), you will restore the decoration 
