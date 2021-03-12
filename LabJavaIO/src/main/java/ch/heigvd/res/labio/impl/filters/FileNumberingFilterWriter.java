@@ -60,7 +60,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
           newLineFormat();
       }
 
-      // Add new line if the \r was alone (no \r\n)
+      // Add new line if the previous char was \r and wasn't followed by \b ( \r\n )
       if(c != '\n' && previousCharacterWasCarriageReturn){
           previousCharacterWasCarriageReturn = false;
           newLineFormat();
