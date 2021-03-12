@@ -19,10 +19,12 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int fileNb;
+  private char previousChar;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
     fileNb = 1;
+    previousChar='a';
   }
 
   private String addNumberToString(String str) {
@@ -73,10 +75,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
       ++fileNb;
       result.append("1\t");
     }
-    result.append(character);
-    if (character == '\n')
-      result.append(fileNb++).append('\t');
 
+    // if alone \r
+    if ((previousChar == '\r' && character != '\n') || previousChar == '\n') {
+      result.append(fileNb++).append('\t');
+    }
+
+    result.append(character);
+
+    previousChar = character;
     out.write(result.toString());
   }
 
