@@ -126,7 +126,7 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     // Build the complete path.
-    String path = WORKSPACE_DIRECTORY + "\\" + String.join("\\", quote.getTags()) + "\\" + filename + ".utf8";
+    String path = WORKSPACE_DIRECTORY + "/" + String.join("/", quote.getTags()) + "/" + filename + ".utf8";
 
     // This create both directories and file
     File file = new File(path);
