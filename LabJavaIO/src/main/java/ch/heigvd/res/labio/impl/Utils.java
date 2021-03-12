@@ -23,33 +23,25 @@ public class Utils {
     String[] array = new String[2];
 
     array[0] = "";
-    array[1] = lines;
+    array[1] = lines;   // Set default result if no new line separator
 
     for(int i = 0; i < lines.length(); i++) {
       char c = lines.charAt(i);
-      if(c == '\n') {
-        array[0] = lines.substring(0, i+1);
-        array[1] = lines.substring(i+1);
-        break;
-      } else if(c == '\r') {
-        if(i < lines.length()-1) {
 
+      if(c == '\n' || c == '\r') {
+        if(c == '\r' && i < lines.length()-1) { // Handle \r\n
           if(lines.charAt(i+1) == '\n') {
             array[0] = lines.substring(0, i+2);
             array[1] = lines.substring(i+2);
-          } else {
-            array[0] = lines.substring(0, i+1);
-            array[1] = lines.substring(i+1);
+            break;
           }
-        } else {
-          array[0] = lines.substring(0, i+1);
-          array[1] = lines.substring(i+1);
         }
+        array[0] = lines.substring(0, i+1);
+        array[1] = lines.substring(i+1);
         break;
       }
     }
 
     return array;
   }
-
 }
