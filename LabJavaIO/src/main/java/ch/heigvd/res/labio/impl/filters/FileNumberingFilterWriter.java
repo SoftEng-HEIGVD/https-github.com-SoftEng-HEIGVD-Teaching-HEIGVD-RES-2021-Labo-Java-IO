@@ -2,6 +2,7 @@ package ch.heigvd.res.labio.impl.filters;
 
 import java.io.FilterWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.logging.Logger;
 
@@ -21,10 +22,12 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    nbLine = 1;
+    newFile = true;
   }
 
-  private static int nbLine = 1;
-  private static boolean newLine = true;
+  private static int nbLine;
+  private static boolean newFile;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
@@ -33,18 +36,20 @@ public class FileNumberingFilterWriter extends FilterWriter {
     String tempStr = str.substring(off, endIndex);
     String newStr = "";
 
-    if(newLine) {
+    if(newFile) {
       out.write(nbLine++ + "\t");
-      newLine = false;
+      newFile = false;
     }
 
     for (int i=0; i < tempStr.length(); i++) {
       char c = tempStr.charAt(i);
-      newStr += c;
+
+        newStr += c;
       if(c == '\n' || c == '\r')
       {
         out.write(newStr);
-        out.write(nbLine++ + "\t");
+        if(i+1 >= len || tempStr.charAt(i+1) != '\n')
+          out.write(nbLine++ + "\t");
         newStr = "";
       }
     }
@@ -54,36 +59,20 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    char[] newCBuf = new char[len];
-    if(newLine) {
-      out.write(nbLine++ + "\t");
-      newLine = false;
-    }
-    for (int i = 0; i < len ; ++i) {
-      newCBuf[i] = cbuf[off + i];
-      if(cbuf[off + i] == '\n' || cbuf[off + i] == '\r')
-      {
-        out.write(newCBuf);
-        out.write(nbLine++ + "\t");
-        newCBuf = new char[len-i];
-      }
-    }
-    out.write(newCBuf);
+    write(new String(cbuf),off,len);
   }
-
-
 
   @Override
   public void write(int c) throws IOException {
-    if(newLine) {
+    if(newFile) {
       out.write(nbLine++ + "\t");
-      newLine = false;
+      newFile = false;
     }
     out.write((char) c);
 
-    if((char) c == '\n' || (char) c == '\r')
+    if((char) c == '\n') {
       out.write(nbLine++ + "\t");
-
+    }
   }
 
 }
