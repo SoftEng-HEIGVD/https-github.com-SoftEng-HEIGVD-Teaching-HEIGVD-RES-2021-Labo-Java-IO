@@ -1,5 +1,6 @@
 package ch.heigvd.res.labio.quotes;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
