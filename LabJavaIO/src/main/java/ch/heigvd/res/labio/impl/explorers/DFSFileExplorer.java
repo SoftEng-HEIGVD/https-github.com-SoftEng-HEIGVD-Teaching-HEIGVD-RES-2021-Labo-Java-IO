@@ -22,7 +22,7 @@ public class DFSFileExplorer implements IFileExplorer {
 
       //Check if directory exists
       if(rootDirectory == null){
-        return;
+          return;
       }
 
       //Visit the file
@@ -31,15 +31,15 @@ public class DFSFileExplorer implements IFileExplorer {
       //If it's a folder
       if(rootDirectory.isDirectory()){
 
-        //Store all folder's files
-        File[] folderContent = rootDirectory.listFiles();
-        //Sort files for display
-        Arrays.sort(folderContent);
+          //Store all folder's files
+          File[] folderContent = rootDirectory.listFiles();
+          //Sort files for display
+          Arrays.sort(folderContent);
 
-        //Recursion in the next folder level
-        for(File file : folderContent){
-          explore(file, vistor);
-        }
+          //Recursion in the next folder level
+          for(File file : folderContent){
+              explore(file, vistor);
+          }
       }
   }
 }
