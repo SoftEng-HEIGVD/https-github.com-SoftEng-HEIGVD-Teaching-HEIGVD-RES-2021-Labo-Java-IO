@@ -43,8 +43,8 @@ public abstract class FileTransformer implements IFileVisitor {
       return;
     }
     try {
-      Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-      Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), StandardCharsets.UTF_8); // the bug fix by teacher
+      Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+      Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), StandardCharsets.UTF_8)); // the bug fix by teacher
       writer = decorateWithFilters(writer);
 
       /*
