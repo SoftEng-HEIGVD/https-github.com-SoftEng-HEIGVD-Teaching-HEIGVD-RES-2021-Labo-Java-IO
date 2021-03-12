@@ -9,11 +9,12 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class Application implements IApplication {
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
   
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
-  
+
   public static void main(String[] args) {
     
     /*
@@ -98,6 +99,7 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        //storeQuote(quote, "quote-" + i);
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -122,18 +124,42 @@ public class Application implements IApplication {
    * 2 responsibilities: 
    * 
    * - with quote.getTags(), it gets a list of tags and uses
-   *   it to create sub-folders (for instance, if a quote has three tags "A", "B" and
-   *   "C", it will be stored in /quotes/A/B/C/quotes-n.utf8.
-   * 
-   * - with quote.getQuote(), it has access to the text of the quote. It stores
-   *   this text in UTF-8 file.
+   *
+   *
+   *
+   *
    * 
    * @param quote the quote object, with tags and text
    * @param filename the name of the file to create and where to store the quote text
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    List<String> tags = quote.getTags();
+    boolean success = true;
+  //  Path path = Paths.get(WORKSPACE_DIRECTORY);
+    /*try {
+
+    for(String tag : tags) {
+      File folder = new File(WORKSPACE_DIRECTORY);
+      if (!folder.exists()) {
+        success = folder.getParentFile().mkdirs();
+      }
+      if (!success) {
+        throw new IOException("Cannot create folder");
+      }
+      //path = folder.getPath();
+    }*/
+/*
+      FileWriter textFile = new FileWriter( path + filename, StandardCharsets.UTF_8 );
+      textFile.write( quote.getQuote() );
+      textFile.close();
+
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }*/
+
   }
   
   /**
@@ -144,12 +170,17 @@ public class Application implements IApplication {
     IFileExplorer explorer = new DFSFileExplorer();
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
-      public void visit(File file) {
+      public void visit(File file){
         /*
          * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try{ writer.write(file.getName());}
+        catch (IOException e) {
+          System.out.println("An error occurred.");
+          e.printStackTrace();
+        }
       }
     });
   }

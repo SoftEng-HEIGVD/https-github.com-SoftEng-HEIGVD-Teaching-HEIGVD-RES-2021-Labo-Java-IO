@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Olivier Liechti
  */
-public class FileNumberingFilterWriter extends FilterWriter {
+public class FileNumberingFilterWriter extends MyFilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
     int lineNumber = 1;
@@ -29,48 +29,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
         super(out);
     }
 
-    @Override
-    public void write(String str, int off, int len) throws IOException {
-        /*
-        str = str.substring(off, off + len);
-        StringBuilder builder = new StringBuilder("");
-        boolean isOneLine = Utils.getNextLine(str)[0].equals("");
-
-        if (isOneLine) {
-
-            if (lineNumber == 1) builder.append(lineNumber++ + "\t" + Utils.getNextLine(str)[1]);
-            else builder.append(Utils.getNextLine(str)[1]);
-
-        } else {
-
-            if (lineNumber == 1) builder.append(lineNumber++ + "\t" + Utils.getNextLine(str)[0] + lineNumber++ + "\t");
-            else builder.append(Utils.getNextLine(str)[0] + lineNumber++ + "\t");
-
-            String tmp = Utils.getNextLine(str)[1];
-
-            while (!Utils.getNextLine(tmp)[0].equals("")) {
-                builder.append(Utils.getNextLine(tmp)[0] + lineNumber++ + "\t");
-                tmp = Utils.getNextLine(tmp)[1];
-            }
-
-            builder.append(Utils.getNextLine(tmp)[1]);
-        }
-
-        super.write(builder.toString(), 0, builder.toString().length());
-*/
-       int size = off+len;
-        for(int i = off; i <size ; ++i){
-            write(str.charAt(i));
-        }
-    }
-
-    @Override
-    public void write(char[] cbuf, int off, int len) throws IOException {
-       // write(new String(cbuf), off, len);
-        int size = off + len;
-        for(int i = off ; i < size; ++i)
-            write(cbuf[i]);
-    }
 
     @Override
     public void write(int c) throws IOException {

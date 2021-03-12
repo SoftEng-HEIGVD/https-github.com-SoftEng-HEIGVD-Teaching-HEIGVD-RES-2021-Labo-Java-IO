@@ -8,22 +8,10 @@ import java.io.Writer;
  *
  * @author Olivier Liechti
  */
-public class UpperCaseFilterWriter extends FilterWriter {
+public class UpperCaseFilterWriter extends MyFilterWriter{
   
   public UpperCaseFilterWriter(Writer wrappedWriter) {
     super(wrappedWriter);
-  }
-
-  @Override
-  public void write(String str, int off, int len) throws IOException {
-    super.write(str.toUpperCase(), off, len);
-  }
-
-  @Override
-  public void write(char[] cbuf, int off, int len) throws IOException {
-    int size = off + len;
-    for(int i = off ; i < size; ++i)
-      write(cbuf[i]);
   }
 
   @Override
