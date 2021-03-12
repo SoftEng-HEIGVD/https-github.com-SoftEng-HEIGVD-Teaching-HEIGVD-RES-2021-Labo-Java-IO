@@ -21,8 +21,6 @@ public class DFSFileExplorer implements IFileExplorer {
 
     @Override
     public void explore(File rootDirectory, IFileVisitor vistor) throws IOException {
-        Objects.requireNonNull(rootDirectory) ;
-        Objects.requireNonNull(vistor);
         File[] paths = rootDirectory.listFiles();
         vistor.visit(rootDirectory);
         if (paths != null) {

@@ -3,6 +3,7 @@ package ch.heigvd.res.labio.impl.filters;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
         if (lineNb == 1) {
             newStr = lineNb++ + "\t";
         }
-        Pattern pattern = Pattern.compile("(\r\n|\r|\n|\n\r)");
+        Pattern pattern = Pattern.compile("(\r\n|\r|\n)");
         Matcher matcher = pattern.matcher(str);
         int posSeparateur = 0;
         boolean hasSep = false;
