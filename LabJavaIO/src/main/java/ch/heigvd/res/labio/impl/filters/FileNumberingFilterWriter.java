@@ -1,5 +1,8 @@
 package ch.heigvd.res.labio.impl.filters;
 
+import ch.heigvd.res.labio.impl.Utils;
+import jdk.jshell.execution.Util;
+
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -25,18 +28,36 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    int count = 1;
+    String lines[] = Utils.getNextLine(str);
+    while (lines[0] != "") {
+      out.write(count +"\t" + lines[0]);
+      count += 1;
+      lines = Utils.getNextLine(lines[1]);
+    }
+    if (lines[1] != "") {
+      out.write(count + "\t" + lines[1]);
+    }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    int count = 1;
+    String lines[] = Utils.getNextLine(cbuf.toString());
+    while (lines[0] != "") {
+      out.write(count + "\t" + lines[0]);
+      count += 1;
+      lines = Utils.getNextLine(lines[1]);
+    }
+    if (lines[1] != "") {
+      out.write(count + "\t" + lines[1]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
     throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
+
 
 }
