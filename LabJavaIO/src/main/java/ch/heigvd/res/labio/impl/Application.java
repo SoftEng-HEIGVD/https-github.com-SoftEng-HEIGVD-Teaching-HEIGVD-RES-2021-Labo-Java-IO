@@ -136,9 +136,10 @@ public class Application implements IApplication {
       File file = new File(filename);
       file.getParentFile().mkdirs();
 
-      FileWriter myWriter = new FileWriter(file);
-      myWriter.write(quote.getQuote());
-      myWriter.close();
+      Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+
+      out.write(quote.getQuote());
+      out.close();
     }
     catch (IOException e)
     {

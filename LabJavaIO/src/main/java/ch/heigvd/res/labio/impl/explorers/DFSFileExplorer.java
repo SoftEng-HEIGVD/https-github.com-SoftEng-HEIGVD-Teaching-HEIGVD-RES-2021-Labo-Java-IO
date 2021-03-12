@@ -20,19 +20,16 @@ public class DFSFileExplorer implements IFileExplorer
   public void explore(File rootDirectory, IFileVisitor visitor)
   {
     File currentDir = new File(rootDirectory.getAbsolutePath());
-    invokeOnNode(currentDir, visitor);
-  }
+    visitor.visit(currentDir);
 
-  private void invokeOnNode (File currentDir, IFileVisitor visitor)
-  {
-    for (File f : currentDir.listFiles())
+    File[] filesAndDirectories = currentDir.listFiles();
+
+    if (filesAndDirectories == null) return;
+
+    for (File f : filesAndDirectories)
     {
-      if (f.isDirectory())
-      {
-        invokeOnNode(f, visitor);
-      }
       visitor.visit(f);
+      explore(f, visitor);
     }
   }
-
 }
