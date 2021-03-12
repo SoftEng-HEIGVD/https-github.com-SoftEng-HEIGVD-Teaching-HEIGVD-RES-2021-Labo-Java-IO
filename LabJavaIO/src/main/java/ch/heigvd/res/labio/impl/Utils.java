@@ -23,11 +23,25 @@ public class Utils {
   public static String[] getNextLine(String lines) {
     String[] result = new String[2];
 
-    int endl = lines.indexOf("\r\n");
 
-    result[0] = lines.substring(0,endl+2);
-    result[1] = lines.substring(endl+2);
-    return result;
+    //find first occurence of "\n"
+    int endl = lines.indexOf("\n");
+
+    if(lines.charAt(endl-1) == '\r')
+    {
+      //we are on Windows
+      endl = endl-1;
+      result[0] = lines.substring(0,endl+2);
+      result[1] = lines.substring(endl+2);
+      return result;
+    }
+    else
+    {
+      //we are on linux
+      result[0] = lines.substring(0,endl+1);
+      result[1] = lines.substring(endl+1);
+      return result;
+    }
   }
 
 }
