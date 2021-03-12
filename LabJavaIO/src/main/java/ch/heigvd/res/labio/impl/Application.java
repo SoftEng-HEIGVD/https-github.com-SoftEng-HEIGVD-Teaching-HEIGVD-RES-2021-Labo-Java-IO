@@ -10,8 +10,6 @@ import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-//import java.io.FilterWriter;
-//import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -131,21 +129,17 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException
   {
-    try
-    {
-      // Créer l'arborescence
       File file = new File(filename);
       file.getParentFile().mkdirs();
 
       Writer out = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
-      out.write(quote.getQuote());
+      BufferedWriter bw = new BufferedWriter(out);
+
+      bw.write(quote.getQuote());
+
+      bw.close();
       out.close();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
   }
   
   /**
@@ -156,20 +150,15 @@ public class Application implements IApplication {
     IFileExplorer explorer = new DFSFileExplorer();
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
-      public void visit(File file) {
-
+      public void visit(File file)
+      {
         try
         {
-          writer.write(file.getName());
+          writer.write(file.getPath() + '\n');
         } catch (IOException e)
         {
           e.printStackTrace();
         }
-        /*
-         * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
-         * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
-         * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
-         */
       }
     });
   }
