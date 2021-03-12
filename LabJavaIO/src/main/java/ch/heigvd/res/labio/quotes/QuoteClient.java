@@ -21,6 +21,10 @@ import java.net.http.HttpResponse;
  * @author Daniel Palumbo
  */
 public class QuoteClient {
+  ObjectMapper objectMapper = new ObjectMapper();
+
+  HttpRequest httpRequest;
+  HttpClient httpClient;
 
   /*
    * This has changed in the 2016 version of the lab. We were using the "itheardquotes" API, which is now down. We have
@@ -28,24 +32,29 @@ public class QuoteClient {
    */
   static String WEB_SERVICE_ENDPOINT = "http://api.icndb.com/jokes/random?firstName=Olivier&lastName=Liechti&escape=javascript";
 
+  public QuoteClient() {
+    try {
+      httpRequest = HttpRequest.newBuilder()
+              .GET()
+              .uri(new URI(WEB_SERVICE_ENDPOINT))
+              .header("Accept", "application/json")
+              .build();
+    } catch (Exception e) {
+      throw new Error();
+    }
+
+    httpClient = HttpClient.newBuilder().build();
+  }
+
   /**
    * Use this method to invoke the iheartquotes.com web service and receive
    * an instance of a Quote.
    *
    * @return an instance of Quote, with values provided by the web service
    */
-  public Quote fetchQuote() throws URISyntaxException, IOException, InterruptedException {
-    // Use JAVA 11 http client and request feature
-    HttpRequest request = HttpRequest.newBuilder()
-            .GET()
-            .uri(new URI(WEB_SERVICE_ENDPOINT))
-            .header("Accept", "application/json")
-            .build();
-
-    HttpClient client = HttpClient.newBuilder().build();
-
+  public Quote fetchQuote() throws IOException, InterruptedException {
     // Make the call to the API and map the response body to a Quote object
-    return new ObjectMapper().readValue(client.send(request, HttpResponse.BodyHandlers.ofString()).body(), Quote.class);
+    return objectMapper.readValue(httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString()).body(), Quote.class);
   }
 
 }

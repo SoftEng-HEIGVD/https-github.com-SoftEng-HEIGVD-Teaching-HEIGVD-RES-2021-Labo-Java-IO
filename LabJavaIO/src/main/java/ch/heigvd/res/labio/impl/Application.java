@@ -88,7 +88,7 @@ public class Application implements IApplication {
       Quote quote = null;
       try {
         quote = client.fetchQuote();
-      } catch (URISyntaxException | InterruptedException e) {
+      } catch (InterruptedException e) {
         e.printStackTrace();
       }
       if (quote != null) {
