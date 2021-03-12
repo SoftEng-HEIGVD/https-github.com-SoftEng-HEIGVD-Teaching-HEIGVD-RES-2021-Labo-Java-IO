@@ -2,8 +2,10 @@ package ch.heigvd.res.labio.impl.explorers;
 
 import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
+import org.apache.commons.io.comparator.NameFileComparator;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -13,11 +15,23 @@ import java.io.File;
  * 
  * @author Olivier Liechti
  */
-public class DFSFileExplorer implements IFileExplorer {
+public class DFSFileExplorer implements IFileExplorer
+{
 
   @Override
-  public void explore(File rootDirectory, IFileVisitor vistor) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+  public void explore(File rootDirectory, IFileVisitor visitor)
+  {
+    visitor.visit(rootDirectory);
 
+    File[] filesAndDirectories = rootDirectory.listFiles();
+
+    if (filesAndDirectories == null) return;
+
+    Arrays.sort(filesAndDirectories);
+
+    for (File f : filesAndDirectories)
+    {
+      explore(f, visitor);
+    }
+  }
 }
