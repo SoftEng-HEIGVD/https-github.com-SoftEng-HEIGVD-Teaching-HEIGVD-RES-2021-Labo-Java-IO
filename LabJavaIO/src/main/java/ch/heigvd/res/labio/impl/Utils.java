@@ -20,25 +20,25 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-
+      
       String[] lineSeparators = {"\r\n", "\r", "\n"};
       int occurence = -1, i = 0;
 
-      // for(; i < lineSeparators.length; ++i){
-      for(; i < lineSeparators.length; ++i){
+      for(; (i < lineSeparators.length) && (occurence == -1) ; ++i){
+          occurence = lines.indexOf(lineSeparators[i]);
           int currentOccurence = lines.indexOf(lineSeparators[i]);
           if(currentOccurence != -1){
               occurence = currentOccurence;
-              // TODO: Peut mieux faire !
-              break;
           }
       }
 
-      if(occurence < 0){ // No line separator.
+      // No line separator.
+      if(occurence < 0){
           return new String[] {"", lines};
       }
 
-      int separatorLength = (lineSeparators[i]).length();
+      // --i to compensate for the ++i in the for loop.
+      int separatorLength = (lineSeparators[--i]).length();
 
 
       return new String[] {lines.substring(0, occurence + separatorLength), lines.substring(occurence + separatorLength)};

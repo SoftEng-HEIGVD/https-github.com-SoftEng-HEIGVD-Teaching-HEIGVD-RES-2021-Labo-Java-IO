@@ -25,10 +25,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public FileNumberingFilterWriter(Writer out) {
     super(out);
     nLines = 1;
-      /**
-       * TODO: Trouver un meilleur nom. Je suis pas doué pour nommer des trucs.
-       * https://en.wikipedia.org/wiki/Carriage_return
-       */
+    // https://en.wikipedia.org/wiki/Carriage_return
     previousCharacterWasCarriageReturn = false;
   }
 
@@ -47,15 +44,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-      /**
-       * TODO: Résultat identique à l'oeil
-       * Cependant, à tester sur Windows pour test itShouldWorkOnWindows (je suis sur OSX).
-       */
-
-      /**
-       * TODO: Je pense que la logique peut être mieux implémentée !
-       */
-
       if(nLines == 1 ){
           newLineFormat();
       }
