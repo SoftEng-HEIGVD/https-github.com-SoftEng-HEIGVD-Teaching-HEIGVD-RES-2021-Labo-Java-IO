@@ -132,13 +132,9 @@ public class Application implements IApplication {
       File file = new File(filename);
       file.getParentFile().mkdirs();
 
-      Writer out = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+      BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
 
-      BufferedWriter bw = new BufferedWriter(out);
-
-      bw.write(quote.getQuote());
-
-      bw.close();
+      out.write(quote.getQuote());
       out.close();
   }
   
@@ -155,7 +151,8 @@ public class Application implements IApplication {
         try
         {
           writer.write(file.getPath() + '\n');
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
           e.printStackTrace();
         }
