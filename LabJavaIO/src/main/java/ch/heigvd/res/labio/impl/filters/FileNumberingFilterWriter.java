@@ -23,11 +23,14 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
-  private static int cpt = 2;
-  private static boolean imTheFirstLine = true;
+  private int cpt = 2;
+  private boolean imTheFirstLine = true;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
+
+    str = str.substring(off,off+len);
+    len = str.length();
 
     if(imTheFirstLine){
       str = "1\t" + str;
@@ -36,8 +39,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
 
     if(str.charAt(len-1) == '\n'){
-      str = str.substring(0,len) + cpt + '\t';
-      cpt++;
+      str = str.substring(0,len) + cpt++ + '\t';
       len += 2;
     }
 
