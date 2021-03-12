@@ -14,8 +14,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -92,6 +97,7 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
+        storeQuote(quote, "quotes-" + i + ".utf8");
         /* There is a missing piece here!
          * As you can see, this method handles the first part of the lab. It uses the web service
          * client to fetch quotes. We have removed a single line from this method. It is a call to
@@ -133,9 +139,23 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    List<String> tags = quote.getTags();
+    String folder_name = "/";
+    for (String tag : tags) {
+      folder_name += tag + "/";
+    }
+    String quote_text = quote.getQuote();
+    Path path = Paths.get(folder_name);
+    try {
+      Files.createDirectories(path);
+    } catch (IOException e) {
+      System.err.println("Failed to create repositories");
+    }
+    File my_quote = new File("./quotes/"+folder_name + filename);
+    FileUtils.writeStringToFile(my_quote, quote_text, "UTF-8");
+
   }
-  
+
   /**
    * This method uses a IFileExplorer to explore the file system and prints the name of each
    * encountered file and directory.
@@ -144,7 +164,14 @@ public class Application implements IApplication {
     IFileExplorer explorer = new DFSFileExplorer();
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
-      public void visit(File file) {
+      public void visit(File file)  {
+
+        try {
+          writer.write(file.getName());
+        }
+        catch(IOException e) {
+          System.err.println("Invalid File");
+        }
         /*
          * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should

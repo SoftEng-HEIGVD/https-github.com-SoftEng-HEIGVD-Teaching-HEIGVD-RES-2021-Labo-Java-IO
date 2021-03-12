@@ -29,7 +29,6 @@ public class Utils {
     if ( (index = lines.indexOf(lsWindows)) != -1) {
       result[0] = lines.substring(0, index+2);
       result[1] = lines.substring(index+2);
-
     }
     //check for \r
     else if ((index = lines.indexOf(lsMac)) != -1) {
