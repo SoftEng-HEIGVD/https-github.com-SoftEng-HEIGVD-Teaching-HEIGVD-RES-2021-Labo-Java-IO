@@ -76,7 +76,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
       result.append("1\t");
     }
 
-    // if alone \r
     if ((previousChar == '\r' && character != '\n') || previousChar == '\n') {
       result.append(fileNb++).append('\t');
     }
