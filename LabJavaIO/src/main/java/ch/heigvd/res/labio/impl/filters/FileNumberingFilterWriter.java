@@ -39,8 +39,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
 
     for(int i = 0 ; i < str.length() ; i++){
-      if(str.charAt(i) == '\n'){
-        str = str.substring(0,i+1) + lineCounter++ + '\t' + str.substring(i+1,str.length());
+      if(str.charAt(i) == '\n' || str.charAt(i) == '\r'){
+        if((i != str.length()-1) && (str.charAt(i) == '\r' && str.charAt(i+1) == '\n')){
+          continue;
+        }
+        str = str.substring(0,i+1) + lineCounter++ + '\t' + str.substring(i+1);
         len = str.length();
       }
     }
