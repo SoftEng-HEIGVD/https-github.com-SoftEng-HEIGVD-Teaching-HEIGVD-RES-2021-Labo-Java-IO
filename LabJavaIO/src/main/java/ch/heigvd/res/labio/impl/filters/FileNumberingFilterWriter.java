@@ -6,6 +6,7 @@ import jdk.jshell.execution.Util;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -62,7 +63,7 @@ public class FileNumberingFilterWriter extends FilterWriter
    @Override
    public void write(char[] cbuf, int off, int len) throws IOException
    {
-      write(cbuf.toString(), off, len);
+      write(new String(cbuf), off, len);
    }
 
    @Override
