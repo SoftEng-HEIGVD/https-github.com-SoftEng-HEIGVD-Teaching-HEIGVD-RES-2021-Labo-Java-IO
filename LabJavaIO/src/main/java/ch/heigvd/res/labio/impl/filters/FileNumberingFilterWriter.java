@@ -23,9 +23,36 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private static int cpt = 2;
+  private static boolean imTheFirstLine = true;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    if(imTheFirstLine){
+      str = "1\t" + str;
+      len += 2;
+      imTheFirstLine = false;
+    }
+
+    if(str.charAt(len-1) == '\n'){
+      str = str.substring(0,len) + cpt + '\t';
+      cpt++;
+      len += 2;
+    }
+
+
+    //if(str.charAt(len) == '\n')
+      //str = str.substring(0,len);
+
+    /*for (int i = 0 ; i < len ; i++){ // len-1 for avoid the treatement of the last \n
+      if(str.charAt(i) == '\n'){
+        str = str.substring(0,i) + '\n' + cpt + '\t' + str.substring(i+1);
+        cpt++;
+        len += 3;
+      }
+    }*/
+    super.write(str,off,len);
   }
 
   @Override
