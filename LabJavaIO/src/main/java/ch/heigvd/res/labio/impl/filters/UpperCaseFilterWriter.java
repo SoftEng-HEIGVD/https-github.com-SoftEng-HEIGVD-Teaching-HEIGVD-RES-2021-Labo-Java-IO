@@ -16,6 +16,7 @@ public class UpperCaseFilterWriter extends MyFilterWriter{
 
   @Override
   public void write(int c) throws IOException {
+    //Writes the character in upper case
     super.write(Character.toUpperCase(c));
   }
 

@@ -1,12 +1,8 @@
 package ch.heigvd.res.labio.impl.filters;
 
-import ch.heigvd.res.labio.impl.Utils;
-
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -22,8 +18,8 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends MyFilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
-    int lineNumber = 1;
-    int pastChar;
+    private int lineNumber = 1;
+    private int pastChar;
 
     public FileNumberingFilterWriter(Writer out) {
         super(out);
@@ -32,30 +28,23 @@ public class FileNumberingFilterWriter extends MyFilterWriter {
 
     @Override
     public void write(int c) throws IOException {
-        if(c < 0 || c >255) throw new IOException("Invalid character");
-        char[] digits  = Integer.toString( lineNumber ).toCharArray();
-        if (lineNumber == 1){
-            for(char digit : digits)
-                super.write(digit);
-            digits  = Integer.toString( lineNumber++ ).toCharArray();
-            super.write('\t');
-            }
 
-        if (c != '\n' && pastChar == '\r'){
-            for(char digit : digits)
-                super.write(digit);
-            digits  = Integer.toString( lineNumber++ ).toCharArray();
-            super.write('\t');
-        }
+        //Check if it is the first line
+        if (lineNumber == 1)
+            out.write(lineNumber++ + "\t");
 
-        if (c == '\n') {
-            super.write(c);
-            for(char digit : digits)
-                super.write(digit);
-            ++lineNumber;
-            super.write('\t');
-        } else
-            super.write(c);
+        //Check if there is a return to the line (Mac OS)
+        if (c != '\n' && pastChar == '\r')
+            out.write(lineNumber++ + "\t");
+
+        //Write the character
+        out.write(c);
+
+        //Check if there is a return to the line (Windows and Linux)
+        if (c == '\n')
+            out.write(lineNumber++ + "\t");
+
+        //Saves the previous character
         pastChar = c;
 
     }

@@ -95,7 +95,7 @@ public class Application implements IApplication {
       if (quote != null) {
 
         //Store the quote (the name contains note number)
-        storeQuote(quote, "quote-"+ String.valueOf(i) +".utf8");
+        storeQuote(quote, "quote-"+ i +".utf8");
 
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {

@@ -21,6 +21,8 @@ public class Utils {
    */
   public static String[] getNextLine(String lines) {
 
+    // Finds the position of the delimiter and separates the string,
+    // if the delimiter was not found, move to the next delimiter
     int index = lines.indexOf("\r\n");
     if (index != -1) return new String[]{lines.substring(0, index + 2), lines.substring(index + 2)};
 
@@ -30,6 +32,7 @@ public class Utils {
     index = lines.indexOf("\n");
     if (index != -1) return new String[]{lines.substring(0, index + 1), lines.substring(index + 1)};
 
+    //the argument does not contain any line separator
     return new String[]{"", lines};
   }
 }
