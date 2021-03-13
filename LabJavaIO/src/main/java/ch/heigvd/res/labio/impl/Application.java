@@ -28,7 +28,7 @@ public class Application implements IApplication {
    * to where the Java application is invoked.
    */
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
-  
+
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
   
   public static void main(String[] args) {
@@ -39,8 +39,8 @@ public class Application implements IApplication {
      * better to use a Logger rather than using System.out.println
      */
     System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%6$s%n");
-    
-       
+
+
     int numberOfQuotes = 0;
     try {
       numberOfQuotes = Integer.parseInt(args[0]);
@@ -100,9 +100,14 @@ public class Application implements IApplication {
          */
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
-          LOG.info("> " + tag);
+          LOG.info("> " + tag );
         }
+
+
+
       }
+
+      //LOG.info("" + quote.getQuote());
 
     }
   }
@@ -113,6 +118,8 @@ public class Application implements IApplication {
    * 
    * @throws IOException 
    */
+
+
   void clearOutputDirectory() throws IOException {
     FileUtils.deleteDirectory(new File(WORKSPACE_DIRECTORY));    
   }
@@ -154,10 +161,11 @@ public class Application implements IApplication {
     });
   }
 
+
   @Override
   public void processQuoteFiles() throws IOException {
     IFileExplorer explorer = new DFSFileExplorer();
-    explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());    
+    explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());
   }
 
 }
