@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ *
+ * Modified by Dylan Canton, Alessandro Parrino
  */
 public class Utils {
 

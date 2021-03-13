@@ -137,8 +137,6 @@ public class Application implements IApplication {
     StringBuilder pathname = new StringBuilder(WORKSPACE_DIRECTORY);
     //Liste for storing tags
     List<String> tags = quote.getTags();
-    //Used to check mkdirs()'s result is fine
-    boolean createFolderSucced;
 
     //Add tags to the path
     for(String tag : tags){
@@ -150,12 +148,7 @@ public class Application implements IApplication {
     //Create File instance with path
     File pathQuote = new File(pathname.toString());
     //Create the directory named by the abstract pathname, including parents
-    createFolderSucced = pathQuote.getParentFile().mkdirs();
-
-    //Check if the create folder process has worked
-    if(!(createFolderSucced)){
-      System.out.println("An error occurred creating folder");
-    }
+    pathQuote.getParentFile().mkdirs();
 
     //Writer open to write quotes and then closed
     OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(pathQuote), StandardCharsets.UTF_8);

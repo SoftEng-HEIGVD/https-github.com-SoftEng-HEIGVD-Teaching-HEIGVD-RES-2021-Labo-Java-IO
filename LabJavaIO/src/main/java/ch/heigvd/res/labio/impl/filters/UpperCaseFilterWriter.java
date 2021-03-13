@@ -7,6 +7,8 @@ import java.io.Writer;
 /**
  *
  * @author Olivier Liechti
+ *
+ * Modified by Dylan Canton, Alessandro Parrino
  */
 public class UpperCaseFilterWriter extends MyFilterWriter{
   
@@ -19,5 +21,4 @@ public class UpperCaseFilterWriter extends MyFilterWriter{
     //Writes the character in upper case
     super.write(Character.toUpperCase(c));
   }
-
 }
