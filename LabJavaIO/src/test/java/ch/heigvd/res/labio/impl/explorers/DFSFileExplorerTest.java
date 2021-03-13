@@ -38,6 +38,22 @@ public class DFSFileExplorerTest {
     }
 
     @Test
+    public void dfsExplorerWithFilesShouldWork() {
+        List<String> dfsNodes = generateTestTreeWithFiles(5, 5, 5);
+
+        final List<String> directories = new ArrayList<>();
+        IFileExplorer explorer = new DFSFileExplorer();
+
+        explorer.explore(new File("./fs-test"), new IFileVisitor() {
+            @Override
+            public void visit(File file) {
+                directories.add(file.getName());
+            }
+        });
+        assertArrayEquals(dfsNodes.toArray(), directories.toArray());
+    }
+
+    @Test
     public void dfsExplorerShouldWorkWhenThereIsNoFile() {
         List<String> dfsNodes = generateTestTree(0, 0, 0);
 
@@ -61,7 +77,6 @@ public class DFSFileExplorerTest {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Could not delete {0} : {1}", new Object[]{dir, ex.getMessage()});
         }
-        dir.mkdir();
         dfsNodes.add(dir.getName());
         generateLevel(dir, 0, levels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
         return dfsNodes;
@@ -70,8 +85,6 @@ public class DFSFileExplorerTest {
     private void generateLevel(File dir, int level, int maxLevels, int maxChildrenFolders, int maxChildrenFiles, List<String> dfsNodes) {
         int childrenFolders = (int) (Math.random() * maxChildrenFolders);
         int childrenFiles = (int) (Math.random() * maxChildrenFiles);
-
-
 
         for (int i = 0; i < childrenFolders; i++) {
             String dirName = dir.getName() + "." + (i + 1);
@@ -82,6 +95,35 @@ public class DFSFileExplorerTest {
                 generateLevel(newDir, level + 1, maxLevels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
             }
         }
+    }
+
+    private List<String> generateTestTreeWithFiles(int levels, int maxChildrenFolders, int maxChildrenFiles) {
+        List<String> dfsNodes = new ArrayList<>();
+        File dir = new File("./fs-test");
+        try {
+            FileUtils.deleteDirectory(dir);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, "Could not delete {0} : {1}", new Object[]{dir, ex.getMessage()});
+        }
+        dfsNodes.add(dir.getName());
+        generateLevelWithFiles(dir, 0, levels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
+        return dfsNodes;
+    }
+
+
+    private void generateLevelWithFiles(File dir, int level, int maxLevels, int maxChildrenFolders, int maxChildrenFiles, List<String> dfsNodes) {
+        int childrenFolders = (int) (Math.random() * maxChildrenFolders);
+        int childrenFiles = (int) (Math.random() * maxChildrenFiles);
+
+        for (int i = 0; i < childrenFolders; i++) {
+            String dirName = dir.getName() + "." + (i + 1);
+            dfsNodes.add(dirName);
+            File newDir = new File(dir, dirName);
+            newDir.mkdirs();
+            if (level < maxLevels) {
+                generateLevelWithFiles(newDir, level + 1, maxLevels, maxChildrenFolders, maxChildrenFiles, dfsNodes);
+            }
+        }
         for (int i = 0; i < childrenFiles; i++) {
             String fileName = dir.getName() + "." + (i + 1) + "_f";
             File newFile = new File(dir, fileName);
@@ -89,7 +131,7 @@ public class DFSFileExplorerTest {
                 newFile.createNewFile();
                 dfsNodes.add(fileName);
             } catch (IOException e) {
-                System.err.println("Error in preparing test " + e+" "+dir);
+                System.err.println("Error in preparing test " + e + " " + dir);
             }
         }
 
