@@ -24,6 +24,6 @@ public interface IFileExplorer {
    * @param rootDirectory the directory where to start the traversal
    * @param vistor defines the operation to be performed on each file
    */
-  public void explore(File rootDirectory, IFileVisitor vistor) throws IOException;
+  public void explore(File rootDirectory, IFileVisitor vistor);
   
 }
