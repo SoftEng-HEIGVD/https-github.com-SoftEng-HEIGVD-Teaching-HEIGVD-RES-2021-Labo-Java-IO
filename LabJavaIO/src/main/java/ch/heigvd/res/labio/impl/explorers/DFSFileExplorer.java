@@ -36,7 +36,7 @@ public class DFSFileExplorer implements IFileExplorer {
     Arrays.sort(subFolder, new Comparator<File>() {
       @Override
       public int compare(File o1, File o2) {
-        return o1.getName().compareTo(o1.getName());
+        return o1.getName().compareTo(o2.getName());
       }
     });
 
