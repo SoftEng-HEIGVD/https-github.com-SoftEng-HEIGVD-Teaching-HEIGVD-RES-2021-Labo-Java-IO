@@ -9,11 +9,9 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,6 +96,7 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        storeQuote(quote, "quote-" + i);
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +132,20 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String subPath = "";
+    String extension = ".utf8";
+    for (String tag : quote.getTags()) {
+      subPath += "/" + tag;
+    }
+    File f = new File(WORKSPACE_DIRECTORY + subPath + "/" + filename + extension);
+    f.getParentFile().mkdirs();
+
+    Writer fileWriter = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8);
+    //FileWriter fileWriter = new FileWriter(f);
+
+    fileWriter.write(quote.getQuote());
+    fileWriter.close();
+
   }
   
   /**
@@ -150,6 +162,15 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try{
+          writer.write(file.getPath() + "\n");
+          writer.flush();
+          writer.close();
+        }catch (Exception ex)
+        {
+          LOG.log(Level.SEVERE, null, ex);
+        }
+
       }
     });
   }

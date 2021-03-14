@@ -2,6 +2,7 @@ package ch.heigvd.res.labio.impl.filters;
 
 import java.io.FilterWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.logging.Logger;
 
@@ -21,21 +22,72 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    nbLine = 1;
+    newLine = true;
   }
+
+  private static int nbLine;
+  private static boolean newLine;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    int endIndex = off + len;
+    String tempStr = str.substring(off, endIndex);
+    String newStr = "";
+
+
+
+    for (int i=0; i < tempStr.length(); i++) {
+      char c = tempStr.charAt(i);
+
+      if(c == '\n')
+      {
+        newStr += c;
+        out.write(newStr);
+        if(i+1 >= len || tempStr.charAt(i+1) != '\n')
+          out.write(nbLine++ + "\t");
+        newStr = "";
+        newLine = false;
+      }else{
+        if(newLine) {
+          out.write(newStr);
+          out.write(nbLine++ + "\t");
+          newLine = false;
+          newStr = "";
+        }
+        newStr += c;
+      }
+
+      if(c == '\r')
+        newLine = true;
+    }
+
+    out.write(newStr);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(new String(cbuf),off,len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    if((char) c == '\n') {
+      out.write((char) c);
+      out.write(nbLine++ + "\t");
+      newLine = false;
+    }else {
+      if(newLine) {
+        out.write(nbLine++ + "\t");
+        newLine = false;
+      }
+      out.write((char) c);
+    }
+
+    if((char) c == '\r')
+      newLine = true;
   }
 
 }
