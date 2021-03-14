@@ -11,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -139,7 +138,7 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     List<String> tags = quote.getTags();
-    String pathString = "./workspace/quotes/";
+    String pathString = WORKSPACE_DIRECTORY + "/";
     for (int i = 0; i < tags.size(); i++){
         pathString += tags.get(i) + "/";
     }
@@ -152,6 +151,8 @@ public class Application implements IApplication {
     OutputStreamWriter inputWriter = new OutputStreamWriter( new FileOutputStream(input), "UTF-8" );
     OutputStreamWriter outputWriter = new OutputStreamWriter( new FileOutputStream(outputFile), "UTF-8" );
 
+    inputWriter.close();
+    outputWriter.close();
   }
   
   /**
@@ -168,6 +169,13 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+
+        try {
+          writer.write(file.getName());
+          writer.write(file.getPath());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     });
   }
