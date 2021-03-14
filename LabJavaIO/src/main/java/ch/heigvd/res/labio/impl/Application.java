@@ -95,7 +95,7 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        filename = "quotes-" + i +".utf8";
+        filename = "quote-" + i +".utf8";
         /* There is a missing piece here!
          * As you can see, this method handles the first part of the lab. It uses the web service
          * client to fetch quotes. We have removed a single line from this method. It is a call to
@@ -147,11 +147,10 @@ public class Application implements IApplication {
     Files.createDirectories(path);
 
     File input = new File(path + "/" + filename);
+    File outputFile = new File(path + "/" + filename + ".out");
 
-    OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream(input), "UTF-8" );
-    writer.write(quote.getQuote());
-    writer.flush();
-    writer.close();
+    OutputStreamWriter inputWriter = new OutputStreamWriter( new FileOutputStream(input), "UTF-8" );
+    OutputStreamWriter outputWriter = new OutputStreamWriter( new FileOutputStream(outputFile), "UTF-8" );
 
   }
   
