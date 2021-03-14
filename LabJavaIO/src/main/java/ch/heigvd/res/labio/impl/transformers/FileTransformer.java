@@ -58,7 +58,8 @@ public abstract class FileTransformer implements IFileVisitor {
       int numberOfNewBytes = reader.read(charBuf);
 
       while(numberOfNewBytes != -1){
-        writer.write(charBuf);
+
+        writer.write(charBuf,0,numberOfNewBytes);
         numberOfNewBytes = reader.read(charBuf);
       }
       
