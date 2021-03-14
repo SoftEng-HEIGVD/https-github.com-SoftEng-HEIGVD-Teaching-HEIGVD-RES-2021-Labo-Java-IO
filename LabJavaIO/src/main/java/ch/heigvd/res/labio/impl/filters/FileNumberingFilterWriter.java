@@ -22,7 +22,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   private int lineNb = 1;
-  private boolean newline = false;
+  private boolean newlineWithR = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -37,7 +37,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
       insertLineNB();
 
     while (!nextLines[0].equals("")) {
-//      super.flush();
       super.write(nextLines[0], 0, nextLines[0].length());
       insertLineNB();
       nextLines = Utils.getNextLine(nextLines[1]);
@@ -57,15 +56,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
     // suivant n'est pas inséré. L'appelant de la méthode doit gérer ce cas, car ici il n'est
     // pas possible de prédire le prochain char
 
-    if (lineNb == 1 || (newline && c != '\n'))
+    if (lineNb == 1 || (newlineWithR && c != '\n')) // début + cas \r
       insertLineNB();
 
     super.write(c);
 
     if (c == '\n')
-      insertLineNB();
+      insertLineNB(); // cas \n et \r\n
 
-    newline = c == '\r';
+    newlineWithR = c == '\r';
   }
 
   private void insertLineNB() throws IOException {
