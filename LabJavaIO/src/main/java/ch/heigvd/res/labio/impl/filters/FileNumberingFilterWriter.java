@@ -23,11 +23,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public FileNumberingFilterWriter(Writer out) {
     super(out);
     nbLine = 1;
-    newFile = true;
+    newLine = true;
   }
 
   private static int nbLine;
-  private static boolean newFile;
+  private static boolean newLine;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
@@ -36,22 +36,31 @@ public class FileNumberingFilterWriter extends FilterWriter {
     String tempStr = str.substring(off, endIndex);
     String newStr = "";
 
-    if(newFile) {
-      out.write(nbLine++ + "\t");
-      newFile = false;
-    }
+
 
     for (int i=0; i < tempStr.length(); i++) {
       char c = tempStr.charAt(i);
 
-        newStr += c;
-      if(c == '\n' || c == '\r')
+      if(c == '\n')
       {
+        newStr += c;
         out.write(newStr);
         if(i+1 >= len || tempStr.charAt(i+1) != '\n')
           out.write(nbLine++ + "\t");
         newStr = "";
+        newLine = false;
+      }else{
+        if(newLine) {
+          out.write(newStr);
+          out.write(nbLine++ + "\t");
+          newLine = false;
+          newStr = "";
+        }
+        newStr += c;
       }
+
+      if(c == '\r')
+        newLine = true;
     }
 
     out.write(newStr);
@@ -64,15 +73,21 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    if(newFile) {
-      out.write(nbLine++ + "\t");
-      newFile = false;
-    }
-    out.write((char) c);
 
     if((char) c == '\n') {
+      out.write((char) c);
       out.write(nbLine++ + "\t");
+      newLine = false;
+    }else {
+      if(newLine) {
+        out.write(nbLine++ + "\t");
+        newLine = false;
+      }
+      out.write((char) c);
     }
+
+    if((char) c == '\r')
+      newLine = true;
   }
 
 }
