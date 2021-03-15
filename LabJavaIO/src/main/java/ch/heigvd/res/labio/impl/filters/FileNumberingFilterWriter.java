@@ -23,19 +23,44 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private int lineNumber = 1;
+  private boolean newLineMac = true;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      write(str.charAt(i));
+    }
+
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; ++i){
+      write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if (c == '\n') {
+      super.write(c);
+      out.write( lineNumber++ + "\t");
+      newLineMac = false;
+      return;
+
+    } else if (c == '\r') {
+      newLineMac = true;
+
+    } else {
+      if (newLineMac) { //Allow to print the first tab and, when it's Mac, to print the next line with tab
+        out.write(lineNumber++ + "\t");
+      }
+      newLineMac = false;
+    }
+
+    super.write(c);
+
   }
 
 }
