@@ -36,8 +36,9 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     for (int i = off ; i <= len-1; i++){
 
-      if (((str.charAt(i) == '\n') && (str.charAt(i-1) == '\r')) || str.charAt(i) == '\n'
-              || (str.charAt(i) == '\r' && str.charAt(i+1) != '\n') ){
+      if (((str.charAt(i) == '\n') && (str.charAt(i - 1) == '\r')) || str.charAt(i) == '\n'
+              || (str.charAt(i) == '\r' && (i == str.length() - 1 || str.charAt(i + 1) != '\n'))) {
+
 
         str = str.substring(0, i + 1) + nbLine + "\t" + str.substring(i+1);
 
@@ -61,10 +62,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-
-
-
-
 
     super.write(cbuf, off, len);
   }
