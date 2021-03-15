@@ -9,10 +9,7 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.logging.Level;
@@ -149,6 +146,10 @@ public class Application implements IApplication {
     File newQuote = new File(filePath.toString());
     newQuote.getParentFile().mkdirs();
     newQuote.createNewFile();
+    BufferedWriter writer = new BufferedWriter(new FileWriter(newQuote));
+    writer.write(quote.getQuote());
+    writer.close();
+
 
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
