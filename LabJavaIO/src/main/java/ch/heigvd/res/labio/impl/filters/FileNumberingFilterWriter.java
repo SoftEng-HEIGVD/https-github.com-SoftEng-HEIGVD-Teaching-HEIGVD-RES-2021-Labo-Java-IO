@@ -24,10 +24,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
   }
 
   private int lineNumber = 1;
-  private boolean newLine = false;
+  private boolean newLineMac = true;
 
-
-  //il va falloir détecter les sauts de ligne, il faut un compteur de ligne.
   @Override
   public void write(String str, int off, int len) throws IOException {
     for(int i = off; i < off + len; ++i){
@@ -45,24 +43,23 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    if(lineNumber == 1){
-      out.write(lineNumber++ + "\t");
+    if (c == '\n') {
       super.write(c);
-    } else if( c == '\n') {
-      newLine = false;
-      super.write(c);
-      out.write(lineNumber++ + "\t");
-    } else if(!newLine){
-      super.write(c);
+      out.write( lineNumber++ + "\t");
+      newLineMac = false;
+      return;
+
+    } else if (c == '\r') {
+      newLineMac = true;
+
     } else {
-      out.write(lineNumber++ + "\t");
-      super.write(c);
-      newLine = false;
+      if (newLineMac) { //Allow to print the first tab and, when it's Mac, to print the next line with tab
+        out.write(lineNumber++ + "\t");
+      }
+      newLineMac = false;
     }
 
-    if(c == '\r'){
-      newLine = true;
-    }
+    super.write(c);
 
   }
 
