@@ -150,13 +150,14 @@ public class Application implements IApplication {
     Files.createDirectories(p);
 
     File inputFile = new File(p+"/"+filename+".utf8");
-    File inputFile1 = new File(p+"/"+filename+".utf8.out");
+
 
     OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream(inputFile), "UTF-8" );
-    OutputStreamWriter writer1 = new OutputStreamWriter( new FileOutputStream(inputFile1), "UTF-8" );
+
+    writer.write(quote.getQuote());
 
     writer.close();
-  writer1.close();
+
 
   }
   
@@ -174,17 +175,10 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
-        String s="";
-        if(file.getName()=="quotes"){
-          s += file.getPath()+"\n";
-
-        }
-
-        s += file.getPath()+"\n";
-
 
         try {
-          writer.write(s,0,s.length());
+          String str = file.getPath()+"\n";
+          writer.write(str);
         } catch (IOException e) {
           e.printStackTrace();
         }
