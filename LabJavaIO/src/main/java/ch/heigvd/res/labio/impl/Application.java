@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -170,12 +171,23 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
 
-        try {
-          writer.write(file.getName());
-          writer.write(file.getPath());
-        } catch (IOException e) {
-          e.printStackTrace();
+        String str ="";
+
+      try{
+          str += file.getPath();
+          if(!file.isDirectory()){
+            str += file.getName()+ "\n";
+          }else{
+            str += "\n";
+          }
+          writer.write(str);
+
+          writer.flush();
+          writer.close();
+        } catch (IOException ex) {
+          LOG.log(Level.SEVERE, null, ex);
         }
+
       }
     });
   }
