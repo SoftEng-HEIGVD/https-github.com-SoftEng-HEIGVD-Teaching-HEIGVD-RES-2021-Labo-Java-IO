@@ -86,7 +86,7 @@ public class Application implements IApplication {
   public void fetchAndStoreQuotes(int numberOfQuotes) throws IOException {
     clearOutputDirectory();
     QuoteClient client = new QuoteClient();
-    String filename = "";
+    String filename;
     for (int i = 0; i < numberOfQuotes; i++) {
       Quote quote = null;
       try {
@@ -139,21 +139,20 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     List<String> tags = quote.getTags();
-    String pathString = WORKSPACE_DIRECTORY + "/";
-    for (int i = 0; i < tags.size(); i++){
-        pathString += tags.get(i) + "/";
+    StringBuilder pathString = new StringBuilder(WORKSPACE_DIRECTORY + "/");
+    for (String tag : tags) {
+      pathString.append(tag).append("/");
     }
-    Path path = Paths.get(pathString);
+    Path path = Paths.get(pathString.toString());
     Files.createDirectories(path);
 
     File input = new File(path + "/" + filename);
-    File outputFile = new File(path + "/" + filename + ".out");
 
     OutputStreamWriter inputWriter = new OutputStreamWriter( new FileOutputStream(input), "UTF-8" );
-    OutputStreamWriter outputWriter = new OutputStreamWriter( new FileOutputStream(outputFile), "UTF-8" );
+
+    inputWriter.write(quote.getQuote());
 
     inputWriter.close();
-    outputWriter.close();
   }
   
   /**
@@ -170,9 +169,8 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
-        String str ="";
         try{
-            str += file.getPath() + "\n";
+           String str = file.getPath() + "\n";
 
             writer.write(str);
             writer.flush();
