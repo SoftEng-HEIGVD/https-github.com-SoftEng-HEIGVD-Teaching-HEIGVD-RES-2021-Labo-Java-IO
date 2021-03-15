@@ -173,7 +173,8 @@ public class Application implements IApplication {
            String str = file.getPath() + "\n";
 
             writer.write(str);
-
+            writer.flush();
+            writer.close();
         }
          catch (IOException ex) {
           LOG.log(Level.SEVERE, null, ex);

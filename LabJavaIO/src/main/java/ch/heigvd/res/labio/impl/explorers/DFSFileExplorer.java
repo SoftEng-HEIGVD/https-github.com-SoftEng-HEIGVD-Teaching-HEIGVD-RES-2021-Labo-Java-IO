@@ -23,6 +23,7 @@ public class DFSFileExplorer implements IFileExplorer {
     File[] listOfFilesAndDirectory = rootDirectory.listFiles();
     // `listFiles()` returns non-null array if `root` denotes a directory
     if (listOfFilesAndDirectory != null) {
+      Arrays.sort(listOfFilesAndDirectory);
       for (File file : listOfFilesAndDirectory) {
         if (file.isDirectory()){
           explore(file,vistor);
