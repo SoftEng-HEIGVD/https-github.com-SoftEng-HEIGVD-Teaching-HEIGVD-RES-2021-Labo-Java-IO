@@ -144,9 +144,7 @@ public class Application implements IApplication {
 
     /* Create sub-directories */
     File subdirectories = new File(path.toString());
-    if(!subdirectories.mkdirs()){
-      System.err.println("Failed to create sub-directories!");
-    }
+    subdirectories.mkdirs();
 
     /* Create and write in output file */
     path.append(filename);
