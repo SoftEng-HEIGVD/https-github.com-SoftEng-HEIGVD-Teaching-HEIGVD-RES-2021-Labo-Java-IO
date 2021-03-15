@@ -22,11 +22,33 @@ import java.net.http.HttpResponse;
  */
 public class QuoteClient {
 
+  ObjectMapper om = new ObjectMapper();
+
+  HttpRequest request;
+  HttpClient client;
+
   /*
    * This has changed in the 2016 version of the lab. We were using the "itheardquotes" API, which is now down. We have
    * replaced it with another API that generates random jokes.
    */
   static String WEB_SERVICE_ENDPOINT = "http://api.icndb.com/jokes/random?firstName=Olivier&lastName=Liechti&escape=javascript";
+
+
+  public QuoteClient() {
+    try {
+      request = HttpRequest.newBuilder()
+              .GET()
+              .uri(new URI(WEB_SERVICE_ENDPOINT))
+              .header("Accept", "application/json")
+              .build();
+    }
+    catch (Exception e)
+    {
+      throw new Error();
+    }
+    client = HttpClient.newBuilder().build();
+
+  }
 
   /**
    * Use this method to invoke the iheartquotes.com web service and receive
@@ -34,15 +56,16 @@ public class QuoteClient {
    *
    * @return an instance of Quote, with values provided by the web service
    */
+
   public Quote fetchQuote() throws URISyntaxException, IOException, InterruptedException {
     // Use JAVA 11 http client and request feature
-    HttpRequest request = HttpRequest.newBuilder()
+    /*HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(new URI(WEB_SERVICE_ENDPOINT))
             .header("Accept", "application/json")
-            .build();
+            .build();*/
 
-    HttpClient client = HttpClient.newBuilder().build();
+    //HttpClient client = HttpClient.newBuilder().build();
 
     // Make the call to the API and map the response body to a Quote object
     return new ObjectMapper().readValue(client.send(request, HttpResponse.BodyHandlers.ofString()).body(), Quote.class);
