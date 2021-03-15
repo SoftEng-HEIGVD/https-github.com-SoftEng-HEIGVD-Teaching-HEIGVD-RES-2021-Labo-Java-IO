@@ -20,7 +20,30 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String[] str = new String[2];
+
+
+    for (int i = 0; i < lines.length(); i++) {
+
+
+      if (((lines.charAt(i) == '\n') && (lines.charAt(i - 1) == '\r')) || lines.charAt(i) == '\n'
+              || (lines.charAt(i) == '\r' && (i == lines.length() - 1 || lines.charAt(i + 1) != '\n'))) {
+
+        str[0] = lines.substring(0, i + 1);
+        str[1] = lines.substring(i + 1, lines.length());
+        return str;
+      }
+
+    }
+
+    str[0] = "";
+    str[1] = lines;
+    return str;
+    }
+
   }
 
-}
+
+
+
