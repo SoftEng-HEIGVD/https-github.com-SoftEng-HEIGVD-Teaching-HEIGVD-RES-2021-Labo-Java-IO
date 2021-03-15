@@ -9,11 +9,13 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,6 +86,7 @@ public class Application implements IApplication {
   public void fetchAndStoreQuotes(int numberOfQuotes) throws IOException {
     clearOutputDirectory();
     QuoteClient client = new QuoteClient();
+    String filename;
     for (int i = 0; i < numberOfQuotes; i++) {
       Quote quote = null;
       try {
@@ -92,12 +95,14 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
+        filename = "quote-" + i +".utf8";
         /* There is a missing piece here!
          * As you can see, this method handles the first part of the lab. It uses the web service
          * client to fetch quotes. We have removed a single line from this method. It is a call to
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        storeQuote(quote,filename);
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +138,21 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    List<String> tags = quote.getTags();
+    StringBuilder pathString = new StringBuilder(WORKSPACE_DIRECTORY + "/");
+    for (String tag : tags) {
+      pathString.append(tag).append("/");
+    }
+    Path path = Paths.get(pathString.toString());
+    Files.createDirectories(path);
+
+    File input = new File(path + "/" + filename);
+
+    OutputStreamWriter inputWriter = new OutputStreamWriter( new FileOutputStream(input), "UTF-8" );
+
+    inputWriter.write(quote.getQuote());
+
+    inputWriter.close();
   }
   
   /**
@@ -150,6 +169,16 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        try{
+           String str = file.getPath() + "\n";
+
+            writer.write(str);
+            writer.flush();
+            writer.close();
+        }
+         catch (IOException ex) {
+          LOG.log(Level.SEVERE, null, ex);
+        }
       }
     });
   }
