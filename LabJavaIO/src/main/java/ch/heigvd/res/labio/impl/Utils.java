@@ -20,7 +20,31 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] arrLines = {"", lines};
+  int j = lines.length();
+
+    for (int i = 0; i < lines.length(); ++i){
+      /**
+       * Checking for \r\n : if current char is \r and it's not the last char of the string and last next char is \n
+       * ! Check if is last char before checking if next char is \n to avoid "string index out of range"
+       */
+      if (lines.charAt(i) == '\r' && i < lines.length() - 1 && lines.charAt(i + 1) == '\n'){
+        arrLines[0] = lines.substring(0, i + 2);
+        arrLines[1] = lines.substring(i + 2);
+        return arrLines;
+      }
+
+      /**
+       * Checking for \r and \n
+       */
+      if(lines.charAt(i) == '\n' || lines.charAt(i) == '\r'){
+        arrLines[0] = lines.substring(0, i + 1);
+        arrLines[1] = lines.substring(i + 1);
+        return arrLines;
+      }
+
+    }
+    return arrLines;
   }
 
 }
