@@ -17,6 +17,8 @@ import java.util.logging.Logger;
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
+  private int totalLines = 1;
+  private boolean isNewLine = false;
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   public FileNumberingFilterWriter(Writer out) {
@@ -25,17 +27,39 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = 0; i < len; i++){
+      write(cbuf[off + i]);
+    }
+    // Send null byte so we can detect newline properly
+    write(0x0);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    // Check if it's the start of th text
+    if(totalLines == 1){
+      out.write(totalLines++ + "\t" + (char)c);
+      return;
+    }
+    // Check for new line
+    if(c == '\r' || c == '\n') {
+      isNewLine = true;
+    }
+    // Write new line with tab
+    else if(isNewLine){
+      out.write(totalLines++ + "\t");
+      isNewLine = false;
+    }
+    // Write char if not null byte
+    if(c != 0x0)
+      out.write(c);
+
   }
 
 }
