@@ -17,23 +17,17 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-
-    //System.out.println("test");
-
-    File lFiles [] = rootDirectory.listFiles();
-
-    for (int i = 0; i < lFiles.length; ++i){
-      //System.out.println(lFiles[i].getPath());
-      //if (lFiles[i].isFile()){
-        //System.out.println(lFiles[i].getPath());
-        vistor.visit(lFiles[i]);
-      //}
-
-    }
-
-    for (int i = 0; i < lFiles.length; ++i){
-      if(lFiles[i].isDirectory())
-        explore(lFiles[i], vistor);
+    vistor.visit(rootDirectory);
+    File[] lFiles = rootDirectory.listFiles();
+    if (lFiles != null) {
+      for (File file : lFiles) {
+        if (file.isDirectory()) {
+          explore(file, vistor);
+        }
+        else {
+          vistor.visit(file);
+        }
+      }
     }
 
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
