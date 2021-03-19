@@ -20,21 +20,21 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    int firstOccurenceOfLineBreak = 0;
+    int lineBreakIndex = 0;
 
-    String[] lineBreakers = {"\n", "\r", "\r\n"};
+    String[] lineBreakers = { "\n", "\r", "\r\n" };
     for (String s : lineBreakers) {
-      firstOccurenceOfLineBreak = lines.indexOf(s);
-      if (firstOccurenceOfLineBreak != -1) {
+      lineBreakIndex = lines.indexOf(s);
+      if (lineBreakIndex != -1) {
         break;
       }
     }
 
-    if (firstOccurenceOfLineBreak == -1) {
-      return new String[]{"", lines};
+    if (lineBreakIndex == -1) {
+      return new String[] { "", lines };
     }
 
-    return new String[]{lines.substring(0, firstOccurenceOfLineBreak + 1), lines.substring(firstOccurenceOfLineBreak + 1)};
+    return new String[] { lines.substring(0, lineBreakIndex + 1), lines.substring(lineBreakIndex + 1) };
 
   }
 }
