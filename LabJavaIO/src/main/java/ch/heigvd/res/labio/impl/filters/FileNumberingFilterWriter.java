@@ -12,74 +12,65 @@ import java.util.logging.Logger;
  * When filter encounters a line separator, it sends it to the decorated writer.
  * It then sends the line number and a tab character, before resuming the write
  * process.
- *
+ * <p>
  * Hello\n\World -> 1\Hello\n2\tWorld
  *
  * @author Olivier Liechti
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
-  private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+    private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
 
+    public FileNumberingFilterWriter(Writer out) {
+        super(out);
+        lineCounter = 1;
+    }
 
-  public FileNumberingFilterWriter(Writer out) {
-      super(out);
-      lineCounter = 1;
-  }
+    static long lineCounter = 1;
 
-  static long lineCounter = 1;
-  @Override
-  public void write(String str, int off, int len) throws IOException {
-    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-      String tempStr = "";
+    @Override
+    public void write(String str, int off, int len) throws IOException {
+        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
 
-      //long lineCounter = 1;
-      String [] oneLineAndRest = Utils.getNextLine(str);
+        if (str.equals("")) {
+            return;
+        }
 
-      do {
-          tempStr += lineCounter;
-          tempStr += "\t";
-          tempStr += oneLineAndRest[0];
-          ++lineCounter;
-          oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
-      }while(!oneLineAndRest[0].equals(""));
+        String tempStr = "";
+        String[] oneLineAndRest = Utils.getNextLine(str);
 
-      /*while(oneLineAndRest[0] != "") {
-          tempStr += lineCounter;
-          tempStr += "\t";
-          tempStr += oneLineAndRest[0];
-          ++lineCounter;
-          oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
-      }*/
+        if (lineCounter == 1) {
+            tempStr += lineCounter;
+            tempStr += "\t";
+            ++lineCounter;
+        }
 
-      //if(oneLineAndRest[0] != ""){
-      //if(oneLineAndRest[oneLineAndRest.length-1] != "\n"){
+        while (!oneLineAndRest[0].equals("")){
+            tempStr += oneLineAndRest[0];
+            tempStr += lineCounter;
+            tempStr += "\t";
+            ++lineCounter;
 
-      if(!oneLineAndRest[1].equals((""))) {
-          tempStr += lineCounter;
-          tempStr += "\t";
-          tempStr += oneLineAndRest[1];
-      } else {
-          tempStr += lineCounter;
-          tempStr += "\t";
-      }
-      
-      out.write(tempStr);
+            oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
+        }
+        
+        tempStr += oneLineAndRest[1];
 
-  }
+        out.write(tempStr);
+    }
 
-  @Override
-  public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    @Override
+    public void write(char[] cbuf, int off, int len) throws IOException {
+        throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    }
 
-  @Override
-  public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-      //char result = (char)c;
-      //String str =String.valueOf(result);
+    @Override
+    public void write(int c) throws IOException {
+        throw new UnsupportedOperationException("The student has not implemented this method yet.");
+        //char result = (char)c;
+        //String str =String.valueOf(result);
 
-  }
+    }
 
 }
