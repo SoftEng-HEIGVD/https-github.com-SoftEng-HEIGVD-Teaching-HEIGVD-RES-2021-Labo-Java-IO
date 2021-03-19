@@ -12,7 +12,7 @@ import java.io.Writer;
 public class NoOpFileTransformer extends FileTransformer {
 
   @Override
-  public Writer decorateWithFilters(Writer writer) {
+  public Writer decorateWithFilters(Writer writer) {  
     /*
      * The NoOpFileTransformer does not apply any transformation of the character stream
      * (no uppercase, no line number, etc.). So, we don't need to decorate the writer connected to
