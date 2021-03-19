@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
+ *
  * @author Olivier Liechti
  */
 public class FileNumberingFilterWriterTest {
@@ -75,7 +76,7 @@ public class FileNumberingFilterWriterTest {
         String line = "This is line 1\r\nThis is line 2\nThis is line 3";
         StringWriter stringWriter = new StringWriter();
         FileNumberingFilterWriter writer = new FileNumberingFilterWriter(stringWriter);
-        for (int i = 0; i < line.length(); i++) {
+        for (int i=0; i<line.length(); i++) {
             int c = line.charAt(i);
             writer.write(c);
         }
@@ -117,7 +118,7 @@ public class FileNumberingFilterWriterTest {
         StringWriter referenceWriter = new StringWriter();
         StringWriter stringWriter = new StringWriter();
         FileNumberingFilterWriter writer = new FileNumberingFilterWriter(stringWriter);
-        for (int i = 1; i < 120; i++) {
+        for (int i=1; i< 120; i++) {
             writer.write("content\n");
             referenceWriter.write(i + "\tcontent\n");
         }

@@ -23,7 +23,7 @@ public class DFSFileExplorerTest {
   private static final Logger LOG = Logger.getLogger(DFSFileExplorerTest.class.getName());
 
   @Test
-  public void dfsExplorerShouldWork() throws IOException {
+  public void dfsExplorerShouldWork() {
     List<String> dfsNodes = generateTestTree(5, 5, 5);
 
     final List<String> directories = new ArrayList<>();
@@ -39,7 +39,7 @@ public class DFSFileExplorerTest {
   }
 
   @Test
-  public void dfsExplorerShouldWorkWhenThereIsNoFile() throws IOException {
+  public void dfsExplorerShouldWorkWhenThereIsNoFile() {
     List<String> dfsNodes = generateTestTree(0, 0, 0);
 
     final List<String> directories = new ArrayList<>();
@@ -53,9 +53,9 @@ public class DFSFileExplorerTest {
     });
     assertArrayEquals(dfsNodes.toArray(), directories.toArray());
   }
-  
+
   private List<String> generateTestTree(int levels, int maxChildrenFolders, int maxChildrenFiles) {
-    List<String> dfsNodes = new ArrayList<>();  
+    List<String> dfsNodes = new ArrayList<>();
     File dir = new File("./fs-test");
     try {
       FileUtils.deleteDirectory(dir);

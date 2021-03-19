@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Level;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
@@ -20,19 +21,23 @@ import java.util.Objects;
 public class DFSFileExplorer implements IFileExplorer {
 
     @Override
-    public void explore(File rootDirectory, IFileVisitor vistor) throws IOException {
+    public void explore(File rootDirectory, IFileVisitor vistor)  {
         File[] paths = rootDirectory.listFiles();
-        vistor.visit(rootDirectory);
-        if (paths != null) {
-            //on trie la liste car listFiles ne garantit pas l'ordre
-            Arrays.sort(paths);
-            for (File path : paths) {
-                if (path.isDirectory()) {
-                    explore(path, vistor);
-                } else {
-                    vistor.visit(path);
+        try{
+            vistor.visit(rootDirectory);
+            if (paths != null) {
+                //on trie la liste car listFiles ne garantit pas l'ordre
+                Arrays.sort(paths);
+                for (File path : paths) {
+                    if (path.isDirectory()) {
+                        explore(path, vistor);
+                    } else {
+                        vistor.visit(path);
+                    }
                 }
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

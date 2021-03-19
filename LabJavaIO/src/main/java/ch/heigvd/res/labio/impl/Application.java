@@ -155,7 +155,7 @@ public class Application implements IApplication {
      * This method uses a IFileExplorer to explore the file system and prints the name of each
      * encountered file and directory.
      */
-    void printFileNames(final Writer writer) throws IOException {
+    void printFileNames(final Writer writer){
         IFileExplorer explorer = new DFSFileExplorer();
         explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
             @Override
@@ -173,7 +173,7 @@ public class Application implements IApplication {
     }
 
     @Override
-    public void processQuoteFiles() throws IOException {
+    public void processQuoteFiles() {
         IFileExplorer explorer = new DFSFileExplorer();
         explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());
     }
