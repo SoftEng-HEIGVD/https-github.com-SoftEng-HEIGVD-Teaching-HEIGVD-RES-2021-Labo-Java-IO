@@ -4,6 +4,7 @@ import ch.heigvd.res.labio.interfaces.IFileVisitor;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,13 +56,15 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
+      BufferedReader br = new BufferedReader(reader);
+      BufferedWriter bw = new BufferedWriter(writer);
       int r;
-      while ((r = reader.read()) != -1)
-        writer.write(r);
+      while ((r = br.read()) != -1)
+        bw.write(r);
 
-      reader.close();
-      writer.flush();
-      writer.close();
+      br.close();
+      bw.flush();
+      bw.close();
     } catch (IOException ex) {
       LOG.log(Level.SEVERE, null, ex);
     }
