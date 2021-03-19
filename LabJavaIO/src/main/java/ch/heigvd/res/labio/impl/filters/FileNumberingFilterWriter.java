@@ -45,7 +45,13 @@ public class FileNumberingFilterWriter extends FilterWriter {
     switch (c){
       case '\n':
         super.write(c);
-        writeLineNumber();
+        //writeLineNumber();
+        returnLine = false;
+        for (char n : Integer.toString(lineNumber).toCharArray()) {
+          super.write(n);
+        }
+        super.write('\t');
+        lineNumber++;
         break;
       case '\r':
         returnLine = true;
@@ -53,7 +59,13 @@ public class FileNumberingFilterWriter extends FilterWriter {
         break;
       default:
         if (returnLine) {
-          writeLineNumber();
+          // writeLineNumber();
+          returnLine = false;
+          for (char n : Integer.toString(lineNumber).toCharArray()) {
+            super.write(n);
+          }
+          super.write('\t');
+          lineNumber++;
         }
         super.write(c);
 
@@ -61,9 +73,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   }
 
+
   /***
    * Signifies a line return and writes the line number
-   */
+   * Used to compile and work greatly but stopped overnight for some reason.
+   */  /*
   private void writeLineNumber(){
     returnLine = false;
     char[] number = Integer.toString(lineNumber).toCharArray();
@@ -73,5 +87,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super.write('\t');
     lineNumber++;
   }
+
+  */
 
 }
