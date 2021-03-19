@@ -24,7 +24,11 @@ public class DFSFileExplorer implements IFileExplorer {
         if (file.isDirectory()) {
           explore(file, vistor);
         }
-        else {
+      }
+    }
+    if (lFiles != null) {
+      for (File file : lFiles) {
+        if (!file.isDirectory()) {
           vistor.visit(file);
         }
       }
