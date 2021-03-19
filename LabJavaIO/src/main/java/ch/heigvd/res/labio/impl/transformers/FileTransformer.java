@@ -1,6 +1,7 @@
 package ch.heigvd.res.labio.impl.transformers;
 
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -52,7 +53,10 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
-      
+      /* Modified by Nicolas and Ryan */
+      writer.write(IOUtils.toString(reader));
+      /* Modified by Nicolas and Ryan */
+
       reader.close();
       writer.flush();
       writer.close();
