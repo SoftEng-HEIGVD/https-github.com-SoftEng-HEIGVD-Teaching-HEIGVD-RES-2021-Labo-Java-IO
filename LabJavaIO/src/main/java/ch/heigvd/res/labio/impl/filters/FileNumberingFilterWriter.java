@@ -40,6 +40,52 @@ public class FileNumberingFilterWriter extends FilterWriter {
         String tempStr = "";
         String[] oneLineAndRest = Utils.getNextLine(str);
 
+
+        if (lineCounter == 1) {
+            tempStr += lineCounter;
+            tempStr += "\t";
+            ++lineCounter;
+        }
+
+
+        while (!oneLineAndRest[0].equals("")){
+
+                tempStr += oneLineAndRest[0];
+                tempStr += lineCounter;
+                tempStr += "\t";
+                ++lineCounter;
+
+            oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
+        }
+
+        if(off != 0 && len != 0) {
+            oneLineAndRest[1] = oneLineAndRest[1].substring(off, off + len);
+        }
+        tempStr += oneLineAndRest[1];
+
+        out.write(tempStr);
+    }
+
+    @Override
+    public void write(char[] cbuf, int off, int len) throws IOException {
+        throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    }
+
+    @Override
+    public void write(int c) throws IOException {
+        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+        char result = (char)c;
+        String str = String.valueOf(result);
+
+        if (str.equals("")) {
+            return;
+        }
+        this.write(str, 0, 0);
+
+        /*String tempStr = "";
+        String[] oneLineAndRest = Utils.getNextLine(str);
+
         if (lineCounter == 1) {
             tempStr += lineCounter;
             tempStr += "\t";
@@ -54,22 +100,10 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
             oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
         }
-        
+
         tempStr += oneLineAndRest[1];
 
-        out.write(tempStr);
-    }
-
-    @Override
-    public void write(char[] cbuf, int off, int len) throws IOException {
-        throw new UnsupportedOperationException("The student has not implemented this method yet.");
-    }
-
-    @Override
-    public void write(int c) throws IOException {
-        throw new UnsupportedOperationException("The student has not implemented this method yet.");
-        //char result = (char)c;
-        //String str =String.valueOf(result);
+        out.write(tempStr);*/
 
     }
 
