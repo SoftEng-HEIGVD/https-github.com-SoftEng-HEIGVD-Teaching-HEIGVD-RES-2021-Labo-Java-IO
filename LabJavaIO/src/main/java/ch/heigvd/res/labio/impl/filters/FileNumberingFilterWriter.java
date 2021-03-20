@@ -17,14 +17,12 @@ import java.util.logging.Logger;
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
-  private int lineNumber = 1;
-  private boolean newLine = true;
-
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
-  public FileNumberingFilterWriter(Writer out) {
-    super(out);
-  }
+  public FileNumberingFilterWriter(Writer out) {    super(out); }
+
+  private int lineNumber = 1;
+  private boolean nextLine = true;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
@@ -45,20 +43,20 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
 
     if (c == '\r') {
-      newLine = true;
+      nextLine = true;
       super.write(c);
     }
 
     else if (c == '\n') {
-      newLine = false;
+      nextLine = false;
       super.write(c);
       super.write(String.valueOf(lineNumber++));
       super.write('\t');
 
     }else {
 
-      if (newLine) {
-        newLine = false;
+      if (nextLine) {
+        nextLine = false;
         super.write(String.valueOf(lineNumber++));
         super.write('\t');
       }
