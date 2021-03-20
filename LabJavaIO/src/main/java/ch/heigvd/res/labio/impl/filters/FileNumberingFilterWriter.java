@@ -14,28 +14,58 @@ import java.util.logging.Logger;
  * Hello\n\World -> 1\Hello\n2\tWorld
  *
  * @author Olivier Liechti
+ *
+ * Modifié par Laurent Tailhades
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
-  public FileNumberingFilterWriter(Writer out) {
-    super(out);
-  }
+  public FileNumberingFilterWriter(Writer out) {    super(out); }
+
+  private int lineNumber = 1;
+  private boolean nextLine = true;
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; i++){
+      char a = str.charAt(i);
+      this.write(a);
+    }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < off + len; i++){
+      this.write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
 
+    //check retour à la ligne MACOS
+    if (c == '\r') {
+      nextLine = true;
+      super.write(c);
+    }
+
+    //check retour à la ligne LINUX et PC
+    else if (c == '\n') {
+      nextLine = false;
+      super.write(c);
+      super.write(String.valueOf(lineNumber++));
+      super.write('\t');
+
+    }else {
+      // vérifie si c'est la première ligne
+      if (nextLine) {
+        nextLine = false;
+        super.write(String.valueOf(lineNumber++));
+        super.write('\t');
+      }
+
+      super.write(c);
+    }
+  }
 }

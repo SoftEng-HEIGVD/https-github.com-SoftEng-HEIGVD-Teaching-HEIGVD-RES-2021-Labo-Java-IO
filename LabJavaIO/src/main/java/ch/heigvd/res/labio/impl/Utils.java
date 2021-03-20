@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ * modifié par Laurent Tailhades
  */
 public class Utils {
 
@@ -19,8 +20,43 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
+
+
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+
+    if (lines.contains("\r\n")) {
+       return splitLine(lines, "\r\n");
+    }
+
+    else if (lines.contains("\r")) {
+      return splitLine(lines, "\r");
+    }
+
+
+    else if (lines.contains("\n")) {
+      return splitLine(lines, "\n");
+    }
+
+    else {
+      return new String[]{"", lines};
+    }
   }
 
+  /**
+   * Cette méthode transforme la ligne en argument selon le séparateur (/n, /r, /r/n)
+   *
+   *
+   * @param lines un string qui contient une ou plusieurs ligne
+   * @param separator le type de séparateur
+   * @return un array avec 2 éléments, le séparateur adéquat est ajouté à la première ligne
+   */
+  private static String[] splitLine(String lines, String separator) {
+    String[] parts = lines.split(separator,2);
+    return new String[]{parts[0] + separator, parts[1]};
+  }
+
+
 }
+
+
