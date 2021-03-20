@@ -144,7 +144,6 @@ public class Application implements IApplication {
     for (String tag : quote.getTags()) {
       content += "/" + tag;
     }
-
     //ajout du nom du fichier
     content += "/" +  filename;
 
