@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  * a list of filters and decorates the output writer with them.
  * 
  * @author Olivier Liechti
+ *
+ * Modifié par Laurent Tailhades
  */
 public abstract class FileTransformer implements IFileVisitor {
 

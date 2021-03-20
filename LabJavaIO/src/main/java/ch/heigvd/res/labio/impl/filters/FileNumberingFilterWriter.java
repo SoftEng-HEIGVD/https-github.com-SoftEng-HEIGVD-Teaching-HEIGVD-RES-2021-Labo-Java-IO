@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  * Hello\n\World -> 1\Hello\n2\tWorld
  *
  * @author Olivier Liechti
+ *
+ * Modifié par Laurent Tailhades
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
@@ -42,11 +44,13 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(int c) throws IOException {
 
+    //check retour à la ligne MACOS
     if (c == '\r') {
       nextLine = true;
       super.write(c);
     }
 
+    //check retour à la ligne LINUX et PC
     else if (c == '\n') {
       nextLine = false;
       super.write(c);
@@ -54,7 +58,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
       super.write('\t');
 
     }else {
-
+      // vérifie si c'est la première ligne
       if (nextLine) {
         nextLine = false;
         super.write(String.valueOf(lineNumber++));
