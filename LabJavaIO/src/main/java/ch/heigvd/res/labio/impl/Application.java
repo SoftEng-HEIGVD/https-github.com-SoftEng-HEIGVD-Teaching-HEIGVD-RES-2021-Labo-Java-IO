@@ -136,20 +136,20 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
 
-    List<String> tags = quote.getTags();
+
     StringBuilder pathName = new StringBuilder(WORKSPACE_DIRECTORY);
 
-    for (String tag : tags){
+    for (String tag : quote.getTags()){
       pathName.append("/").append(tag);
     }
 
-    pathName.append("/").append(filename);
+    pathName.append("/");
 
     File dir = new File(pathName.toString());
 
-    dir.getParentFile().mkdirs();
+    dir.mkdirs();
 
-    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dir), StandardCharsets.UTF_8));
+    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathName + filename), StandardCharsets.UTF_8));
     writer.write(quote.getQuote());
     writer.close();
   }

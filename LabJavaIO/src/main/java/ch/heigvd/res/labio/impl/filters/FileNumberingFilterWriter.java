@@ -25,25 +25,14 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
   private int lineNb = 1;
-  private boolean firstLine = true;
   private boolean isMacSeparator = false;
   @Override
   public void write(String str, int off, int len) throws IOException {
 
-    String[] result = Utils.getNextLine(str.substring(off, off+len));
-    if(firstLine){
-      super.write(lineNb++  + "\t");
+    for(int i = 0; i < len; i++){
+      write(str.charAt(off + i));
     }
-    while(result[0].length() != 0){
-      if(result[0].substring(result.length - 2) == "\r\n"){
-        super.write(result[0].substring(result.length - 2) + lineNb++ + "\t");
-      }
-      else{
-        super.write(result[0].substring(result.length - 1) + lineNb++ + "\t");
-      }
-      result = Utils.getNextLine(result[1]);
-    }
-    super.write(result[1]);
+
   }
 
   @Override
@@ -54,30 +43,35 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(int c) throws IOException {
 
-    if(firstLine){
-      super.write(lineNb++  + "\t" + c);
-      firstLine = false;
+    if(lineNb == 1){
+      out.write(lineNb++  + "\t");
+      out.write(c);
     }
+
     else if(c == '\n'){
+      
+      //If there was a '\r' character before
       if(isMacSeparator){
-        super.write("\r\n" + lineNb++ + "\t");
         isMacSeparator = false;
-      }else{
-        super.write(c + lineNb++ + "\t");
       }
+        out.write(c);
+        out.write(lineNb++ + "\t");
+
     }
+
     else if(isMacSeparator){
-      super.write('\r' + lineNb++ + "\t" + c);
+      out.write( lineNb++ + "\t");
+      out.write(c);
       isMacSeparator = false;
 
     }
-    else if(c != '\r'){
-      super.write(c);
-    }
+
     else{
+      out.write(c);
+    }
+
+    if(c == '\r'){
       isMacSeparator = true;
     }
-
   }
-
 }
