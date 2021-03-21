@@ -21,6 +21,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int lineNumber = 1; // lines are numbered from 1 not 0
+  private boolean hasSeenCarriageReturn = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -59,12 +60,35 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    // Write the character, but as in String impl. we write the next line number as soon as we encounter \n.
+    // Write the character, but when we encounter a carriage return we need to "remember" that we saw it, to handle all
+    // possible newline permutations (\r, \r\n and \n) correctly.
     if (lineNumber == 1) out.write(lineNumber++ + "\t");
+
+    if (hasSeenCarriageReturn) { // if we saw a carriage return before
+      if (c == '\n') { // if newline, write newline then next line number
+        out.write(c);
+        out.write(lineNumber++ + "\t");
+      } else { // otherwise, write next line number before writing the character
+        out.write(lineNumber++ + "\t");
+        out.write(c);
+      }
+      hasSeenCarriageReturn = c == '\r';
+    } else { // otherwise, handle single newlines without carriage return
       out.write(c);
-    if (c == '\n') {
-      out.write(lineNumber++ + "\t");
+      if (c == '\n') {
+        out.write(lineNumber++ + "\t");
+      } else {
+        hasSeenCarriageReturn = c == '\r';
+      }
     }
+
+
+
+
+//      out.write(c);
+//    if (c == '\n') {
+//      out.write(lineNumber++ + "\t");
+//    }
   }
 
 }
