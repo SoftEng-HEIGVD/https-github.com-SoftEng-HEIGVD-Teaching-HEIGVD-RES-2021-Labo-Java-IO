@@ -28,6 +28,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
 
     static long lineCounter = 1;
+    static char previousChar;
 
     @Override
     public void write(String str, int off, int len) throws IOException {
@@ -75,35 +76,31 @@ public class FileNumberingFilterWriter extends FilterWriter {
     public void write(int c) throws IOException {
         //throw new UnsupportedOperationException("The student has not implemented this method yet.");
 
-        char result = (char)c;
-        String str = String.valueOf(result);
 
-        if (str.equals("")) {
-            return;
-        }
-        this.write(str, 0, 0);
+        String str = "";
 
-        /*String tempStr = "";
-        String[] oneLineAndRest = Utils.getNextLine(str);
-
-        if (lineCounter == 1) {
-            tempStr += lineCounter;
-            tempStr += "\t";
+        if(lineCounter == 1){
+            str += lineCounter;
+            str += "\t";
             ++lineCounter;
         }
 
-        while (!oneLineAndRest[0].equals("")){
-            tempStr += oneLineAndRest[0];
-            tempStr += lineCounter;
-            tempStr += "\t";
-            ++lineCounter;
 
-            oneLineAndRest = Utils.getNextLine(oneLineAndRest[1]);
+        if((c == '\r' && previousChar != '\r' && previousChar != '\n') || (c == '\n' && previousChar != '\r' &&
+            previousChar != '\n')){
+            str += "\r\n";
+            str += lineCounter;
+            str += "\t";
+            ++lineCounter;
+        }
+        else if (c != '\r' && c != '\n'){
+            str += (char)c;
         }
 
-        tempStr += oneLineAndRest[1];
+        previousChar = (char)c;
 
-        out.write(tempStr);*/
+        out.write(str);
+
 
     }
 
