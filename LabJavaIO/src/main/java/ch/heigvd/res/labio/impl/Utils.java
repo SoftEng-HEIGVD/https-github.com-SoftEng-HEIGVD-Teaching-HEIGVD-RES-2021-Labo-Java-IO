@@ -19,8 +19,52 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
-  public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+  public static String[] getNextLine(String lines) throws RuntimeException {
+    String[] parts = new String[2];
+    parts[0] = "";
+    parts[1] = "";
+
+    int i = 0;
+    int separator = 0;
+    boolean empty = true;
+    boolean rn = false;
+    boolean stop = false;
+
+    while(i < lines.length() && !stop) {
+      if (lines.charAt(i) == '\r') {
+        separator = 1;
+        rn = true;
+        i++;
+      } else if (lines.charAt(i) == '\n') {
+        separator = rn ? 3 : 2;
+        if (rn) rn = false;
+        i++;
+        stop = true;
+      } else {
+        if (rn) {
+          rn = false;
+          stop = true;
+        } else {
+          parts[0] += lines.charAt(i);
+          empty = false;
+          i++;
+        }
+      }
+    }
+
+    if(!empty) {
+      parts[1] = separator == 0 ? parts[0] : lines.substring(i);
+
+      switch (separator) {
+        case 0 : parts[0] = ""; break;
+        case 1 : parts[0] += '\r'; break;
+        case 2 : parts[0] += '\n'; break;
+        case 3 : parts[0] += "\r\n"; break;
+        default: break;
+      }
+    }
+
+    return parts;
   }
 
 }
