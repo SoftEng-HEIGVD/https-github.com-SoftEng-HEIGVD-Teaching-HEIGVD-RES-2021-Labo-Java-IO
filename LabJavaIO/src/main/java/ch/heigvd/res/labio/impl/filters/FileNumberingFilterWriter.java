@@ -81,14 +81,6 @@ public class FileNumberingFilterWriter extends FilterWriter {
         hasSeenCarriageReturn = c == '\r';
       }
     }
-
-
-
-
-//      out.write(c);
-//    if (c == '\n') {
-//      out.write(lineNumber++ + "\t");
-//    }
   }
 
 }
