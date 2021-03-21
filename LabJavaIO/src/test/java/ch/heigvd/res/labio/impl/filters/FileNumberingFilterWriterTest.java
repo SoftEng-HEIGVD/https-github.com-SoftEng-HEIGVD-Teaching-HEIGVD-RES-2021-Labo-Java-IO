@@ -31,11 +31,8 @@ public class FileNumberingFilterWriterTest {
     String line2 = "this is a second line\n";
     StringWriter stringWriter = new StringWriter();
     FileNumberingFilterWriter writer = new FileNumberingFilterWriter(stringWriter);
-    String test2 = "1\t" + line1 + "2\t" + line2 + "3\t";
     writer.write(line1);
     writer.write(line2);
-    String test = stringWriter.toString();
-
     assertEquals("1\t" + line1 + "2\t" + line2 + "3\t", stringWriter.toString());
   }
   
@@ -60,7 +57,6 @@ public class FileNumberingFilterWriterTest {
     writer.write(line1_1);
     writer.write(line1_2);
     writer.write(line2);
-    String souldBe = "1\t" + line1_1 + line1_2 + "2\t" + line2;
     assertEquals("1\t" + line1_1 + line1_2 + "2\t" + line2, stringWriter.toString());
   }
 
@@ -84,7 +80,6 @@ public class FileNumberingFilterWriterTest {
       int c = line.charAt(i);
       writer.write(c);
     }
-    String expected = "1\tThis is line 1\r\n2\tThis is line 2\n3\tThis is line 3";
     assertEquals("1\tThis is line 1\r\n2\tThis is line 2\n3\tThis is line 3", stringWriter.toString());
   }
 
