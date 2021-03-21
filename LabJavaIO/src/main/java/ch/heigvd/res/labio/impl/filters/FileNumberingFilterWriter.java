@@ -28,11 +28,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(String str, int off, int len) throws IOException {
     String[] strParse = str.substring(off, len + off).split("(?<=(?>\\r\\n|\\r|\\n))");
 
-    if (out.toString().isEmpty()) {
-      out.write(counter++ + "\t");
-    }
-
     for (String s : strParse) {
+      if (counter == 1) {
+        out.write(counter++ + "\t");
+      }
+
       if (s.contains("\n") || s.contains("\r")) {
         out.write(s + counter++ + '\t');
       } else {
@@ -49,14 +49,14 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    if (out.toString().isEmpty()) {
+    if (counter == 1) {
       out.write(counter++ + "\t");
     }
 
     if (lastChar == '\r' && c != '\n') {
       out.write(lastChar);
-      out.write(c);
       out.write(counter++ + "\t");
+      out.write(c);
     } else if (lastChar == '\r') {
       out.write("\r\n");
       out.write(counter++ + "\t");
