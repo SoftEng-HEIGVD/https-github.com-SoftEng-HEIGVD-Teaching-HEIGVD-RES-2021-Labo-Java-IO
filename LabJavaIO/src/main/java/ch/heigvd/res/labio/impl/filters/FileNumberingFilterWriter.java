@@ -1,8 +1,6 @@
 package ch.heigvd.res.labio.impl.filters;
 
-import java.io.FilterWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.logging.Logger;
 
 /**
@@ -23,10 +21,26 @@ public class FileNumberingFilterWriter extends FilterWriter {
     super(out);
   }
 
+  private int counter = 1;
+  private char lastChar;
+
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] strParse = str.substring(off, len + off).split("(?<=(?>\\r\\n|\\r|\\n))");
+
+    if (out.toString().isEmpty()) {
+      out.write(counter++ + "\t");
+    }
+
+    for (String s : strParse) {
+      if (s.contains("\n") || s.contains("\r")) {
+        out.write(s + counter++ + '\t');
+      } else {
+        out.write(s);
+      }
+    }
   }
+
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
@@ -35,7 +49,24 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    if (out.toString().isEmpty()) {
+      out.write(counter++ + "\t");
+    }
 
+    if (lastChar == '\r' && c != '\n') {
+      out.write(lastChar);
+      out.write(c);
+      out.write(counter++ + "\t");
+    } else if (lastChar == '\r') {
+      out.write("\r\n");
+      out.write(counter++ + "\t");
+    } else if  (c == '\n'){
+      out.write(c);
+      out.write(counter++ + "\t");
+    } else if (c != '\r'){
+      out.write(c);
+    }
+
+    lastChar = (char) c;
+  }
 }
