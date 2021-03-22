@@ -18,7 +18,6 @@ public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    //Needs to be checked again
     if (rootDirectory == null) {
       return;
     }
