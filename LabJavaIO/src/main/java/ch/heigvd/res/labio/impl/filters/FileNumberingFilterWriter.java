@@ -21,14 +21,15 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
+    long lineCounter = 1;
+    char previousChar;
 
     public FileNumberingFilterWriter(Writer out) {
         super(out);
         lineCounter = 1;
     }
 
-    static long lineCounter = 1;
-    static char previousChar;
+
 
     @Override
     public void write(String str, int off, int len) throws IOException {
@@ -69,39 +70,32 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        throw new UnsupportedOperationException("The student has not implemented this method yet.");
+        String str;
+        str = String.valueOf(cbuf);
+        this.write(str);
     }
 
     @Override
     public void write(int c) throws IOException {
-        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-
-
         String str = "";
 
-        if(lineCounter == 1){
+        if(lineCounter == 1 || ( c == '\r' && previousChar =='\n') ){
             str += lineCounter;
             str += "\t";
             ++lineCounter;
         }
 
+        str +=(char)c;
 
-        if((c == '\r' && previousChar != '\r' && previousChar != '\n') || (c == '\n' && previousChar != '\r' &&
-            previousChar != '\n')){
-            str += "\r\n";
+        if( c == '\n' ){
             str += lineCounter;
             str += "\t";
             ++lineCounter;
-        }
-        else if (c != '\r' && c != '\n'){
-            str += (char)c;
         }
 
         previousChar = (char)c;
 
         out.write(str);
-
-
     }
 
 }
