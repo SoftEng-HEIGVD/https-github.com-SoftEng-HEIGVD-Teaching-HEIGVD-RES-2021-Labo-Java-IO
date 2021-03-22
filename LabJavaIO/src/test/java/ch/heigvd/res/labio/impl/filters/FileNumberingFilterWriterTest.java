@@ -56,7 +56,7 @@ public class FileNumberingFilterWriterTest {
     FileNumberingFilterWriter writer = new FileNumberingFilterWriter(stringWriter);
     writer.write(line1_1);
     writer.write(line1_2);
-    writer.write(line2);  
+    writer.write(line2);
     assertEquals("1\t" + line1_1 + line1_2 + "2\t" + line2, stringWriter.toString());
   }
 

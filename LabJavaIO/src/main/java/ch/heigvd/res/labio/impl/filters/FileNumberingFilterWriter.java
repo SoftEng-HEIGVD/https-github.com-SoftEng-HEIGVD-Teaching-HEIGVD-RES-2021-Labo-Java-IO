@@ -3,6 +3,7 @@ package ch.heigvd.res.labio.impl.filters;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,24 +19,59 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private boolean isFirstCall;
+  private int lineNumber;
+  private boolean reachedLineBrake;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    this.isFirstCall = true;
+    this.lineNumber = 1;
+    this.reachedLineBrake = false;
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    StringBuilder sOut = new StringBuilder();
+
+    str = str.substring(off, off + len);
+    String[] lines = str.split("(?<=\n|\r(?!\n))");
+
+    for(String line : lines){
+      if(this.isFirstCall && !this.reachedLineBrake) {
+        this.isFirstCall = false;
+        sOut.append(this.lineNumber + "\t");
+      }
+      sOut.append(line);
+      this.reachedLineBrake = line.endsWith("\n") || line.endsWith("\r");
+      if(this.reachedLineBrake){
+        sOut.append(++this.lineNumber + "\t");
+      }
+    }
+
+    out.write(String.valueOf(sOut));
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+   this.write(new String(cbuf), off, len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    boolean isLineBreak = (c == '\r' || c == '\n');
+
+    if(this.isFirstCall && !this.reachedLineBrake) {
+      this.isFirstCall = false;
+      out.write(this.lineNumber + "\t");
+    }
+
+    if(this.reachedLineBrake && !isLineBreak){
+      out.write(++this.lineNumber + "\t");
+    }
+    out.write(c);
+    this.reachedLineBrake = isLineBreak;
   }
+
 
 }
