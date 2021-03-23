@@ -12,6 +12,8 @@ import java.util.logging.Logger;
  * Hello\n\World -> 1\Hello\n2\tWorld
  *
  * @author Olivier Liechti
+ *
+ * Modified by Noah Fusi and Janis Chiffelle
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
