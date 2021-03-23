@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 /**
  * @author Olivier Liechti
+ *
+ * Modified by Noah Fusi and Janis Chiffelle
  */
 public class Utils {
 
@@ -21,26 +23,31 @@ public class Utils {
      * contain any line separator, then the first element is an empty string.
      */
     public static String[] getNextLine(String lines) {
-        String delimiter = "x";
+        String delimiter;
+        String[] output = new String[]{"", ""};
+        //Find which line separator is used
         if(lines.contains("\n")) delimiter = "\n";
         else if(lines.contains("\r")) delimiter = "\r";
         else if(lines.contains("\r\n")) delimiter = "\r\n";
+        else
+        {
+            output[1] = lines;
+            return output;
+        }
 
-        String[] output = new String[]{"", ""};
-
+        //Find next occurence of the line seperator
         Pattern p = Pattern.compile(delimiter);
         Matcher m = p.matcher(lines);
         int delimiterIndex = 0;
         if(m.find())
         {
+            //If found, split the lines
             delimiterIndex = m.end();
             output[0] = lines.substring(0, delimiterIndex);
         }
         output[1] = lines.substring(delimiterIndex);
 
         return output;
-
-        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
     }
 
 }

@@ -13,6 +13,8 @@ import java.io.Writer;
  * beginning of each line.
  * 
  * @author Olivier Liechti
+ *
+ * Modified by Noah Fusi and Janis Chiffelle
  */
 public class CompleteFileTransformer extends FileTransformer {
 
