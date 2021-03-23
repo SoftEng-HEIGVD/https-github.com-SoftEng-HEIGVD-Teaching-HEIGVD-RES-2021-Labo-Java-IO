@@ -9,11 +9,9 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +26,7 @@ public class Application implements IApplication {
    * to where the Java application is invoked.
    */
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
+
   
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
   
@@ -98,6 +97,8 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        storeQuote(quote, "quote-"+ i + ".utf8");
+
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +134,21 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String path = WORKSPACE_DIRECTORY + "/";
+    for(String tag : quote.getTags()){
+      path += tag + "/";
+    }
+
+    File file = new File(path);
+    file.mkdirs();
+    FileOutputStream fos = new FileOutputStream(path + filename);
+    OutputStreamWriter osw = new OutputStreamWriter(fos);
+
+    osw.write(quote.getQuote());
+    osw.flush();
+    osw.close();
   }
   
   /**
@@ -150,6 +165,18 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+
+        try {
+          writer.write(file.toString() + "\n");
+        } catch (IOException ex){
+
+        }
+       /*try {
+          writer.append(WORKSPACE_DIRECTORY + file.getName());
+        }catch (IOException e){
+
+        }*/
+          //out.write(WORKSPACE_DIRECTORY + file.getName());
       }
     });
   }
