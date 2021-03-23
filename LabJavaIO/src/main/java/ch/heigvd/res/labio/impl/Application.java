@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Olivier Liechti
+ * Modifed by Blanc Jean-Luc
  */
 public class Application implements IApplication {
 
@@ -144,6 +145,7 @@ public class Application implements IApplication {
     File fileDir = new File(pathToRep);
     fileDir.mkdirs();
 
+    pathToRep += filename;
     FileWriter fileWriter = new FileWriter(pathToRep);
     fileWriter.write(quoteText);
     fileWriter.close();
@@ -167,6 +169,7 @@ public class Application implements IApplication {
           writer.write(file.getPath());
         }
         catch(IOException e){
+          e.printStackTrace();
         }
       }
     });
