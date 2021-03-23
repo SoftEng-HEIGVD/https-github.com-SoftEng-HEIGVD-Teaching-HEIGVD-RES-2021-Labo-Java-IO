@@ -20,7 +20,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int counter = 0;
-  private int lastC;
+  private int lastC = '\0';
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -44,13 +44,26 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(int c) throws IOException {
     //here we want to check if we are on the first line, if that's not the case then we want to check
     // the various "c" cases regarding the OS
-    // windows = \n      MAC OS = \r
-    if(counter == 0 || c == '\n' || lastC == '\r'){
+    // UNIX = \n      MAC OS = \r     Windows = \r\n
+    // after that we write down the counter, insert a tab
+    // then we write down the char (while not forgetting to save the last char
+    if(counter == 0){
+      out.write(++counter + "\t");
+    }
+    else if(lastC == '\r' && c != '\n'){
+      out.write(++counter + "\t");
+    }
+
+    out.write(c);
+
+    if(c == '\n' && lastC == '\r'){
+      out.write(++counter + "\t");
+    }
+    else if(c == '\n' && lastC != '\r'){
       out.write(++counter + "\t");
     }
 
     lastC = c;
-    out.write(c);
   }
 
 }
