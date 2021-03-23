@@ -138,14 +138,14 @@ public class Application implements IApplication {
     List<String> tags = quote.getTags();
     String quoteText = quote.getQuote();
 
-    String pathToRep = WORKSPACE_DIRECTORY + "/";
+    String pathToRep = WORKSPACE_DIRECTORY;
     for(String tag : tags){
-      pathToRep += tag + "/";
+      pathToRep += "/" + tag;
     }
     File fileDir = new File(pathToRep);
     fileDir.mkdirs();
 
-    pathToRep += filename;
+    pathToRep += "/" + filename;
     FileWriter fileWriter = new FileWriter(pathToRep);
     fileWriter.write(quoteText);
     fileWriter.close();
@@ -166,7 +166,7 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
         try{
-          writer.write(file.getPath());
+          writer.write(file.getPath() + "\n");
         }
         catch(IOException e){
           e.printStackTrace();
