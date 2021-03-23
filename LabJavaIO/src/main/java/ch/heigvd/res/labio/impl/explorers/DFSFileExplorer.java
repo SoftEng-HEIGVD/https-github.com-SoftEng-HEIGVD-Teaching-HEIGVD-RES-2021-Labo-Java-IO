@@ -4,7 +4,6 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 
 /**
@@ -31,6 +30,7 @@ public class DFSFileExplorer implements IFileExplorer {
       if (rootDirectory.isDirectory()) {
         // if so is the case, list all files inside and explore within
         File[] dirContentFiles = rootDirectory.listFiles();
+        Arrays.sort(dirContentFiles);
         for (File dirFile : dirContentFiles) {
           explore(dirFile, visitor);
         }
