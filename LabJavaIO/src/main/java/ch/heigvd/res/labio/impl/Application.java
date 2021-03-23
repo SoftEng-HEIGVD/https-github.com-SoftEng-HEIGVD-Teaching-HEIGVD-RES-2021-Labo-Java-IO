@@ -144,7 +144,6 @@ public class Application implements IApplication {
       System.out.println(file.getName());
     }
 
-    /* todo : write in file.
     FileWriter writer = new FileWriter(file);
     writer.write(quote.getQuote());
     writer.close();//*/
