@@ -138,6 +138,7 @@ public class Application implements IApplication {
     for (String tag : tags) {
       folder_name += tag + "/";
     }
+    
     String quote_text = quote.getQuote();
     File my_quote = new File("./workspace/quotes/"+folder_name + filename);
     FileUtils.writeStringToFile(my_quote, quote_text, "UTF-8");
