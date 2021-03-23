@@ -132,23 +132,30 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     String filepath = WORKSPACE_DIRECTORY;
+    System.out.println("test1");
     File mainDir = new File(filepath);
     if (!mainDir.exists()){
+      System.out.println("test2");
       mainDir.mkdir();
     }
 
     for (String tag : quote.getTags()){
       filepath += "/" + tag;
+      System.out.println("test3");
       File dir = new File(filepath) ;
       if (!dir.exists()){
+        System.out.println("test4");
         dir.mkdir();
       }
     }
     filepath += "/" + filename;
     File file = new File(filepath);
+    System.out.println("test5");
     file.createNewFile();
+    System.out.println("test6");
     FileWriter fileWriter = new FileWriter(file);
     fileWriter.write(quote.getQuote());
+    System.out.println("test7");
     fileWriter.close();
   }
   
@@ -168,9 +175,10 @@ public class Application implements IApplication {
          */
         try {
           writer.write(file.getPath() + "\n");
-        } catch (IOException e){
-
+        } catch (IOException e) {
+          e.printStackTrace();
         }
+
 
       }
     });
