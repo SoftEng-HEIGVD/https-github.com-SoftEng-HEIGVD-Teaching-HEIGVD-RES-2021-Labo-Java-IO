@@ -21,8 +21,10 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
+
     long lineCounter = 1;
     char previousChar;
+
 
     public FileNumberingFilterWriter(Writer out) {
         super(out);
@@ -30,10 +32,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
 
 
-
     @Override
     public void write(String str, int off, int len) throws IOException {
-        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
 
         if (str.equals("")) {
             return;
@@ -42,13 +42,11 @@ public class FileNumberingFilterWriter extends FilterWriter {
         String tempStr = "";
         String[] oneLineAndRest = Utils.getNextLine(str);
 
-
         if (lineCounter == 1) {
             tempStr += lineCounter;
             tempStr += "\t";
             ++lineCounter;
         }
-
 
         while (!oneLineAndRest[0].equals("")){
 
@@ -79,15 +77,18 @@ public class FileNumberingFilterWriter extends FilterWriter {
     public void write(int c) throws IOException {
         String str = "";
 
-        if(lineCounter == 1 || ( c == '\r' && previousChar =='\n') ){
+        if(lineCounter == 1 || previousChar == '\r' && c != '\n'){
+
             str += lineCounter;
             str += "\t";
             ++lineCounter;
         }
 
+
         str +=(char)c;
 
         if( c == '\n' ){
+
             str += lineCounter;
             str += "\t";
             ++lineCounter;

@@ -144,7 +144,7 @@ public class Application implements IApplication {
     File file = new File(path);
     file.mkdirs();
     FileOutputStream fos = new FileOutputStream(path + filename);
-    OutputStreamWriter osw = new OutputStreamWriter(fos);
+    OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
 
     osw.write(quote.getQuote());
     osw.flush();
@@ -165,18 +165,12 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
-
         try {
           writer.write(file.toString() + "\n");
         } catch (IOException ex){
 
         }
-       /*try {
-          writer.append(WORKSPACE_DIRECTORY + file.getName());
-        }catch (IOException e){
 
-        }*/
-          //out.write(WORKSPACE_DIRECTORY + file.getName());
       }
     });
   }

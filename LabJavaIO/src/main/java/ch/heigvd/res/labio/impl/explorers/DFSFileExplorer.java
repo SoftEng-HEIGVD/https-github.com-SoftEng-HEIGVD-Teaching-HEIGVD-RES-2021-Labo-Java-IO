@@ -23,12 +23,15 @@ public class DFSFileExplorer implements IFileExplorer {
     File[] list = rootDirectory.listFiles();
     if(list == null)
       return;
-    for(File file : list)
-    {
-      if(file.isDirectory() )
-      {
+    for(File file : list) {
+
+      if(file.isDirectory() ) {
         explore(file,vistor);
       }
+      else {
+        vistor.visit(file);
+      }
+
     }
   }
 }
