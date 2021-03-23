@@ -133,19 +133,13 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
     StringBuilder filepath = new StringBuilder(WORKSPACE_DIRECTORY);
-    File mainDir = new File(filepath.toString());
-    if (!mainDir.exists()){
-      mainDir.mkdir();
-    }
 
     for (String tag : quote.getTags()){
-      filepath.append("/").append(tag);
-      File dir = new File(filepath.toString()) ;
-      if (!dir.exists()){
-        dir.mkdir();
-      }
+      filepath.append(File.separator).append(tag);
     }
-    filepath.append("/").append(filename);
+    new File(filepath.toString()).mkdirs();
+
+    filepath.append(File.separator).append(filename);
     Writer writer = new OutputStreamWriter(new FileOutputStream(filepath.toString()), StandardCharsets.UTF_8);
     writer.write(quote.getQuote());
     writer.close();
