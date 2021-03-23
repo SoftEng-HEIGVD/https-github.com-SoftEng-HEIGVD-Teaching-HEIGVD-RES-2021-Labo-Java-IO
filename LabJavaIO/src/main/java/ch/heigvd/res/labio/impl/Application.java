@@ -140,9 +140,9 @@ public class Application implements IApplication {
     file.getParentFile().mkdirs();
     file.createNewFile();
 
-    OutputStreamWriter writer =
-            new OutputStreamWriter(new FileOutputStream(file.getPath()), StandardCharsets.UTF_8);
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(quote.getQuote());
+    writer.flush();
     writer.close();
   }
   
@@ -163,7 +163,8 @@ public class Application implements IApplication {
         try {
           writer.write(file.getPath() + "\n");
         } catch (IOException ex) {
-          // TODO do something
+          ex.printStackTrace();
+          throw new RuntimeException("Unable to write the file path!");
         }
       }
     });

@@ -16,30 +16,20 @@ import java.util.Arrays;
  */
 public class DFSFileExplorer implements IFileExplorer {
 
-  private void visitFilesAndDirectoriesRecur(File root, IFileVisitor visitor) {
-    File[] filesAndDirectories = root.listFiles();
+  @Override
+  public void explore(File rootDirectory, IFileVisitor vistor) {
+    if(rootDirectory == null || vistor == null)
+      throw new NullPointerException();
+
+    vistor.visit(rootDirectory);
+    File[] filesAndDirectories = rootDirectory.listFiles();
 
     if(filesAndDirectories != null) {
       Arrays.sort(filesAndDirectories);
-      // Then we go in sub-directories
-      for(File file : filesAndDirectories) {
-        if(file.isDirectory()) {
-          visitor.visit(file);
-          visitFilesAndDirectoriesRecur(file, visitor);
-        }
-      }
-      // We treat files first
-      for(File file : filesAndDirectories) {
-        if(file.isFile())
-          visitor.visit(file);
-      }
-    }
-  }
 
-  @Override
-  public void explore(File rootDirectory, IFileVisitor vistor) {
-    vistor.visit(rootDirectory);
-    visitFilesAndDirectoriesRecur(rootDirectory, vistor);
+      for(File file : filesAndDirectories)
+        explore(file, vistor);
+    }
   }
 
 }

@@ -39,6 +39,9 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
+    if(cbuf.length < off + len - 1)
+      throw new ArrayIndexOutOfBoundsException("The offset or len is out of range!");
+
     for(int i = off; i < off + len; i++)
         write(cbuf[i]);
   }
