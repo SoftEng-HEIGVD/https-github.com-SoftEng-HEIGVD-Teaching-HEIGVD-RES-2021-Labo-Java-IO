@@ -11,13 +11,16 @@ import java.util.logging.Logger;
  * It then sends the line number and a tab character, before resuming the write
  * process.
  *
- * Hello\n\World -> 1\Hello\n2\tWorld
+ * Hello\n\World -> 1\tHello\n2\tWorld
  *
  * @author Olivier Liechti
+ * Modified by Blanc Jean-Luc
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int counter = 0;
+  private int lastC = '\0';
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -25,17 +28,42 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < len+off; i++){
+      write(str.charAt(i));
+    }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    for(int i = off; i < len+off; i++){
+      write(cbuf[i]);
+    }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //here we want to check if we are on the first line, if that's not the case then we want to check
+    // the various "c" cases regarding the OS
+    // UNIX = \n      MAC OS = \r     Windows = \r\n
+    // after that we write down the counter, insert a tab
+    // then we write down the char (while not forgetting to save the last char
+    if(counter == 0){
+      out.write(++counter + "\t");
+    }
+    else if(lastC == '\r' && c != '\n'){
+      out.write(++counter + "\t");
+    }
+
+    out.write(c);
+
+    if(c == '\n' && lastC == '\r'){
+      out.write(++counter + "\t");
+    }
+    else if(c == '\n' && lastC != '\r'){
+      out.write(++counter + "\t");
+    }
+
+    lastC = c;
   }
 
 }
