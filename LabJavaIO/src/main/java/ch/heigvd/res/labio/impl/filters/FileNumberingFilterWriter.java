@@ -1,8 +1,11 @@
 package ch.heigvd.res.labio.impl.filters;
 
+import ch.heigvd.res.labio.impl.Utils;
+
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -18,6 +21,8 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int currentLine = 1;
+  private boolean firstLine = true;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -25,17 +30,53 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String tmp = str.substring(off, off + len);
+    String[] nextLine = Utils.getNextLine(tmp);
+
+    if (firstLine) {
+      out.write(currentLine + "\t");
+      firstLine = false;
+    }
+
+    while(true){
+      if(nextLine[0] == "") {
+        if (nextLine[1] == ""){
+          break;
+        }else{
+          String subStr = nextLine[1];//.substring(off, len);
+          out.write(subStr);
+          break;
+        }
+      }else {
+        String subStr = nextLine[0];//.substring(off, len);
+        out.write(subStr);
+        nextLine = Utils.getNextLine(nextLine[1]);
+      }
+
+      out.write(++currentLine + "\t");
+    }
+
+
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if(firstLine) {
+      out.write(currentLine + "\t");
+      firstLine = false;
+    }
+
+    out.write(c);
+    if (c == '\n'){
+      out.write(++currentLine + "\t");
+    }
+
+
   }
 
 }
