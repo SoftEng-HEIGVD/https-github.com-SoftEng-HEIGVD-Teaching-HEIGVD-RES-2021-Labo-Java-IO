@@ -1,5 +1,6 @@
 package ch.heigvd.res.labio.quotes;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -45,7 +46,8 @@ public class QuoteClient {
     HttpClient client = HttpClient.newBuilder().build();
 
     // Make the call to the API and map the response body to a Quote object
-    return new ObjectMapper().readValue(client.send(request, HttpResponse.BodyHandlers.ofString()).body(), Quote.class);
+    ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    return mapper.readValue(client.send(request, HttpResponse.BodyHandlers.ofString()).body(), Quote.class);
   }
 
 }
