@@ -29,6 +29,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
+    hadAnR = true;
+    newLine = true;
   }
 
   private void writeLineNumToken() throws IOException {
