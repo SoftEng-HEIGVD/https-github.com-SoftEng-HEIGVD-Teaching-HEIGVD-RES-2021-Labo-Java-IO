@@ -167,7 +167,7 @@ public class Application implements IApplication {
       public void visit(File file)  {
 
         try {
-          writer.write(file.getName());
+          writer.write(file.getPath()+System.lineSeparator());
         }
         catch(IOException e) {
           System.err.println("Invalid File");
