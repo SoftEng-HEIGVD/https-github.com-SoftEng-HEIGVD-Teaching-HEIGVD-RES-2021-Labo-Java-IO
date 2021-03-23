@@ -146,7 +146,6 @@ public class Application implements IApplication {
       }
     }
     filepath += "/" + filename;
-    System.out.println(filepath);
     Writer writer = new OutputStreamWriter(new FileOutputStream(filepath), StandardCharsets.UTF_8);
     writer.write(quote.getQuote());
     writer.close();
