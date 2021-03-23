@@ -144,7 +144,7 @@ public class Application implements IApplication {
     File file = new File(path);
     file.mkdirs();
     FileOutputStream fos = new FileOutputStream(path + filename);
-    OutputStreamWriter osw = new OutputStreamWriter(fos);
+    OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
 
     osw.write(quote.getQuote());
     osw.flush();
@@ -170,11 +170,7 @@ public class Application implements IApplication {
         } catch (IOException ex){
 
         }
-        /*try {
-          writer.append(WORKSPACE_DIRECTORY + file.getName());
-        }catch (IOException e){
 
-        }*/
       }
     });
   }

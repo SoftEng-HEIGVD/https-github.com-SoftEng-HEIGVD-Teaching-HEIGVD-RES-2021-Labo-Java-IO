@@ -74,7 +74,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     public void write(int c) throws IOException {
         String str = "";
 
-        if(lineCounter == 1 || (previousChar == '\r' && c != '\n')){
+        if(lineCounter == 1 || previousChar == '\r' && c != '\n'){
             str += lineCounter;
             str += "\t";
             ++lineCounter;

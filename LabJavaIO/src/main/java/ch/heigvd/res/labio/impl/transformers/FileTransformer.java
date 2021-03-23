@@ -40,13 +40,14 @@ public abstract class FileTransformer implements IFileVisitor {
   private static final int BUFFER_SIZE = 512;
 
   public void duplicate(Reader reader, Writer writer) throws IOException {
-    char[] buffer = new char[BUFFER_SIZE];
-    int readBytes = reader.read(buffer);
-    while (readBytes != -1 ) {
-      writer.write(buffer, 0, readBytes);
-      readBytes = reader.read(buffer);
+    int readChar = reader.read();
+    while(readChar != -1) {
+      writer.write(readChar);
+      readChar = reader.read();
     }
+
   }
+
   @Override
   public void visit(File file) {
     if (!file.isFile()) {
