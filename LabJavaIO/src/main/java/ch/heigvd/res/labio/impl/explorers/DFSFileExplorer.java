@@ -22,7 +22,7 @@ public class DFSFileExplorer implements IFileExplorer {
         vistor.visit(rootDirectory);
         if (rootDirectory.isDirectory()) {
             for (String pathname : rootDirectory.list()) {
-                explore(new File(rootDirectory.getAbsolutePath() + File.separator + pathname), vistor);
+                explore(new File(rootDirectory + File.separator + pathname), vistor);
             }
         }
     }
