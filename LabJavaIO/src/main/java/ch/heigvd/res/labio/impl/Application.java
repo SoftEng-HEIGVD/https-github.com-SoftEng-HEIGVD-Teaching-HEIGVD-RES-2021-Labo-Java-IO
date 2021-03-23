@@ -139,12 +139,6 @@ public class Application implements IApplication {
       folder_name += tag + "/";
     }
     String quote_text = quote.getQuote();
-    Path path = Paths.get(folder_name);
-    try {
-      Files.createDirectories(path);
-    } catch (IOException e) {
-      System.err.println("Failed to create repositories");
-    }
     File my_quote = new File("./workspace/quotes/"+folder_name + filename);
     FileUtils.writeStringToFile(my_quote, quote_text, "UTF-8");
 
