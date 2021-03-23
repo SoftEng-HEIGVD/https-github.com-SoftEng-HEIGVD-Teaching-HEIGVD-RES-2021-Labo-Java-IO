@@ -97,7 +97,7 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        storeQuote(quote, "quotes-" + i + ".utf8");
+        storeQuote(quote, "quote-" + i + ".utf8");
         /* There is a missing piece here!
          * As you can see, this method handles the first part of the lab. It uses the web service
          * client to fetch quotes. We have removed a single line from this method. It is a call to
