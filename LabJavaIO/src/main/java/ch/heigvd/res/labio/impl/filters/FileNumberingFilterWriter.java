@@ -33,23 +33,23 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(String str, int off, int len) throws IOException {
       String s = str.substring(off, off + len);
       String[] line = new String[2];
-      String res = "";
+      StringBuilder res = new StringBuilder();
       do {
         line = Utils.getNextLine(s);
         if (!init){
           init = true;
-          res +=  idLine + "\t";
+          res.append(idLine).append("\t");
         }
-        res += line[0];
+        res.append(line[0]);
         if (line[0].length() != 0){
           ++idLine;
-          res += idLine + "\t";
+          res.append(idLine).append("\t");
         }
         s = line[1];
 
       }while (line[0].length() != 0);
-      res += line[1];
-      out.write(res);
+      res.append(line[1]);
+      out.write(res.toString());
   }
 
   @Override

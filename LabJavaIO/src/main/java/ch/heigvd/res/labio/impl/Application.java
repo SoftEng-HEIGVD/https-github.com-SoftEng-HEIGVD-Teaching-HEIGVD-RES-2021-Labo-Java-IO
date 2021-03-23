@@ -132,21 +132,21 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    String filepath = WORKSPACE_DIRECTORY;
-    File mainDir = new File(filepath);
+    StringBuilder filepath = new StringBuilder(WORKSPACE_DIRECTORY);
+    File mainDir = new File(filepath.toString());
     if (!mainDir.exists()){
       mainDir.mkdir();
     }
 
     for (String tag : quote.getTags()){
-      filepath += "/" + tag;
-      File dir = new File(filepath) ;
+      filepath.append("/").append(tag);
+      File dir = new File(filepath.toString()) ;
       if (!dir.exists()){
         dir.mkdir();
       }
     }
-    filepath += "/" + filename;
-    Writer writer = new OutputStreamWriter(new FileOutputStream(filepath), StandardCharsets.UTF_8);
+    filepath.append("/").append(filename);
+    Writer writer = new OutputStreamWriter(new FileOutputStream(filepath.toString()), StandardCharsets.UTF_8);
     writer.write(quote.getQuote());
     writer.close();
   }
