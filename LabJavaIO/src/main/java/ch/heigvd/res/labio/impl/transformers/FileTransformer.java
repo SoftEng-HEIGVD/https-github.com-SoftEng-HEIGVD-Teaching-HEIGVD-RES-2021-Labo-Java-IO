@@ -1,9 +1,13 @@
 package ch.heigvd.res.labio.impl.transformers;
 
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,7 +39,7 @@ public abstract class FileTransformer implements IFileVisitor {
    * @param writer the writer connected to the output file
    * @return the writer decorated by 0, 1 or more filter writers
    */
-  public abstract Writer decorateWithFilters(Writer writer);
+  public abstract Writer decorateWithFilters(Writer writer) throws IOException;
 
   @Override
   public void visit(File file) {
@@ -52,10 +56,16 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
-      
-      reader.close();
-      writer.flush();
-      writer.close();
+      BufferedReader br = new BufferedReader(reader);
+      BufferedWriter bw = new BufferedWriter(writer);
+
+      int r;
+      while ((r = br.read()) != -1)
+        bw.write(r);
+
+      br.close();
+      bw.flush();
+      bw.close();
     } catch (IOException ex) {
       LOG.log(Level.SEVERE, null, ex);
     }

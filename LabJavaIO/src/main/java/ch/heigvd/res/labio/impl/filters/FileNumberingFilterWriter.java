@@ -19,23 +19,54 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
-  public FileNumberingFilterWriter(Writer out) {
+  private int no;
+  private boolean shouldInsertNewLine = false;
+
+  public FileNumberingFilterWriter(Writer out) throws IOException {
     super(out);
+    insertNumerotation();
+  }
+
+  private void insertNumerotation() throws IOException {
+    super.out.write(String.valueOf(++no));
+    super.out.write(9); // Tab
   }
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(str.toCharArray(), off, len);
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    if(cbuf.length < off + len - 1)
+      throw new ArrayIndexOutOfBoundsException("The offset or len is out of range!");
+
+    for(int i = off; i < off + len; i++)
+        write(cbuf[i]);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+    if (shouldInsertNewLine) {
+      if ((char) c == '\n') {
+        super.out.write(c);
+        insertNumerotation();
+        shouldInsertNewLine = false;
+        return;
+      } else {
+        insertNumerotation();
+        shouldInsertNewLine = false;
+      }
+    } else if ((char) c == '\n') {
+      super.out.write(c);
+      insertNumerotation();
+      return;
+    }
 
+    if ((char) c == '\r')
+      shouldInsertNewLine = true;
+
+    super.out.write(c);
+  }
 }
