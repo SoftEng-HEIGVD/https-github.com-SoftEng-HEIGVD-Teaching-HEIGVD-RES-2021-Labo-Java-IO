@@ -4,20 +4,29 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * This implementation of the IFileExplorer interface performs a depth-first
  * exploration of the file system and invokes the visitor for every encountered
  * node (file and directory). When the explorer reaches a directory, it visits all
  * files in the directory and then moves into the subdirectories.
- * 
+ *
+ * Site : https://www.techiedelight.com/traverse-given-directory-bfs-dfs-java/
+ *
  * @author Olivier Liechti
  */
 public class DFSFileExplorer implements IFileExplorer {
 
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    vistor.visit(rootDirectory);
+    File[] listOfFilesAndDirectory = rootDirectory.listFiles();
+    if (listOfFilesAndDirectory != null){
+      Arrays.sort(listOfFilesAndDirectory);
+      for (File file : listOfFilesAndDirectory){
+          explore(file, vistor);
+      }
+    }
   }
-
 }
