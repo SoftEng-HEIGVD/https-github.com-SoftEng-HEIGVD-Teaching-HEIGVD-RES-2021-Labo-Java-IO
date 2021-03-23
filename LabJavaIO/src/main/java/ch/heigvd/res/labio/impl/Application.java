@@ -100,7 +100,7 @@ public class Application implements IApplication {
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
-        storeQuote(quote, "quote-" + i + ".utf8");
+        storeQuote(quote, "quote-" + (i + 1) + ".utf8");
       }
 
     }
