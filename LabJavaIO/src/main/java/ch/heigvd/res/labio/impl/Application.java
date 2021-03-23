@@ -145,8 +145,8 @@ public class Application implements IApplication {
       }
     }
     filepath += "/" + filename;
-    File file = new File(filepath);
     System.out.println(filepath);
+    File file = new File(filepath);
     file.createNewFile();
     FileWriter fileWriter = new FileWriter(file);
     fileWriter.write(quote.getQuote());
