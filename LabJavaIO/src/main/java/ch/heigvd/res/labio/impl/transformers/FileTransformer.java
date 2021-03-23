@@ -37,6 +37,17 @@ public abstract class FileTransformer implements IFileVisitor {
    */
   public abstract Writer decorateWithFilters(Writer writer);
 
+  private static final int BUFFER_SIZE = 512;
+
+  public void duplicate(Reader reader, Writer writer) throws IOException {
+    int readChar = reader.read();
+    while(readChar != -1) {
+      writer.write(readChar);
+      readChar = reader.read();
+    }
+
+  }
+
   @Override
   public void visit(File file) {
     if (!file.isFile()) {
@@ -47,12 +58,14 @@ public abstract class FileTransformer implements IFileVisitor {
       Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), StandardCharsets.UTF_8); // the bug fix by teacher
       writer = decorateWithFilters(writer);
 
+
       /*
        * There is a missing piece here: you have an input reader and an ouput writer (notice how the 
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
-      
+      duplicate(reader, writer);
+
       reader.close();
       writer.flush();
       writer.close();
@@ -60,5 +73,6 @@ public abstract class FileTransformer implements IFileVisitor {
       LOG.log(Level.SEVERE, null, ex);
     }
   }
+
 
 }
