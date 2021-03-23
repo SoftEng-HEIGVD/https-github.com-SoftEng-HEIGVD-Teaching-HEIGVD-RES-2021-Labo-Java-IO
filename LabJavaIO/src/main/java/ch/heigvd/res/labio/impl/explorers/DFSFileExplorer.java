@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * @author Olivier Liechti
  *
- * Modified by Joan Maillard
+ * Modified by Joan Maillard and Mathias Maillard
  */
 public class DFSFileExplorer implements IFileExplorer {
 
