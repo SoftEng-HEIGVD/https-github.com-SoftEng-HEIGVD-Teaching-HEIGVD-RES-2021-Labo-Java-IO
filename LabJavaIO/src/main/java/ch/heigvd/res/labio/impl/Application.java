@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,11 +147,9 @@ public class Application implements IApplication {
     }
     filepath += "/" + filename;
     System.out.println(filepath);
-    File file = new File(filepath);
-    file.createNewFile();
-    FileWriter fileWriter = new FileWriter(file);
-    fileWriter.write(quote.getQuote());
-    fileWriter.close();
+    Writer writer = new OutputStreamWriter(new FileOutputStream(filepath), StandardCharsets.UTF_8);
+    writer.write(quote.getQuote());
+    writer.close();
   }
   
   /**
