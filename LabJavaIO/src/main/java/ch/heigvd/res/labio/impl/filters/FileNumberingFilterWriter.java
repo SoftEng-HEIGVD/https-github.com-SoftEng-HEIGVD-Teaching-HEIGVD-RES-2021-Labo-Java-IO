@@ -21,13 +21,16 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
-    static long lineCounter = 1;
-    static char previousChar;
+
+    long lineCounter = 1;
+    char previousChar;
+
 
     public FileNumberingFilterWriter(Writer out) {
         super(out);
         lineCounter = 1;
     }
+
 
     @Override
     public void write(String str, int off, int len) throws IOException {
@@ -75,18 +78,22 @@ public class FileNumberingFilterWriter extends FilterWriter {
         String str = "";
 
         if(lineCounter == 1 || previousChar == '\r' && c != '\n'){
+
             str += lineCounter;
             str += "\t";
             ++lineCounter;
         }
 
-        str += (char)c;
 
-        if(c == '\n'){
+        str +=(char)c;
+
+        if( c == '\n' ){
+
             str += lineCounter;
             str += "\t";
             ++lineCounter;
         }
+
         previousChar = (char)c;
 
         out.write(str);
