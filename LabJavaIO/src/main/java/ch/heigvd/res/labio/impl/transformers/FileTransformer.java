@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * 
  * @author Olivier Liechti
  */
-public abstract class FileTransformer implements IFileVisitor {
+public abstract class   FileTransformer implements IFileVisitor {
 
   private static final Logger LOG = Logger.getLogger(FileTransformer.class.getName());
   private final List<FilterWriter> filters = new ArrayList<>();
@@ -52,6 +52,12 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
+
+      int b = reader.read();
+      while(b != -1) {
+        writer.write(b);
+        b = reader.read();
+      }
       
       reader.close();
       writer.flush();
