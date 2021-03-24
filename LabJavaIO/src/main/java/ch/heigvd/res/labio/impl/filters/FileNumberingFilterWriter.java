@@ -1,5 +1,7 @@
 package ch.heigvd.res.labio.impl.filters;
 
+import ch.heigvd.res.labio.impl.Utils;
+
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -18,6 +20,9 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  private int currentLine = 1;
+  private boolean firstLine = true;
+  private boolean returnLine = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -25,17 +30,67 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String tmp = str.substring(off, off + len);
+    String[] nextLine = Utils.getNextLine(tmp);
+
+    if (firstLine) {
+      out.write(currentLine + "\t");
+      firstLine = false;
+    }
+
+    while(true){
+      if(nextLine[0].equals("")) {
+        if (nextLine[1].equals("")){
+          break;
+        }else{
+          String subStr = nextLine[1];
+          out.write(subStr);
+          break;
+        }
+      }else {
+        String subStr = nextLine[0];
+        out.write(subStr);
+        nextLine = Utils.getNextLine(nextLine[1]);
+      }
+
+      out.write(++currentLine + "\t");
+    }
+
+
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    write(new String(cbuf), off, len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+
+
+    if(firstLine) {
+      out.write(currentLine + "\t");
+      firstLine = false;
+    }
+
+
+    if (c == '\r'){
+      out.write(c);
+      returnLine = true;
+    }else {
+      if(returnLine && c != '\n'){
+        out.write(++currentLine + "\t");
+        out.write(c);
+        returnLine = false;
+      }else if (c == '\n'){
+        out.write(c);
+        out.write(++currentLine + "\t");
+        returnLine = false;
+      }else {
+        out.write(c);
+      }
+    }
   }
 
 }
