@@ -24,6 +24,8 @@ import java.io.*;
 /**
  *
  * @author Olivier Liechti
+ *
+ * modified by Mario Tomic
  */
 public class Application implements IApplication {
 

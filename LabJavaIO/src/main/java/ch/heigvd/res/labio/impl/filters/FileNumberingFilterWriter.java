@@ -39,6 +39,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
   }
 
+
   @Override
   public void write(int c) throws IOException {
 
