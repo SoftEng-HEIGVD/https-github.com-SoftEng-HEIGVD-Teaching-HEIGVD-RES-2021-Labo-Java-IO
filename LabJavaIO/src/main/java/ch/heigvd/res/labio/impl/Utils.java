@@ -21,7 +21,6 @@ public class Utils {
    */
   public static String[] getNextLine(String lines) {
     String[] arrLines = {"", lines};
-  int j = lines.length();
 
     for (int i = 0; i < lines.length(); ++i){
       /**
