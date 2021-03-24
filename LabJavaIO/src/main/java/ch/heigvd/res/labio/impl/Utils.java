@@ -20,7 +20,38 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String[] resullt;
+
+    // Line with separator "\r\n"
+    if (lines.contains("\r\n"))
+      resullt = split("\r\n", lines);
+
+    // Line with separator "\r"
+    else if (lines.contains("\r"))
+      resullt = split("\r", lines);
+
+    // Line with separator "\n"
+    else if (lines.contains("\n"))
+      resullt = split("\n", lines);
+
+    // No line separator
+    else
+      resullt = new String[] {"", lines};
+    return resullt;
+  }
+
+  /**
+   * This method splits the string according to the Separator into two strings;
+   * the nextLine and the rest.
+   *
+   * @param separator
+   * @return an array with 2 elements; the first element is the next line with
+   * the line separator, the second element is the remaining text.
+   */
+  private static String[] split(String separator, String lines) {
+    String[] nextLine = lines.split(separator, 2);
+    nextLine[0] += separator;
+    return nextLine;
   }
 
 }
