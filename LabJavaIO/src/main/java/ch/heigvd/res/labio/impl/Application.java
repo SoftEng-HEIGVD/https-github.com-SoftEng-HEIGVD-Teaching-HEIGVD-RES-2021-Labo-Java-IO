@@ -17,9 +17,15 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+//import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.io.*;
+
 /**
  *
  * @author Olivier Liechti
+ *
+ * modified by Mario Tomic
  */
 public class Application implements IApplication {
 
@@ -98,6 +104,7 @@ public class Application implements IApplication {
          * one method provided by this class, which is responsible for storing the content of the
          * quote in a text file (and for generating the directories based on the tags).
          */
+        storeQuote(quote, "quote-" + i);
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +140,21 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    String path = WORKSPACE_DIRECTORY;
+    //List<String> quotes = quote.getTags();
+    for (String tag : quote.getTags()){
+      path += "/" + tag;
+    }
+    path += "/" + filename + ".utf8";
+
+    File file = new File(path.toString());
+    file.getParentFile().mkdirs();
+
+    Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+    writer.write(quote.getQuote());
+    writer.close();
+
   }
   
   /**
@@ -150,6 +171,12 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+
+        try {
+          writer.write(file.getPath() + '\n');
+        } catch (IOException e) {
+
+        }
       }
     });
   }
