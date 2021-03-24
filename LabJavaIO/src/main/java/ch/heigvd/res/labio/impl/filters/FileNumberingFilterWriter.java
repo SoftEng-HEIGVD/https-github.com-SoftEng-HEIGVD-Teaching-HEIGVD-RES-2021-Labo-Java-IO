@@ -5,7 +5,6 @@ import ch.heigvd.res.labio.impl.Utils;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -40,16 +39,16 @@ public class FileNumberingFilterWriter extends FilterWriter {
     }
 
     while(true){
-      if(nextLine[0] == "") {
-        if (nextLine[1] == ""){
+      if(nextLine[0].equals("")) {
+        if (nextLine[1].equals("")){
           break;
         }else{
-          String subStr = nextLine[1];//.substring(off, len);
+          String subStr = nextLine[1];
           out.write(subStr);
           break;
         }
       }else {
-        String subStr = nextLine[0];//.substring(off, len);
+        String subStr = nextLine[0];
         out.write(subStr);
         nextLine = Utils.getNextLine(nextLine[1]);
       }
@@ -91,32 +90,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
       }else {
         out.write(c);
       }
-
-
     }
-
-
-
-    /**
-    if (returnLine){  // if prev char was \r
-      if (c == '\n'){ // if curr char is \n -> \r\n
-
-        out.write(++currentLine + "\t");
-      }else{          // prev char was \r
-        out.write(++currentLine + "\t");
-      }
-      returnLine = false;
-    }else {
-      if (c == '\n'){
-
-        out.write(++currentLine + "\t");
-      }
-      if (c == '\r'){
-
-        returnLine = true;
-      }
-    }
-    */
   }
 
 }
