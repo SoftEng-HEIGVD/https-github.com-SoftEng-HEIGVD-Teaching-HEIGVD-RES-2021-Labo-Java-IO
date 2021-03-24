@@ -23,6 +23,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int currentLine = 1;
   private boolean firstLine = true;
+  private boolean returnLine = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -66,17 +67,56 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
+
+
+
     if(firstLine) {
       out.write(currentLine + "\t");
       firstLine = false;
     }
 
-    out.write(c);
-    if (c == '\n'){
-      out.write(++currentLine + "\t");
+
+    if (c == '\r'){
+      out.write(c);
+      returnLine = true;
+    }else {
+      if(returnLine && c != '\n'){
+        out.write(++currentLine + "\t");
+        out.write(c);
+        returnLine = false;
+      }else if (c == '\n'){
+        out.write(c);
+        out.write(++currentLine + "\t");
+        returnLine = false;
+      }else {
+        out.write(c);
+      }
+
+
     }
 
 
+
+    /**
+    if (returnLine){  // if prev char was \r
+      if (c == '\n'){ // if curr char is \n -> \r\n
+
+        out.write(++currentLine + "\t");
+      }else{          // prev char was \r
+        out.write(++currentLine + "\t");
+      }
+      returnLine = false;
+    }else {
+      if (c == '\n'){
+
+        out.write(++currentLine + "\t");
+      }
+      if (c == '\r'){
+
+        returnLine = true;
+      }
+    }
+    */
   }
 
 }
