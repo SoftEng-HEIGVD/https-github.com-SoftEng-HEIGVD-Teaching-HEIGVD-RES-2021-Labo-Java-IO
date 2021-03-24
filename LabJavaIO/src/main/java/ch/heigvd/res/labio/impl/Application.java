@@ -9,11 +9,10 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,12 +91,7 @@ public class Application implements IApplication {
         e.printStackTrace();
       }
       if (quote != null) {
-        /* There is a missing piece here!
-         * As you can see, this method handles the first part of the lab. It uses the web service
-         * client to fetch quotes. We have removed a single line from this method. It is a call to
-         * one method provided by this class, which is responsible for storing the content of the
-         * quote in a text file (and for generating the directories based on the tags).
-         */
+        storeQuote(quote, "quote-" + (i + 1) + ".utf8");
         LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
@@ -133,7 +127,23 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+
+    // Getting the filepath
+    String filepath = WORKSPACE_DIRECTORY + "/";
+    List<String> quotesTags = quote.getTags();
+    for (String tag : quotesTags)
+      filepath += tag + "/";
+
+    // Create needed directories and new file
+    File newFile = new File(filepath + filename);
+    newFile.getParentFile().mkdirs();
+    newFile.createNewFile();
+
+    // Write
+    FileWriter fw = new FileWriter(newFile, StandardCharsets.UTF_8);
+    fw.write(quote.getQuote());
+    fw.flush();
+    fw.close();
   }
   
   /**
@@ -145,11 +155,11 @@ public class Application implements IApplication {
     explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
       @Override
       public void visit(File file) {
-        /*
-         * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
-         * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
-         * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
-         */
+        try{
+          writer.write(file.getPath() + "\n");
+        }catch(IOException e){
+          LOG.log(Level.SEVERE, "Could not write the filename", e.getMessage());
+        }
       }
     });
   }
