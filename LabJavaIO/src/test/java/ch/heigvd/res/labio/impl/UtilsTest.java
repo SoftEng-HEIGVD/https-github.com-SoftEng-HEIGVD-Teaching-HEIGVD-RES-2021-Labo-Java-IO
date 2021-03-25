@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 /**
  *
  * @author Olivier Liechti
- * TODO: Anthony
  */
 public class UtilsTest {
 

@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  *
  * @author Olivier Liechti
- * TODO: Anthony
  */
 public class FileTransformerTest {
   
