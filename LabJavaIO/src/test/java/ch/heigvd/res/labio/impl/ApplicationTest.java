@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * then you will introduce a change of specification!!!
  *
  * @author Olivier Liechti
+ *
  */
 public class ApplicationTest {
 

@@ -9,11 +9,9 @@ import ch.heigvd.res.labio.quotes.Quote;
 import ch.heigvd.res.labio.quotes.QuoteClient;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,6 +100,7 @@ public class Application implements IApplication {
         for (String tag : quote.getTags()) {
           LOG.info("> " + tag);
         }
+        storeQuote(quote, "quote-" + Integer.toString(i) + ".utf8");
       }
 
     }
@@ -133,7 +132,20 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String quoteDir = WORKSPACE_DIRECTORY + "/" + String.join("/", quote.getTags());
+    File quoteDirFile = new File(quoteDir);
+    try {
+      quoteDirFile.mkdirs();
+    } catch (SecurityException e) {
+      LOG.log(Level.SEVERE, "Could not create directories for path '" + quoteDir + "'");
+      throw e;
+    }
+    String quotePath = quoteDir + "/" + filename;
+    File quoteFile = new File(quotePath);
+    try(FileOutputStream fos = new FileOutputStream(quoteFile)) {
+      byte[] bytes = quote.getQuote().getBytes(StandardCharsets.UTF_8);
+      fos.write(bytes);
+    }
   }
   
   /**
@@ -150,6 +162,13 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+        String path = file.getPath();
+        try {
+          writer.write(path);
+          writer.write('\n');
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     });
   }
